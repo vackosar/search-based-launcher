@@ -1,0 +1,184 @@
+<ViewAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+		android:id="@+id/viewAnimator"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+    
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+ 	android:layout_height="fill_parent"
+    android:id="@+id/layoutMain" 
+    android:layout_gravity="bottom" >
+    
+    
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/button0"
+        android:longClickable="true"
+        android:ems="10"
+        android:inputType="textNoSuggestions"  
+        android:background="@android:color/darker_gray"
+        android:textColor="@android:color/white" >
+
+        <requestFocus />
+    </EditText>
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/editText1" 
+        android:focusable="false" 
+        android:focusableInTouchMode="false"
+        android:textFilterEnabled="false">
+    </ListView>
+
+    <TextView
+        android:layout_marginRight="7dp" 
+        android:id="@+id/toggleButton0"
+        android:gravity="center"
+        android:layout_height="35dp"
+        android:layout_width="70dp"
+        
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+            
+      
+        android:text="Autostart" />
+
+    <TextView
+        android:layout_marginRight="7dp" 
+        android:id="@+id/button1"
+        android:gravity="center"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/toggleButton0"
+        android:layout_marginTop="50dp"
+        android:layout_width="70dp"
+        android:background="@android:color/darker_gray"
+        android:textColor="@android:color/white"
+        android:text="Flash" />
+
+    
+    <TextView
+        android:layout_marginRight="7dp" 
+        android:gravity="center"
+        android:id="@+id/button2"
+        android:layout_width="70dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/button1"
+        android:layout_marginTop="40dp"
+		android:background="@android:color/darker_gray"
+        android:textColor="@android:color/white"
+        android:text="Wifi" />
+
+     <TextView
+        android:layout_marginRight="7dp" 
+        android:gravity="center"
+        android:id="@+id/button4"
+        android:layout_width="70dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/button2"
+        android:layout_marginTop="40dp"
+		android:background="@android:color/darker_gray"
+        android:textColor="@android:color/white"
+        android:text="Blue."  />
+     
+
+     <TextView
+        android:layout_marginRight="7dp" 
+        android:gravity="center"
+        android:id="@+id/button6"
+        android:layout_width="70dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/button4"
+        android:layout_marginTop="40dp"
+        android:background="@android:color/darker_gray"
+        android:textColor="@android:color/white"
+        android:text="Cam."  />
+	</RelativeLayout> 
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/layoutMenu" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="Switch between the lists on the bottom of the screen. If you like this app, buy me a coffee: donate PayPal on Google Play. Button below will take to Google Play page."
+        android:textAppearance="?android:attr/textAppearanceMedium" 
+        android:layout_alignParentTop="true"/>
+
+
+
+        <Button
+            android:id="@+id/donateButton"
+            android:layout_width="140dp"
+            android:layout_height="100dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/textView1"
+            android:layout_marginTop="130dp"
+            android:text="Go to G. Play to rate or donate" />
+
+
+
+
+
+        <RadioGroup
+            android:id="@+id/radioGroup1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:clickable="true"
+            android:duplicateParentState="false"
+            android:checkedButton="@+id/radio0"
+            android:longClickable="false" 
+            android:text="tet" >
+
+            <RadioButton
+                android:id="@+id/radio0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="List of applications" />
+
+            <RadioButton
+                android:id="@+id/radio1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="List of all activities of all packages" />
+
+            <RadioButton
+                android:id="@+id/radio2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Extra added activities to the list of applications" />
+            
+            <RadioButton
+                android:id="@+id/radio3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hidden applications from list of applications" />
+        </RadioGroup>
+
+</RelativeLayout>
+    
+    
+    
+    
+    
+</ViewAnimator>
+
