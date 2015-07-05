@@ -626,19 +626,19 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
    	 			final TextView myWifiButton = (TextView) findViewById(R.id.button2);
    	 			final WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
    	 			if (wifi != null) {
-   	 				myWifiButton.setVisibility(0);
+   	 				myWifiButton.setVisibility(View.VISIBLE);
    	 			}
 
    	            final TextView myBlueButton = (TextView) findViewById(R.id.button4);        	
    	            final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
    	            if (mBluetoothAdapter != null) {
-   	                myBlueButton.setVisibility(0);
+   	                myBlueButton.setVisibility(View.VISIBLE);
    	            }
    	            
    	        	final TextView myCamButton = (TextView) findViewById(R.id.button6);
    	         
    	        	if (HasCam) {
-   	        		myCamButton.setVisibility(0);
+   	        		myCamButton.setVisibility(View.VISIBLE);
    	        	}
    	 			myEditText.setText(""); 
    	 		Autostart=false; onClick(null);
