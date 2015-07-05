@@ -18,6 +18,19 @@ public interface Colorful {
             setNormalColor();
         }
     }
+    default void setVisible() {
+        colorService.setVisible(getView());
+    }
+    default void setInvisible() {
+        colorService.setInvisible(getView());
+    }
+    default void setVisible(boolean visible) {
+        if (visible) {
+            setVisible();
+        } else {
+            setInvisible();
+        }
+    }
 
     View getView();
 }

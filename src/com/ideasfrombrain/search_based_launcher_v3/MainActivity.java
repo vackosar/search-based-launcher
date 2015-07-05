@@ -487,19 +487,9 @@ public class MainActivity extends Activity {
    	 			
    	 		}
    	 		else {
-   	 			
-   	 			final TextView myWifiButton = (TextView) findViewById(R.id.button2);
-   	 			final WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-   	 			if (wifi != null) {
-   	 				colorService.setVisible(myWifiButton);
-   	 			}
+				wifiButton.setVisibleIfAvailable();
+				bluetoothButton.setVisibleIfAvailable();
 
-   	            final TextView myBlueButton = (TextView) findViewById(R.id.button4);        	
-   	            final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-   	            if (mBluetoothAdapter != null) {
-   	                colorService.setVisible(myBlueButton);
-   	            }
-   	            
    	        	final TextView myCamButton = (TextView) findViewById(R.id.button6);
    	         
    	        	if (HasCam) {

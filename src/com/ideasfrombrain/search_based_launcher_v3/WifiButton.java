@@ -5,7 +5,7 @@ import android.net.wifi.WifiManager;
 import android.view.View;
 import android.widget.TextView;
 
-public class WifiButton implements View.OnClickListener {
+public class WifiButton implements View.OnClickListener, Colorful {
     final MainActivity mainActivity;
     final ColorService colorService = new ColorService();
     private final WifiManager wifiManager;
@@ -15,10 +15,8 @@ public class WifiButton implements View.OnClickListener {
         this.mainActivity = mainActivity;
         textView = (TextView) mainActivity.findViewById(R.id.button2);
         wifiManager = (WifiManager) mainActivity.getSystemService(Context.WIFI_SERVICE);
-        if (wifiManager == null) {
-            colorService.setInvisible(textView);
-        }
-        else {
+        setVisibleIfAvailable();
+        if (isAvailable()) {
             if(wifiManager.isWifiEnabled()) {
                 colorService.setActive(textView);
             }
@@ -35,4 +33,22 @@ public class WifiButton implements View.OnClickListener {
             wifiManager.setWifiEnabled(!wifiManager.isWifiEnabled());
         }
     }
+
+    private boolean isAvailable () {
+        return wifiManager == null;
+    }
+
+    public void setVisibleIfAvailable () {
+        if (wifiManager == null) {
+            colorService.setInvisible(textView);
+        } else {
+            colorService.setVisible(textView);
+        }
+    }
+
+    @Override
+    public View getView() {
+        return textView;
+    }
+
 }

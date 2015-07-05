@@ -14,6 +14,9 @@ public class BluetoothButton implements View.OnClickListener {
         this.mainActivity = mainActivity;
         textView = (TextView) mainActivity.findViewById(R.id.button4);
         textView.setOnClickListener(this);
+    }
+
+    public void setVisibleIfAvailable () {
         if (mBluetoothAdapter == null) {
             colorService.setInvisible(textView);
         }
