@@ -423,26 +423,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
             } 
             
 
-            myBlueButton.setOnClickListener(new View.OnClickListener()
-            {
-            	
-				public void onClick(View arg0) {
-	              
-
-					final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-					
-					if ((mBluetoothAdapter!=null)  && (!mBluetoothAdapter.isEnabled())) {
-						
-						mBluetoothAdapter.enable();
-		            }
-					else if (mBluetoothAdapter!=null)   {
-						mBluetoothAdapter.disable();
-
-					} 
-				}
-
-            });
-            
+            myBlueButton.setOnClickListener(new BluetoothListener());
             
         	//-------------------------------- FLASH -------------------------------------------
         	
