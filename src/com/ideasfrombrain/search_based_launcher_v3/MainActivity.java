@@ -84,23 +84,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
     
     EditText DialogInput;
      
-    private final BroadcastReceiver mApplicationsReceiver = new BroadcastReceiver() {
-		@Override
-        public void onReceive(Context context, Intent intent) {
-			Log.d("DEBUG", "recieved Broadcast");
-			final WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-
-			if(wifi!=null) {
-				final TextView myWifiButton = (TextView) findViewById(R.id.button2);
-				if(wifi.isWifiEnabled()) {
-					myWifiButton.setBackgroundColor(-16711936);
-				}
-				else {
-					myWifiButton.setBackgroundColor(-12303292);
-				}
-			}
-        }
-    };
+    private BroadcastReceiver wifiBroadcastReceiver;
 
     private final BroadcastReceiver mPkgApplicationsReceiver = new BroadcastReceiver() {
 		@Override
@@ -182,9 +166,10 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
         registerReceiver(mPkgApplicationsReceiver, pkgFilter);
         
         IntentFilter filter = new IntentFilter( );
-        filter.addAction( Intent.ACTION_AIRPLANE_MODE_CHANGED );
+        filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
         filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        registerReceiver(mApplicationsReceiver, filter);
+		wifiBroadcastReceiver = new WifiBroadcastReceiver((WifiManager) getSystemService(Context.WIFI_SERVICE), (TextView) findViewById(R.id.button2));
+        registerReceiver(wifiBroadcastReceiver, filter);
         
     }
     
@@ -715,7 +700,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
     
     @Override
     public void onDestroy() {
-        unregisterReceiver(mApplicationsReceiver);
+        unregisterReceiver(wifiBroadcastReceiver);
         unregisterReceiver(mPkgApplicationsReceiver);
     	super.onDestroy();	
     }
