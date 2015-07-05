@@ -32,26 +32,20 @@ import android.view.View.OnClickListener;
 
 
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ArrayAdapter;
 
 import android.widget.ViewAnimator;
 
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 
 
 public class MainActivity extends Activity implements OnClickListener {
-	
-	
-    
-    
-    static String app_package_name="com.ideasfrombrain.search_based_launcher_v3";
+
+
+	public static final int FIRST_INDEX = 0;
+	static String APP_PACKAGE_NAME ="com.ideasfrombrain.search_based_launcher_v3";
 	
 	private ColorService colorService = new ColorService();
 	
@@ -251,9 +245,9 @@ public class MainActivity extends Activity implements OnClickListener {
 
            break;
            }
-           pkg.Name.add(app_package_name + ".Menu");
+           pkg.Name.add(APP_PACKAGE_NAME + ".Menu");
        	   pkg.Nick.add(" Menu-Launcher");
-       	   pkg.Activity.add(app_package_name + ".Menu");
+       	   pkg.Activity.add(APP_PACKAGE_NAME + ".Menu");
 
      }
         
@@ -482,7 +476,7 @@ public class MainActivity extends Activity implements OnClickListener {
             
    	   	 findViewById(R.id.donateButton).setOnClickListener(new View.OnClickListener() {
    				public void onClick(View v) {
-   					Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+ app_package_name));
+   					Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+ APP_PACKAGE_NAME));
    					marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
    					startActivity(marketIntent);
    				}
@@ -490,7 +484,7 @@ public class MainActivity extends Activity implements OnClickListener {
    	    	 
    	       	findViewById(R.id.donateButton).setOnClickListener(new View.OnClickListener() {
    	 			public void onClick(View v) {
-   	 				Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+ app_package_name + "_donate"));
+   	 				Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+ APP_PACKAGE_NAME + "_donate"));
    	 				marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
    	 				startActivity(marketIntent);
    	 			}
@@ -718,7 +712,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 		
 		
-		if((app_package_name+".Menu").equals(pkgFiltered.Name.get(index))) {
+		if((APP_PACKAGE_NAME +".Menu").equals(pkgFiltered.Name.get(index))) {
 			myShowNext(false);
 		}
 		else {
@@ -760,8 +754,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		pkgFiltered.Name.clear();
 		pkgFiltered.Nick.clear();
 		pkgFiltered.Activity.clear();
-		final ListView myListView = (ListView) findViewById(R.id.listView1);
-			
 			String FilterText = searchText.getFilterText();
 			
 
@@ -790,11 +782,10 @@ public class MainActivity extends Activity implements OnClickListener {
 	           
 		   }
 		   if(((pkgFiltered.Name.size())==1) && Autostart) {
-				runApp(0) ;
+				runApp(FIRST_INDEX) ;
 			 }
 			 else {
-				 //FilteredAdapter = 
-		    	 myListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, pkgFiltered.Nick));
+			   appListView.setAppList(pkgFiltered.Nick);
 			}
 			
 		//}
@@ -811,7 +802,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 		dialog.setTitle(pkgFiltered.Nick.get(index));
 
-		if((tmpActivity==app_package_name+".Menu")  ) {return false;}
+		if((tmpActivity== APP_PACKAGE_NAME +".Menu")  ) {return false;}
 		if((tmpNickBefore.matches("R:.*"))  ) {tmpNickBefore=tmpNickBefore.substring(2,tmpNickBefore.length());}
 		final String tmpNick=tmpNickBefore;
 			
