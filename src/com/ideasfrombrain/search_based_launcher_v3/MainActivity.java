@@ -140,6 +140,9 @@ public class MainActivity extends Activity {
 	private SearchText searchText;
 	private AppListView appListView;
 	private AutostartButton autostartButton;
+	private WifiButton wifiButton;
+	private BluetoothButton bluetoothButton;
+	private FlashButton flashButton;
 
 	private void registerIntentReceivers() {
         IntentFilter pkgFilter = new IntentFilter( );
@@ -343,104 +346,12 @@ public class MainActivity extends Activity {
 		final PackageManager pm = getPackageManager();
         	HasCam = pm.hasSystemFeature(PackageManager.FEATURE_CAMERA);
 
-        	
-        	//-------------------------------- WIFI ------------------------------------------------
-        	final TextView myWifiButton = (TextView) findViewById(R.id.button2);
-        	final WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        	//if ((wifi!=null) &&  (wifi.isWifiEnabled())) {myWifiButton.setChecked(true); }
-        	if (wifi == null) {
-        		colorService.setInvisible(myWifiButton);
-        		
-            } 
-        	else {
-				if(wifi.isWifiEnabled()) {
-					colorService.setActive(myWifiButton);
-				}
-				else {
-					colorService.setNormal(myWifiButton);
-				}
-        	}
-        	
-            myWifiButton.setOnClickListener(new View.OnClickListener()
-            {
+		wifiButton = new WifiButton(this);
+		bluetoothButton = new BluetoothButton(this);
+		flashButton = new FlashButton(this);
 
-				public void onClick(View arg0) {
-	                final WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-	                if(wifi!=null) { wifi.setWifiEnabled(!wifi.isWifiEnabled());}
-					
-				}
 
-            });
-        	
-          //-------------------------------- BLUE ------------------------------------------------
-            
-            final TextView myBlueButton = (TextView) findViewById(R.id.button4);        	
-            final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-           if (mBluetoothAdapter == null) {
-			   colorService.setInvisible(myBlueButton);
-            } 
-            
-
-            myBlueButton.setOnClickListener(new BluetoothListener());
-            
-        	//-------------------------------- FLASH -------------------------------------------
-        	
-        	final TextView myFlashButton = (TextView) findViewById(R.id.button1);
-
-        	colorService.setInvisible(myFlashButton);
-        	if (!(HasCam)) {
-				colorService.setInvisible(myFlashButton);
-        	}
-            myFlashButton.setOnClickListener(new View.OnClickListener()
-            {
-
-				public void onClick(View arg0) {
-					   //Camera mCamera;	
-					/*   String value;	
-					   if (isFlashOn) // we are being ask to turn it on
-					    {
-					        value = Camera.Parameters.FLASH_MODE_TORCH;
-					    }
-					    else  // we are being asked to turn it off
-					    {
-					        value =  Camera.Parameters.FLASH_MODE_AUTO;
-					    }
-
-					
-					    try{    
-					    
-					    	Camera cam = Camera.open();     
-					    	Parameters p = cam.getParameters();
-					    	p.setFlashMode(Parameters.FLASH_MODE_TORCH);
-					    	cam.setParameters(p);
-					    	cam.startPreview();
-
-					    	String nowMode=p.getFlashMode();
-					    	
-					        if (isFlashOn && nowMode.equals(Camera.Parameters.FLASH_MODE_TORCH))
-					        {
-					        	isFlashOn=true;
-					        }
-					        if (! isFlashOn && nowMode.equals(Camera.Parameters.FLASH_MODE_AUTO))
-					        {
-					        	isFlashOn=true;
-					        }
-					        isFlashOn= false;
-					    }
-					    catch (Exception ex)
-					    {
-					        // nothing to do
-					    	Log.d("DEBUG", "error");
-					    }
-	                	 */
-	                
-					
-				}
-
-            });            
-
-             
-        	//-------------------------------- Camera -------------------------------------------
+		//-------------------------------- Camera -------------------------------------------
         	
 
         	
