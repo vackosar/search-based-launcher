@@ -554,8 +554,6 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
                 pkgRecent.Nick=savedInstanceState.getStringArrayList("pkgRecent.Nick");
                 pkgRecent.Activity=savedInstanceState.getStringArrayList("pkgRecent.Activity");
                 
-        		 //REFILTER   
-        	     //refresh(myEditText.getText()) ;
         	}
         	registerIntentReceivers();        
         
@@ -566,8 +564,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
 
     
     public void myShowNext(Boolean DoLoadApps) {
-    	final EditText myEditText=(EditText) findViewById(R.id.editText1);
-    	colorService.setNormal(myEditText); // because of menu in applist
+		searchText.setNormalColor();
        	ViewAnimator mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
     	//mViewAnimator.setInAnimation(null);  // Skipping this will cause trouble
        // mViewAnimator.setOutAnimation(null);
@@ -578,7 +575,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
    	 		if (DoLoadApps) {loadApps();}
    	 		
    	 		if(checkedRadioButton > 0) { 
-   	 			myEditText.append(" ") ; 
+   	 			searchText.setSpaceCharacterToText();
    	 			Autostart=true; onClick(null);
    	 			TextView b;
    	 			b = (TextView) findViewById(R.id.button1);
@@ -612,11 +609,10 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
    	        	if (HasCam) {
    	        		colorService.setVisible(myCamButton);
    	        	}
-   	 			myEditText.setText(""); 
+   	 			searchText.clearText();
    	 		Autostart=false; onClick(null);
    	 		}
    	 		
-   	 		//myEditText.requestFocus();
    	 	}
    	 	else {
    	 		RadioGroup mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup1);
@@ -668,10 +664,9 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
     protected void onResume()
     {
         super.onResume();
-        final EditText myEditText=(EditText) findViewById(R.id.editText1);
-        colorService.setNormal(myEditText);
+        searchText.setNormalColor();
 		if((checkedRadioButton == 0)  && Autostart) {
-			myEditText.setText("");
+			searchText.clearText();
 		 }
 
 		if(!NewerAndroid) {
@@ -695,8 +690,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
     
 	//@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		final EditText myEditText=(EditText) findViewById(R.id.editText1);
-		colorService.setActive(myEditText);
+		searchText.setActivatedColor();
 
 		int tmpint = ItemNumInRecent(pkgFiltered.Activity.get(arg2));
 		if((pkgRecent.Nick.size() >=10) && (tmpint==-1)){
@@ -752,8 +746,8 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
 		 catch(Exception e) {
 			// TODO Auto-generated catch block
 			Log.d("DEBUG", e.getMessage());
-			colorService.setNormal(myEditText);
-			
+			searchText.setNormalColor();
+
 			if(!NewerAndroid) {
 				final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
 				if (imm != null){
@@ -772,11 +766,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
 		pkgFiltered.Activity.clear();
 		final ListView myListView = (ListView) findViewById(R.id.listView1);
 			
-			final EditText myEditText=(EditText) findViewById(R.id.editText1);
-			
-	
-			
-			String FilterText= myEditText.getText().toString().toLowerCase().replace(" ", ".*") + ".*"; // space is replaced with REGEX  symbols ".*"
+			String FilterText = searchText.getFilterText();
 			
 
 			int tmpsize = pkgRecent.Name.size();
@@ -805,7 +795,6 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
 		   }
 		   if(((pkgFiltered.Name.size())==1) && Autostart) {
 				this.onItemClick(myListView, myListView, 0, 0) ;
-				//myEditText.setText("");
 			 }
 			 else {
 				 //FilteredAdapter = 
