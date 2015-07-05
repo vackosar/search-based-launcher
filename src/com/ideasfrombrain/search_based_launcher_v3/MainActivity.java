@@ -391,7 +391,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
         	final WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         	//if ((wifi!=null) &&  (wifi.isWifiEnabled())) {myWifiButton.setChecked(true); }
         	if (wifi == null) {
-        		myWifiButton.setVisibility(4);
+        		myWifiButton.setVisibility(View.INVISIBLE);
         		
             } 
         	else {
@@ -419,7 +419,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
             final TextView myBlueButton = (TextView) findViewById(R.id.button4);        	
             final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
            if (mBluetoothAdapter == null) {
-                myBlueButton.setVisibility(4);
+                myBlueButton.setVisibility(View.INVISIBLE);
             } 
             
 
@@ -429,9 +429,9 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
         	
         	final TextView myFlashButton = (TextView) findViewById(R.id.button1);
 
-        	myFlashButton.setVisibility(4); // FIX AND COMMENT THIS+repair return!!!!!!!
+        	myFlashButton.setVisibility(View.INVISIBLE); // FIX AND COMMENT THIS+repair return!!!!!!!
         	if (!(HasCam)) {
-        		myFlashButton.setVisibility(4);
+        		myFlashButton.setVisibility(View.INVISIBLE);
         	}
             myFlashButton.setOnClickListener(new View.OnClickListener()
             {
@@ -489,7 +489,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
         	final TextView myCamButton = (TextView) findViewById(R.id.button6);
         
         	if (!(HasCam)) {
-        		myCamButton.setVisibility(4);
+        		myCamButton.setVisibility(View.INVISIBLE);
         	}
         	
         	myCamButton.setOnClickListener(new View.OnClickListener()
@@ -610,15 +610,15 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
    	 			Autostart=true; onClick(null);
    	 			TextView b;
    	 			b = (TextView) findViewById(R.id.button1);
-   	 			b.setVisibility(4);
+   	 			b.setVisibility(View.INVISIBLE);
    	 			b = (TextView) findViewById(R.id.button2);
-	 			b.setVisibility(4);
+	 			b.setVisibility(View.INVISIBLE);
 	 			b = (TextView) findViewById(R.id.button4);
-   	 			b.setVisibility(4);
+   	 			b.setVisibility(View.INVISIBLE);
    	 			//b = (TextView) findViewById(R.id.button5);
-	 			//b.setVisibility(4);
+	 			//b.setVisibility(View.INVISIBLE);
 	 			b = (TextView) findViewById(R.id.button6);
-   	 			b.setVisibility(4);
+   	 			b.setVisibility(View.INVISIBLE);
    	 			
    	 		}
    	 		else {
