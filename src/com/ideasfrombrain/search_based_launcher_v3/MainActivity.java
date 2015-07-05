@@ -55,6 +55,8 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
     
     static String app_package_name="com.ideasfrombrain.search_based_launcher_v3";
 	
+	private ColorService colorService = new ColorService();
+	
     int tmpArg;
     boolean tmpYes;
     boolean isFlashOn=false;
@@ -161,7 +163,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
     private void registerIntentReceivers() {
         IntentFilter pkgFilter = new IntentFilter( );
         pkgFilter.addAction( Intent.ACTION_PACKAGE_ADDED );
-        pkgFilter.addAction( Intent.ACTION_PACKAGE_REMOVED );
+        pkgFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
         pkgFilter.addDataScheme("package");
         registerReceiver(mPkgApplicationsReceiver, pkgFilter);
         
@@ -376,15 +378,15 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
         	final WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         	//if ((wifi!=null) &&  (wifi.isWifiEnabled())) {myWifiButton.setChecked(true); }
         	if (wifi == null) {
-        		myWifiButton.setVisibility(View.INVISIBLE);
+        		colorService.setInvisible(myWifiButton);
         		
             } 
         	else {
 				if(wifi.isWifiEnabled()) {
-					myWifiButton.setBackgroundColor(-16711936);
+					colorService.setActive(myWifiButton);
 				}
 				else {
-					myWifiButton.setBackgroundColor(-12303292);
+					colorService.setNormal(myWifiButton);
 				}
         	}
         	
@@ -404,7 +406,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
             final TextView myBlueButton = (TextView) findViewById(R.id.button4);        	
             final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
            if (mBluetoothAdapter == null) {
-                myBlueButton.setVisibility(View.INVISIBLE);
+			   colorService.setInvisible(myBlueButton);
             } 
             
 
@@ -414,9 +416,9 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
         	
         	final TextView myFlashButton = (TextView) findViewById(R.id.button1);
 
-        	myFlashButton.setVisibility(View.INVISIBLE); // FIX AND COMMENT THIS+repair return!!!!!!!
+        	colorService.setInvisible(myFlashButton);
         	if (!(HasCam)) {
-        		myFlashButton.setVisibility(View.INVISIBLE);
+				colorService.setInvisible(myFlashButton);
         	}
             myFlashButton.setOnClickListener(new View.OnClickListener()
             {
@@ -474,7 +476,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
         	final TextView myCamButton = (TextView) findViewById(R.id.button6);
         
         	if (!(HasCam)) {
-        		myCamButton.setVisibility(View.INVISIBLE);
+				colorService.setInvisible(myCamButton);
         	}
         	
         	myCamButton.setOnClickListener(new View.OnClickListener()
@@ -580,7 +582,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
     
     public void myShowNext(Boolean DoLoadApps) {
     	final EditText myEditText=(EditText) findViewById(R.id.editText1);
-    	myEditText.setBackgroundColor(-12303292); // because of menu in applist
+    	colorService.setNormal(myEditText); // because of menu in applist
        	ViewAnimator mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
     	//mViewAnimator.setInAnimation(null);  // Skipping this will cause trouble
        // mViewAnimator.setOutAnimation(null);
@@ -595,15 +597,15 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
    	 			Autostart=true; onClick(null);
    	 			TextView b;
    	 			b = (TextView) findViewById(R.id.button1);
-   	 			b.setVisibility(View.INVISIBLE);
+   	 			colorService.setInvisible(b);
    	 			b = (TextView) findViewById(R.id.button2);
-	 			b.setVisibility(View.INVISIBLE);
+	 			colorService.setInvisible(b);
 	 			b = (TextView) findViewById(R.id.button4);
-   	 			b.setVisibility(View.INVISIBLE);
+   	 			colorService.setInvisible(b);
    	 			//b = (TextView) findViewById(R.id.button5);
-	 			//b.setVisibility(View.INVISIBLE);
+	 			//colorService.setInvisible(//b);
 	 			b = (TextView) findViewById(R.id.button6);
-   	 			b.setVisibility(View.INVISIBLE);
+   	 			colorService.setInvisible(b);
    	 			
    	 		}
    	 		else {
@@ -611,19 +613,19 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
    	 			final TextView myWifiButton = (TextView) findViewById(R.id.button2);
    	 			final WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
    	 			if (wifi != null) {
-   	 				myWifiButton.setVisibility(View.VISIBLE);
+   	 				colorService.setVisible(myWifiButton);
    	 			}
 
    	            final TextView myBlueButton = (TextView) findViewById(R.id.button4);        	
    	            final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
    	            if (mBluetoothAdapter != null) {
-   	                myBlueButton.setVisibility(View.VISIBLE);
+   	                colorService.setVisible(myBlueButton);
    	            }
    	            
    	        	final TextView myCamButton = (TextView) findViewById(R.id.button6);
    	         
    	        	if (HasCam) {
-   	        		myCamButton.setVisibility(View.VISIBLE);
+   	        		colorService.setVisible(myCamButton);
    	        	}
    	 			myEditText.setText(""); 
    	 		Autostart=false; onClick(null);
@@ -682,7 +684,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
     {
         super.onResume();
         final EditText myEditText=(EditText) findViewById(R.id.editText1);
-        myEditText.setBackgroundColor(-12303292);
+        colorService.setNormal(myEditText);
 		if((checkedRadioButton == 0)  && Autostart) {
 			myEditText.setText("");
 		 }
@@ -709,7 +711,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 	//@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		final EditText myEditText=(EditText) findViewById(R.id.editText1);
-		myEditText.setBackgroundColor(-16711936);
+		colorService.setActive(myEditText);
 
 		int tmpint = ItemNumInRecent(pkgFiltered.Activity.get(arg2));
 		if((pkgRecent.Nick.size() >=10) && (tmpint==-1)){
@@ -765,7 +767,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 		 catch(Exception e) {
 			// TODO Auto-generated catch block
 			Log.d("DEBUG", e.getMessage());
-			myEditText.setBackgroundColor(-12303292);
+			colorService.setNormal(myEditText);
 			
 			if(!NewerAndroid) {
 				final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -1154,10 +1156,10 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 		Autostart=!Autostart;
 		final TextView myToggleButton = (TextView) findViewById(R.id.toggleButton0);
 		if(Autostart) {
-			myToggleButton.setBackgroundColor(-16711936);
+			colorService.setActive(myToggleButton);
 		}
 		else {
-			myToggleButton.setBackgroundColor(-12303292);
+			colorService.setNormal(myToggleButton);
 		}
 		
 	}
