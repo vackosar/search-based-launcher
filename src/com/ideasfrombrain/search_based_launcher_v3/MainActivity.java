@@ -24,9 +24,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -48,7 +46,7 @@ import android.widget.TextView;
 
 
 
-public class MainActivity extends Activity implements OnItemClickListener, TextWatcher, OnItemLongClickListener, OnClickListener {
+public class MainActivity extends Activity implements OnItemClickListener, OnItemLongClickListener, OnClickListener {
 	
 	
     
@@ -144,11 +142,12 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
         	    SaveExtRemLists(false);
 				checkedRadioButton=0;	
 				loadApps();
-				afterTextChanged(null);
+				refresh();
 		}
     };
-    
-    private void registerIntentReceivers() {
+	private SearchText searchText;
+
+	private void registerIntentReceivers() {
         IntentFilter pkgFilter = new IntentFilter( );
         pkgFilter.addAction( Intent.ACTION_PACKAGE_ADDED );
         pkgFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
@@ -251,9 +250,9 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 
            break;
            }
-           pkg.Name.add(app_package_name+".Menu" );
+           pkg.Name.add(app_package_name + ".Menu");
        	   pkg.Nick.add(" Menu-Launcher");
-       	   pkg.Activity.add(app_package_name+".Menu");
+       	   pkg.Activity.add(app_package_name + ".Menu");
 
      }
         
@@ -286,14 +285,14 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
     	SaveList(pkgHide.Nick,"pkgHide.Nick", myContext);
     	SaveList(pkgHide.Activity,"pkgHide.Activity", myContext);
     	SaveList(pkgRecent.Name,"pkgRecent.Name", myContext);
-    	SaveList(pkgRecent.Nick,"pkgRecent.Nick", myContext);
-    	SaveList(pkgRecent.Activity,"pkgRecent.Activity", myContext);
+    	SaveList(pkgRecent.Nick, "pkgRecent.Nick", myContext);
+    	SaveList(pkgRecent.Activity, "pkgRecent.Activity", myContext);
     }
 
     public boolean SaveList(List<String> list, String listName, Context mContext) { 
         SharedPreferences prefs = mContext.getSharedPreferences("preferencename", 0);  
         SharedPreferences.Editor editor = prefs.edit();  
-        editor.putInt(listName +"_size", list.size());  
+        editor.putInt(listName + "_size", list.size());
         for(int i=0;i<list.size();i++)  
             editor.putString(listName + "_" + i, list.get(i));  
         return editor.commit();  
@@ -346,11 +345,9 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
             myListView.setOnItemClickListener(this);
             myListView.setOnItemLongClickListener(this);
 
-        	final EditText myEditText = (EditText) findViewById(R.id.editText1);
-           
-        	myEditText.addTextChangedListener(this);
-        	
-        	final TextView myToggleButton =(TextView) findViewById(R.id.toggleButton0) ;
+		searchText = new SearchText(this);
+
+		final TextView myToggleButton =(TextView) findViewById(R.id.toggleButton0) ;
         	myToggleButton.setOnClickListener(this);
         	Autostart=false; onClick(null);
         	
@@ -558,7 +555,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
                 pkgRecent.Activity=savedInstanceState.getStringArrayList("pkgRecent.Activity");
                 
         		 //REFILTER   
-        	     //afterTextChanged(myEditText.getText()) ;
+        	     //refresh(myEditText.getText()) ;
         	}
         	registerIntentReceivers();        
         
@@ -713,9 +710,9 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
     		pkgRecent.Activity.remove(tmpint);
 		}
 		final Context myContext =  getApplicationContext();
-    	SaveList(pkgRecent.Name,"pkgRecent.Name", myContext);
-    	SaveList(pkgRecent.Nick,"pkgRecent.Nick", myContext);
-    	SaveList(pkgRecent.Activity,"pkgRecent.Activity", myContext);
+    	SaveList(pkgRecent.Name, "pkgRecent.Name", myContext);
+    	SaveList(pkgRecent.Nick, "pkgRecent.Nick", myContext);
+    	SaveList(pkgRecent.Activity, "pkgRecent.Activity", myContext);
 		
 		String tmpNickBefore = pkgFiltered.Nick.get(arg2);
 		pkgRecent.Name.add(pkgFiltered.Name.get(arg2));
@@ -768,13 +765,8 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 		
 	}
 
-	
 
-
-
-
-	//@Override
-	public void afterTextChanged(Editable arg0) {
+	public void refresh() {
 		pkgFiltered.Name.clear();
 		pkgFiltered.Nick.clear();
 		pkgFiltered.Activity.clear();
@@ -824,10 +816,6 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 		
 
 	}
-	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-		// TODO Auto-generated method stub
-
-	}
 
 	//@Override
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
@@ -874,7 +862,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 				        		  
 				        		  SaveExtRemLists(false);
 				        		  loadApps();
-				        		  afterTextChanged(null);
+				        		  refresh();
 				        		  dialog.dismiss();
 				        	  }
 				           }
@@ -885,7 +873,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 						Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + tmpName));
 						startActivity(intent);
 						//loadApps();
-						afterTextChanged(null);
+						refresh();
 						dialog.dismiss();
 					}
 				});
@@ -907,7 +895,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 			        		  
 			        		  SaveExtRemLists(false);
 			        		  loadApps();
-			        		  afterTextChanged(null);
+			        		  refresh();
 			        		  dialog.dismiss();
 			        	  }
 					}
@@ -941,7 +929,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 				        		  
 				        		  SaveExtRemLists(false);
 				        		  loadApps();
-				        		  afterTextChanged(null);
+				        		  refresh();
 				        		  dialog.dismiss();
 				        	  }
 				           }
@@ -952,7 +940,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 						Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + tmpName));
 						startActivity(intent);
 						//loadApps();
-						afterTextChanged(null);
+						refresh();
 						dialog.dismiss();
 					}
 				});
@@ -978,7 +966,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 			        		  
 			        		  SaveExtRemLists(false);
 			        		  loadApps();
-			        		  afterTextChanged(null);
+			        		  refresh();
 			        		  dialog.dismiss();
 			        	  
 					}
@@ -1004,7 +992,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 				        		  
 				        		  SaveExtRemLists(false) ;
 				        		  loadApps();
-				        		  afterTextChanged(null);
+				        		  refresh();
 				        		  dialog.dismiss();
 				        		  
 				           }
@@ -1033,7 +1021,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 				   			  pkgExtra.Activity.add(pkgFiltered.Activity.get(tmpArg));
 				   			  SaveExtRemLists(true);
 				   			  loadApps();
-				   			  afterTextChanged(null);
+				   			  refresh();
 				   			  dialog.dismiss();
 			           }
 			       });
@@ -1066,7 +1054,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 				        		  
 				        		  MainActivity.this.SaveExtRemLists(false) ;
 				        		  loadApps();
-				        		  afterTextChanged(null);
+				        		  refresh();
 				        		  dialog.dismiss();
 				        	  }
 			           }
@@ -1092,7 +1080,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 				        		  pkgHide.Nick.remove(tmpItemNumInHide);
 				        		  MainActivity.this.SaveExtRemLists(false) ;
 				        		  loadApps();
-				        		  afterTextChanged(null);
+				        		  refresh();
 				        		  dialog.dismiss();
 				        	  }
 			           }
@@ -1132,13 +1120,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 		return -1;
 	}	
 	
-	
-	//@Override
-	public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-			int arg3) {
-		// TODO Auto-generated method stub
-		
-	}
+
 	public void onClick(View arg0) {
 		Autostart=!Autostart;
 		final TextView myToggleButton = (TextView) findViewById(R.id.toggleButton0);
