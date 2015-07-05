@@ -46,7 +46,7 @@ import android.widget.TextView;
 
 
 
-public class MainActivity extends Activity implements OnItemClickListener, OnItemLongClickListener, OnClickListener {
+public class MainActivity extends Activity implements OnClickListener {
 	
 	
     
@@ -146,6 +146,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
 		}
     };
 	private SearchText searchText;
+	private AppListView appListView;
 
 	private void registerIntentReceivers() {
         IntentFilter pkgFilter = new IntentFilter( );
@@ -341,10 +342,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
         super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-            final ListView myListView = (ListView) findViewById(R.id.listView1);
-            myListView.setOnItemClickListener(this);
-            myListView.setOnItemLongClickListener(this);
-
+		appListView = new AppListView(this);
 		searchText = new SearchText(this);
 
 		final TextView myToggleButton =(TextView) findViewById(R.id.toggleButton0) ;
@@ -687,12 +685,10 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
     	super.onDestroy();	
     }
  
-    
-	//@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+	public void runApp(int index) {
 		searchText.setActivatedColor();
 
-		int tmpint = ItemNumInRecent(pkgFiltered.Activity.get(arg2));
+		int tmpint = ItemNumInRecent(pkgFiltered.Activity.get(index));
 		if((pkgRecent.Nick.size() >=10) && (tmpint==-1)){
 			pkgRecent.Name.remove(0);
     		pkgRecent.Nick.remove(0);
@@ -708,11 +704,11 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
     	SaveList(pkgRecent.Nick, "pkgRecent.Nick", myContext);
     	SaveList(pkgRecent.Activity, "pkgRecent.Activity", myContext);
 		
-		String tmpNickBefore = pkgFiltered.Nick.get(arg2);
-		pkgRecent.Name.add(pkgFiltered.Name.get(arg2));
+		String tmpNickBefore = pkgFiltered.Nick.get(index);
+		pkgRecent.Name.add(pkgFiltered.Name.get(index));
 			if((tmpNickBefore.matches("R:.*"))  ) {tmpNickBefore=tmpNickBefore.substring(2,tmpNickBefore.length());}
 		pkgRecent.Nick.add( tmpNickBefore);
-		pkgRecent.Activity.add(pkgFiltered.Activity.get(arg2)); 
+		pkgRecent.Activity.add(pkgFiltered.Activity.get(index));
 		
 		if(!NewerAndroid) {
 			final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -722,7 +718,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
 		}
 		
 		
-		if((app_package_name+".Menu").equals(pkgFiltered.Name.get(arg2))) {
+		if((app_package_name+".Menu").equals(pkgFiltered.Name.get(index))) {
 			myShowNext(false);
 		}
 		else {
@@ -731,7 +727,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
 	        	final Intent intent = new Intent(Intent.ACTION_MAIN, null);
 	        	intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-			 intent.setComponent(new ComponentName(pkgFiltered.Name.get(arg2) , pkgFiltered.Activity.get(arg2)));
+			 intent.setComponent(new ComponentName(pkgFiltered.Name.get(index) , pkgFiltered.Activity.get(index)));
 
 	        	
 	        	
@@ -794,7 +790,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
 	           
 		   }
 		   if(((pkgFiltered.Name.size())==1) && Autostart) {
-				this.onItemClick(myListView, myListView, 0, 0) ;
+				runApp(0) ;
 			 }
 			 else {
 				 //FilteredAdapter = 
@@ -807,15 +803,13 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
 	}
 
 	//@Override
-	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
-			long arg3) {
-		final int tmpArg = arg2;
-		final String tmpActivity = pkgFiltered.Activity.get(tmpArg);
-		final String tmpName= pkgFiltered.Name.get(tmpArg);
-		String tmpNickBefore= pkgFiltered.Nick.get(tmpArg);
+	public boolean showOptionsForApp(final int index) {
+		final String tmpActivity = pkgFiltered.Activity.get(index);
+		final String tmpName= pkgFiltered.Name.get(index);
+		String tmpNickBefore= pkgFiltered.Nick.get(index);
 		
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-		dialog.setTitle(pkgFiltered.Nick.get(tmpArg));
+		dialog.setTitle(pkgFiltered.Nick.get(index));
 
 		if((tmpActivity==app_package_name+".Menu")  ) {return false;}
 		if((tmpNickBefore.matches("R:.*"))  ) {tmpNickBefore=tmpNickBefore.substring(2,tmpNickBefore.length());}
@@ -998,16 +992,16 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
         	
 			DialogInput =   new EditText(this);
 			DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-			DialogInput.setText(pkgFiltered.Nick.get(tmpArg));
+			DialogInput.setText(pkgFiltered.Nick.get(index));
 			
 			dialog.setView(DialogInput);
 			dialog.setMessage("Add this activity to applications list?");
 			dialog.setCancelable(true);
 			dialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
 			           public void onClick(DialogInterface dialog, int id) {
-				        	  pkgExtra.Name.add(pkgFiltered.Name.get(tmpArg));
+				        	  pkgExtra.Name.add(pkgFiltered.Name.get(index));
 				   			  pkgExtra.Nick.add(DialogInput.getText().toString() );
-				   			  pkgExtra.Activity.add(pkgFiltered.Activity.get(tmpArg));
+				   			  pkgExtra.Activity.add(pkgFiltered.Activity.get(index));
 				   			  SaveExtRemLists(true);
 				   			  loadApps();
 				   			  refresh();
@@ -1021,7 +1015,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
         case 2:	
 			DialogInput =   new EditText(this);
 			DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-			DialogInput.setText(pkgFiltered.Nick.get(tmpArg));
+			DialogInput.setText(pkgFiltered.Nick.get(index));
 			
 			dialog.setView(DialogInput);
 			dialog.setMessage("Remove this (extra added list of all activities) activity from applications list?");
@@ -1055,7 +1049,7 @@ public class MainActivity extends Activity implements OnItemClickListener, OnIte
         case 3:    	
 			DialogInput =   new EditText(this);
 			DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-			DialogInput.setText(pkgFiltered.Nick.get(tmpArg));
+			DialogInput.setText(pkgFiltered.Nick.get(index));
 			
 			dialog.setView(DialogInput);
 			dialog.setMessage("Remove this activity (hidden app) from hidden applications list?");
