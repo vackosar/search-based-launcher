@@ -64,25 +64,13 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
     boolean Autostart=true;
     boolean NewerAndroid=true;
     boolean HasCam = false;
-
-    public class pkgInfo {
-    	public String[] Nick=  new String[300]; 
-        public String[] Name =  new String[300];
-        public String[] Activity = new String[300] ;
-        public int last;
-    }
-    public class pkgListInfo {
-    	public ArrayList<String> Nick = new ArrayList<String>(200);
-    	public ArrayList<String> Name = new ArrayList<String>(200);
-    	public ArrayList<String> Activity = new ArrayList<String>(200);
-    }    
     
-    pkgListInfo pkg = new pkgListInfo();
-    pkgListInfo pkgFiltered = new pkgListInfo();
-    pkgListInfo pkgExtra = new pkgListInfo();
-    pkgListInfo pkgHide = new pkgListInfo();
+    PackageList pkg = new PackageList();
+    PackageList pkgFiltered = new PackageList();
+    PackageList pkgExtra = new PackageList();
+    PackageList pkgHide = new PackageList();
     
-    pkgListInfo pkgRecent = new pkgListInfo();
+    PackageList pkgRecent = new PackageList();
     
     EditText DialogInput;
      
@@ -1151,7 +1139,6 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 		// TODO Auto-generated method stub
 		
 	}
-
 	public void onClick(View arg0) {
 		Autostart=!Autostart;
 		final TextView myToggleButton = (TextView) findViewById(R.id.toggleButton0);
