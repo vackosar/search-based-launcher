@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ideasfrombrain.search_based_launcher_v2"
+    package="com.ideasfrombrain.search_based_launcher_v3"
     android:versionCode="5"
     android:versionName="1.13" >
     <uses-sdk
@@ -11,8 +11,6 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-	<!--  <uses-permission android:name="android.permission.CAMERA" /> -->  
-
     
 
 	<supports-screens
@@ -23,13 +21,13 @@
 	
     <application
         android:icon="@drawable/ic_launcher"
-        android:label="Search based launcher"
+        android:label="Search based launcher v3"
         android:theme="@android:style/Theme.NoTitleBar" 
         android:persistent="true" >
         
         <activity
             android:name=".MainActivity"
-            android:label="Search based launcher" 
+            android:label="Search based launcher v3"
             android:alwaysRetainTaskState="True" 
              android:launchMode="singleInstance" >
             <intent-filter>

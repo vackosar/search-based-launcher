@@ -1,4 +1,4 @@
-package com.ideasfrombrain.search_based_launcher_v2;
+package com.ideasfrombrain.search_based_launcher_v3;
 
 
 import java.util.ArrayList;
@@ -23,8 +23,6 @@ import android.content.SharedPreferences;
 
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-//import android.hardware.Camera;
-//import android.hardware.Camera.Parameters;
 
 import android.text.Editable;
 import android.text.InputType;
@@ -40,9 +38,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
-//import android.widget.Button;
-
-//import android.widget.ToggleButton;
 
 import android.widget.ViewAnimator;
 
@@ -58,21 +53,16 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 	
     
     
-    static String app_package_name="com.ideasfrombrain.search_based_launcher_v2";
+    static String app_package_name="com.ideasfrombrain.search_based_launcher_v3";
 	
-    //EditText myEditText;
-    //ListView myListView;
     int tmpArg;
     boolean tmpYes;
     boolean isFlashOn=false;
     int checkedRadioButton=0;
-   // boolean lastWifiState=false;
-  //  boolean lastBlueState=false;
     boolean Autostart=true;
     boolean NewerAndroid=true;
     boolean HasCam = false;
-    //PackageManager pm;
-    
+
     public class pkgInfo {
     	public String[] Nick=  new String[300]; 
         public String[] Name =  new String[300];
@@ -94,25 +84,12 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
     
     EditText DialogInput;
      
-   // ArrayAdapter<String> adapter ;
-    //ArrayAdapter<String> FilteredAdapter;
-    
     private final BroadcastReceiver mApplicationsReceiver = new BroadcastReceiver() {
 		@Override
         public void onReceive(Context context, Intent intent) {
 			Log.d("DEBUG", "recieved Broadcast");
 			final WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-			
-			//if("android.intent.action.AIRPLANE_MODE".equals(intent.getAction()))  {
-				 //final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-				 
-				 
-				
-				//if ((wifi!=null)  && (lastWifiState)) { /*wifi.setWifiEnabled(true);*/ startActivity(new Intent(wifi.ACTION_REQUEST_ENABLE)); }
-				//if ((mBluetoothAdapter!=null)  && (lastBlueState)) {startActivity(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)); /*mBluetoothAdapter.enable();*/ }
-				//lastBlueState=false;
-				//lastWifiState =false;
-			//}
+
 			if(wifi!=null) {
 				final TextView myWifiButton = (TextView) findViewById(R.id.button2);
 				if(wifi.isWifiEnabled()) {
@@ -121,8 +98,6 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 				else {
 					myWifiButton.setBackgroundColor(-12303292);
 				}
-				//loadApps();
-					
 			}
         }
     };
@@ -215,16 +190,8 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
     
     public void loadApps() {
     	Log.d("DEBUG", "start loading apps");
-
-		//ActivityIsssssssnfo acInfo;  
-    		
 		Log.d("DEBUG", "activity arrays prepared");
-        
 
-
-        
-      //  try {
-        	
            final Intent main=new Intent(Intent.ACTION_MAIN, null);
            final PackageManager pm = getPackageManager();
            
@@ -252,36 +219,25 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
         	        
         	        for(ResolveInfo launchable : launchables) 
         	    	{
-        	        	//acInfo=launchable.activityInfo;         	        	
-        	        	if (ItemNumInHide(launchable.activityInfo.name)==-1) 
+        	        	if (ItemNumInHide(launchable.activityInfo.name)==-1)
         	        	{
             	        	pkg.Name.add(launchable.activityInfo.packageName);
             	        	pkg.Activity.add(launchable.activityInfo.name);
             	        	pkg.Nick.add(launchable.activityInfo.loadLabel(pm).toString());//tmpSplit[length-2]+ ":" +tmpSplit[length-1];
-            	        	//Log.d("DEBUG", pkg.Nick[i] );
         	        	}
 
 
         	    	}
-        	        
 
-        	        //pkg.last=pkg.last + pkgExtra.Name.size();
         	break;
             case 1:
         		
         			final List<ResolveInfo> launchables2=pm.queryIntentActivities(main, 0);
-        	        
-        	        
-        	        //pkg.last=launchables2.size()-1;
-        	        //for(int i=0; i<=pkg.last; i++)
+
         			int length=0;
         	        for(ResolveInfo launchable : launchables2) 
         	    	{
         	        	String[] tmpSplit = new String[10];
-        	        	
-        	        	
-        	        	//acInfo=launchable.activityInfo; 
-        	        	
         	            tmpSplit=launchable.activityInfo.name.split("\\.");
  					    length=tmpSplit.length;
 
@@ -294,24 +250,14 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
         	        	}
         	        	
         	        	pkg.Nick.add(tmpNick);
-        	        	//pkg.Nick.add(tmpSplit[length-2]+ ":" +tmpSplit[length-1]);
         	    	}
 
 
             break;
             case 2:
-        		
-    			
-        		//final List<ResolveInfo> launchables3=pm.queryIntentActivities(main, 0);
-    	        
-    	        
-    	       // pkg.last=pkgExtra.Name.size()-1;
+
     	        for(i=0; i<pkgExtra.Name.size(); i++  ) 
     	    	{
-    	        	
-    	            //tmpSplit=acInfo.name.split("\\.");
-					//    length=tmpSplit.length;
-
     	        	pkg.Name.add(pkgExtra.Name.get(i));
     	        	pkg.Nick.add(pkgExtra.Nick.get(i));
     	        	pkg.Activity.add(pkgExtra.Activity.get(i));
@@ -319,15 +265,9 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 
            break;
             case 3:
-        		
-    	        
-    	        
-    	        //pkg.last=pkgHide.Name.size()-1;
+
     	        for(i=0; i<pkgHide.Name.size(); i++  ) 
     	    	{
-    	        	
-    	            //tmpSplit=acInfo.name.split("\\.");
-					//    length=tmpSplit.length;
 
     	        	pkg.Name.add(pkgHide.Name.get(i));
     	        	pkg.Nick.add(pkgHide.Nick.get(i));
@@ -339,13 +279,6 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
            pkg.Name.add(app_package_name+".Menu" );
        	   pkg.Nick.add(" Menu-Launcher");
        	   pkg.Activity.add(app_package_name+".Menu");
-    //     }	
-     //    catch (Exception e) {
-   	//			Log.d("DEBUG",e.getStackTrace().toString());
-   	//	 }
-
-     //REFILTER   
-     //afterTextChanged(myEditText.getText()) ;
 
      }
         
@@ -397,7 +330,6 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
     public void LoadList(ArrayList<String> List, String ListName, Context mContext) {  
         SharedPreferences prefs = mContext.getSharedPreferences("preferencename", 0);  
         int size = prefs.getInt(ListName + "_size", 0);  
-        //List = new ArrayList<String>(20);
         List.clear();
         for(int i=0;i<size;i++)  
             List.add(prefs.getString(ListName + "_" + i, null));  
@@ -406,27 +338,10 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
     @Override
     public boolean onKeyUp(int keycode, KeyEvent event ) {
      if(keycode == KeyEvent.KEYCODE_MENU){
-    	 
-    	 //startActivityForResult((new Intent(this, Menu.class).putExtra(  "checkedRadioButton", checkedRadioButton)), 1);
     	 myShowNext(false);
      }
      else if(keycode == KeyEvent.KEYCODE_SEARCH ) {
-    	 //onSearchRequested();
     	 startSearch("",false,null,true);
-    	 /*
-    	 try {
-    		 
-    	 	final Intent intent = new Intent(Intent.ACTION_MAIN, null);
-     		intent.addCategory(Intent.CATEGORY_LAUNCHER);
-     		intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox", "com.google.android.googlequicksearchbox.SearchActivity"));
-     	
-     	
-     	
-     		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK  |
-            Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-     		startActivity( intent);
-    	 }
-    	 catch (Exception e ){}*/
      }
      else if(keycode == KeyEvent.KEYCODE_BACK ) {
     	  ViewAnimator mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
@@ -450,19 +365,8 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        savedInstanceState
-        	//setDefaultKeyMode(DEFAULT_KEYS_SEARCH_LOCAL);
-        	
-//            final PackageManager pm = getPackageManager();
-            
             setContentView(R.layout.activity_main);
-            
-            
-           //myViewAnimator = (ViewAnimator)findViewById(R.id.container);
-           // myViewAnimator.setInAnimation(null);  // Skipping this will cause trouble
-           // myViewAnimator.setOutAnimation(null);
-            
-           
+
             final ListView myListView = (ListView) findViewById(R.id.listView1);
             myListView.setOnItemClickListener(this);
             myListView.setOnItemLongClickListener(this);
@@ -595,25 +499,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 				}
 
             });            
-            
-            
-        	//-------------------------------- Contacts -------------------------------------------
-        	
-        	/*
-        	final Button myContButton = (Button) findViewById(R.id.button5);
-        	
-        	myContButton.setOnClickListener(new View.OnClickListener()
-            {
 
-				public void onClick(View arg0) {
-						
-					startActivity( (new Intent(Intent.ACTION_VIEW ,  Uri.parse("content://contacts/people/"))));	
-					
-				}
-
-            });*/                
-       
-        	
              
         	//-------------------------------- Camera -------------------------------------------
         	
@@ -761,16 +647,7 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
    	 			if (wifi != null) {
    	 				myWifiButton.setVisibility(0);
    	 			}
-   	        	/*final TextView myFlashButton = (TextView) findViewById(R.id.button1);
 
-   	        	if (HasCam) {
-   	        		// myMobButton.setVisibility(0);
-   	        	}*/
-   	        	
-   	        	
-   	        	
-   	        	
-   	        	
    	            final TextView myBlueButton = (TextView) findViewById(R.id.button4);        	
    	            final BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
    	            if (mBluetoothAdapter != null) {
@@ -840,13 +717,10 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
         super.onResume();
         final EditText myEditText=(EditText) findViewById(R.id.editText1);
         myEditText.setBackgroundColor(-12303292);
-    	//final TextView myToggleButton = (TextView) findViewById(R.id.toggleButton0);
 		if((checkedRadioButton == 0)  && Autostart) {
 			myEditText.setText("");
 		 }
-		//myEditText.requestFocus();
-		
-		
+
 		if(!NewerAndroid) {
 			final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
 			if (imm != null){
@@ -909,20 +783,9 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 	
 	        	final Intent intent = new Intent(Intent.ACTION_MAIN, null);
 	        	intent.addCategory(Intent.CATEGORY_LAUNCHER);
-	        	/*if("".equals(myEditText.getText())) {
-	        		//final ComponentName cn = ;
-	        		pkgRecent.Name.add(pkg.Name.get(arg2));
-	        		pkgRecent.Nick.add("R:" + pkg.Nick.get(arg2));
-	        		pkgRecent.Activity.add(pkg.Activity.get(arg2));
-	        		intent.setComponent(new ComponentName(pkg.Name.get(arg2) , pkg.Activity.get(arg2)));
-	        		
-	        	}
-	        	else {*/
-	        		//final ComponentName cn = ));
 
-	        		
-	        		intent.setComponent(new ComponentName(pkgFiltered.Name.get(arg2) , pkgFiltered.Activity.get(arg2)));
-	        	//}
+			 intent.setComponent(new ComponentName(pkgFiltered.Name.get(arg2) , pkgFiltered.Activity.get(arg2)));
+
 	        	
 	        	
 	        	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK  |
@@ -960,15 +823,6 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 		pkgFiltered.Nick.clear();
 		pkgFiltered.Activity.clear();
 		final ListView myListView = (ListView) findViewById(R.id.listView1);
-		//final ToggleButton myToggleButton = (ToggleButton) findViewById(R.id.toggleButton0);
-		
-		
-		//if( ("".equals(myEditText.getText())) || (" ".equals(myEditText.getText())) ) {
-
-		//	myListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, android.R.id.text1, pkg.Nick));
-		
-		//}
-		//else {
 			
 			final EditText myEditText=(EditText) findViewById(R.id.editText1);
 			
@@ -1014,30 +868,10 @@ public class MainActivity extends Activity implements OnItemClickListener, TextW
 		
 
 	}
-
-
-
-	//@Override
 	public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 		// TODO Auto-generated method stub
 
 	}
-
-
-   /* private class ApplicationsIntentReceiver extends BroadcastReceiver {
-		@Override
-		public void onReceive(Context arg0, Intent arg1) {
-			Log.d("DEBUG", "activity arrays prepared1");
-			MainActivity.this.loadApps();
-		}
-    }*/
-
-
-	//@Override
-	//public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-//		MainActivity.this.loadApps();
-//	}
-
 
 	//@Override
 	public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
