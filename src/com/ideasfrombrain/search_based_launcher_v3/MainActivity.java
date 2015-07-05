@@ -28,7 +28,6 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 
 
 import android.view.inputmethod.InputMethodManager;
@@ -41,7 +40,7 @@ import android.widget.TextView;
 
 
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity {
 
 
 	public static final int FIRST_INDEX = 0;
@@ -53,7 +52,6 @@ public class MainActivity extends Activity implements OnClickListener {
     boolean tmpYes;
     boolean isFlashOn=false;
     int checkedRadioButton=0;
-    boolean Autostart=true;
     boolean NewerAndroid=true;
     boolean HasCam = false;
     
@@ -141,6 +139,7 @@ public class MainActivity extends Activity implements OnClickListener {
     };
 	private SearchText searchText;
 	private AppListView appListView;
+	private AutostartButton autostartButton;
 
 	private void registerIntentReceivers() {
         IntentFilter pkgFilter = new IntentFilter( );
@@ -338,15 +337,10 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		appListView = new AppListView(this);
 		searchText = new SearchText(this);
+		autostartButton = new AutostartButton(this);
 
-		final TextView myToggleButton =(TextView) findViewById(R.id.toggleButton0) ;
-        	myToggleButton.setOnClickListener(this);
-        	Autostart=false; onClick(null);
-        	
-        	
-        	
 
-        	final PackageManager pm = getPackageManager();
+		final PackageManager pm = getPackageManager();
         	HasCam = pm.hasSystemFeature(PackageManager.FEATURE_CAMERA);
 
         	
@@ -568,7 +562,6 @@ public class MainActivity extends Activity implements OnClickListener {
    	 		
    	 		if(checkedRadioButton > 0) { 
    	 			searchText.setSpaceCharacterToText();
-   	 			Autostart=true; onClick(null);
    	 			TextView b;
    	 			b = (TextView) findViewById(R.id.button1);
    	 			colorService.setInvisible(b);
@@ -602,7 +595,6 @@ public class MainActivity extends Activity implements OnClickListener {
    	        		colorService.setVisible(myCamButton);
    	        	}
    	 			searchText.clearText();
-   	 		Autostart=false; onClick(null);
    	 		}
    	 		
    	 	}
@@ -657,7 +649,7 @@ public class MainActivity extends Activity implements OnClickListener {
     {
         super.onResume();
         searchText.setNormalColor();
-		if((checkedRadioButton == 0)  && Autostart) {
+		if((checkedRadioButton == 0)  && autostartButton.isAutostart()) {
 			searchText.clearText();
 		 }
 
@@ -781,7 +773,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			   }
 	           
 		   }
-		   if(((pkgFiltered.Name.size())==1) && Autostart) {
+		   if(((pkgFiltered.Name.size())==1) && autostartButton.isAutostart()) {
 				runApp(FIRST_INDEX) ;
 			 }
 			 else {
@@ -1092,20 +1084,6 @@ public class MainActivity extends Activity implements OnClickListener {
 			}
 		}
 		return -1;
-	}	
-	
-
-	public void onClick(View arg0) {
-		Autostart=!Autostart;
-		final TextView myToggleButton = (TextView) findViewById(R.id.toggleButton0);
-		if(Autostart) {
-			colorService.setActive(myToggleButton);
-		}
-		else {
-			colorService.setNormal(myToggleButton);
-		}
-		
 	}
-
 
 }

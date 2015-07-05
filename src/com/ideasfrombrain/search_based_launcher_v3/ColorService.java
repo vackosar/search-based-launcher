@@ -32,4 +32,12 @@ public class ColorService {
     public void setInvisible(View view) {
         view.setVisibility(View.INVISIBLE);
     }
+
+    public void setActive(boolean active, View view) {
+        if (active) {
+            setActive(view);
+        } else {
+            setNormal(view);
+        }
+    }
 }
