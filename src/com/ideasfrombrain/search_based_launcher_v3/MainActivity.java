@@ -3,15 +3,15 @@ package com.ideasfrombrain.search_based_launcher_v3;
 
 import java.util.ArrayList;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 import android.net.Uri;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.bluetooth.BluetoothAdapter;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -36,881 +36,791 @@ import android.widget.ViewAnimator;
 
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.TextView;
+
+import org.json.JSONException;
 
 
-
+@SuppressWarnings("Convert2Lambda")
 public class MainActivity extends Activity {
 
 
-	public static final int FIRST_INDEX = 0;
-	static String APP_PACKAGE_NAME ="com.ideasfrombrain.search_based_launcher_v3";
-	
-    boolean NewerAndroid=true;
+    public static final int FIRST_INDEX = 0;
+    static String APP_PACKAGE_NAME = "com.ideasfrombrain.search_based_launcher_v3";
+    public static final App MENU_APP = new App(APP_PACKAGE_NAME + ".Menu", " Menu-Launcher", APP_PACKAGE_NAME + ".Menu");
 
-    PackageList pkg = new PackageList();
-    PackageList pkgFiltered = new PackageList();
-    PackageList pkgExtra = new PackageList();
-    PackageList pkgHide = new PackageList();
-    PackageList pkgRecent = new PackageList();
-    
+    boolean NewerAndroid = true;
+
+    List<App> pkg = new ArrayList<App>();
+    List<App> pkgFiltered = new ArrayList<App>();
+    List<App> extra = new ArrayList<App>();
+    List<App> hidden = new ArrayList<App>();
+    List<App> recent = new ArrayList<App>();
+
     EditText DialogInput;
-     
-    private final BroadcastReceiver mPkgApplicationsReceiver = new BroadcastReceiver() {
-		@Override
-        public void onReceive(Context context, Intent intent) {
-				loadApps();
-					boolean found = false;
-					//ArrayList<String> pkgRecentFound = new ArrayList<String>(200);
-					EscapeToBeSure: for(int i=0; i<pkgRecent.Name.size(); i++  ) 
-        	    	{				
-	    	        	for(int j=0;j<pkg.Name.size(); j++) {
-	    	        		if(pkg.Activity.get(j).equals(pkgRecent.Activity.get(i))){
-	    	        				found = true;
-	    	        				//pkgRecentFound.add()
-	    	        		}
-	    	        	}
-	    	        	if(!found) {
-	    	        		pkgRecent.Activity.remove(i);
-	    	        		pkgRecent.Name.remove(i);
-	    	        		pkgRecent.Nick.remove(i);
-	    	        		i--;
-	    	        	}
-	    	        	else {
-	    	        		found=false;
-	    	        	}
-	    	        	if(i>=pkgRecent.Name.size()) {break EscapeToBeSure;}
-        	    	}
-					EscapeToBeSure2: for(int i=0; i<pkgHide.Name.size(); i++  ) 
-        	    	{				
-	    	        	for(int j=0;j<pkg.Name.size(); j++) {
-	    	        		if(pkg.Activity.get(j).equals(pkgHide.Activity.get(i))){
-	    	        				found = true;
-	    	        				//pkgHideFound.add()
-	    	        		}
-	    	        	}
-	    	        	if(!found) {
-	    	        		pkgHide.Activity.remove(i);
-	    	        		pkgHide.Name.remove(i);
-	    	        		pkgHide.Nick.remove(i);
-	    	        		i--;
-	    	        	}
-	    	        	else {
-	    	        		found=false;
-	    	        	}
-	    	        	if(i>=pkgHide.Name.size()) {break EscapeToBeSure2;}
-        	    	}
-					EscapeToBeSure3: for(int i=0; i<pkgExtra.Name.size(); i++  ) 
-        	    	{				
-	    	        	for(int j=0;j<pkg.Name.size(); j++) {
-	    	        		if(pkg.Activity.get(j).equals(pkgExtra.Activity.get(i))){
-	    	        				found = true;
-	    	        				//pkgExtraFound.add()
-	    	        		}
-	    	        	}
-	    	        	if(!found) {
-	    	        		pkgExtra.Activity.remove(i);
-	    	        		pkgExtra.Name.remove(i);
-	    	        		pkgExtra.Nick.remove(i);
-	    	        		i--;
-	    	        	}
-	    	        	else {
-	    	        		found=false;
-	    	        	}
-	    	        	if(i>=pkgExtra.Name.size()) {break EscapeToBeSure3;}
-        	    	}
-        	    
-        	    SaveExtRemLists(false);
-				loadApps();
-				refresh();
-		}
-    };
-	private SearchText searchText;
-	private AppListView appListView;
-	private AutostartButton autostartButton;
-	private WifiButton wifiButton;
-	private BluetoothButton bluetoothButton;
-	private FlashButton flashButton;
-	private CameraButton cameraButton;
-	private RadioButtons radioButtons;
 
-	private void registerIntentReceivers() {
-        IntentFilter pkgFilter = new IntentFilter( );
-        pkgFilter.addAction( Intent.ACTION_PACKAGE_ADDED );
+    private final BroadcastReceiver mPkgApplicationsReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            loadApps();
+            recent.retainAll(pkg);
+            extra.retainAll(pkg);
+            hidden.retainAll(pkg);
+            pkgFiltered.retainAll(pkg);
+            saveExtRemLists(false);
+            loadApps();
+            refresh();
+        }
+    };
+    private SearchText searchText;
+    private AppListView appListView;
+    private AutostartButton autostartButton;
+    private WifiButton wifiButton;
+    private BluetoothButton bluetoothButton;
+    private FlashButton flashButton;
+    private CameraButton cameraButton;
+    private RadioButtons radioButtons;
+
+    private void registerIntentReceivers() {
+        IntentFilter pkgFilter = new IntentFilter();
+        pkgFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
         pkgFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
         pkgFilter.addDataScheme("package");
         registerReceiver(mPkgApplicationsReceiver, pkgFilter);
     }
-    
+
     public void loadApps() {
-    	Log.d("DEBUG", "start loading apps");
-		Log.d("DEBUG", "activity arrays prepared");
+        Log.d("DEBUG", "start loading apps");
+        Log.d("DEBUG", "activity arrays prepared");
 
-           final Intent main=new Intent(Intent.ACTION_MAIN, null);
-           final PackageManager pm = getPackageManager();
-           
-           int i=0;
-           int j=0;
-           String tmpNick="";
-          
-            if(pkg.Name.size()!=0 ) {pkg.Name.clear(); pkg.Activity.clear(); pkg.Nick.clear();}
-        
-        	
-           switch(radioButtons.getCheckedRadioButton()) {
-           case 0:
-        	        // LAUCHABLES VARIANT OF LOAD APPS
-        	        
-   	        
-		   	        for(i=0; i<pkgExtra.Name.size(); i++  ) 
-		   	    	{
-		   	        	pkg.Name.add(pkgExtra.Name.get(i));
-		   	        	pkg.Nick.add(pkgExtra.Nick.get(i));
-		   	        	pkg.Activity.add(pkgExtra.Activity.get(i));
-		   	    	}
-        	            
-        	        main.addCategory(Intent.CATEGORY_LAUNCHER); // will show only Regular Apps
-        	        final List<ResolveInfo> launchables=pm.queryIntentActivities(main, 0);
-        	        
-        	        for(ResolveInfo launchable : launchables) 
-        	    	{
-        	        	if (ItemNumInHide(launchable.activityInfo.name)==-1)
-        	        	{
-            	        	pkg.Name.add(launchable.activityInfo.packageName);
-            	        	pkg.Activity.add(launchable.activityInfo.name);
-            	        	pkg.Nick.add(launchable.activityInfo.loadLabel(pm).toString());//tmpSplit[length-2]+ ":" +tmpSplit[length-1];
-        	        	}
+        final Intent main = new Intent(Intent.ACTION_MAIN, null);
+        final PackageManager pm = getPackageManager();
 
+        pkg.clear();
 
-        	    	}
-
-        	break;
+        switch (radioButtons.getCheckedRadioButton()) {
+            case 0:
+                loadNormal(main, pm);
+                break;
             case 1:
-        		
-        			final List<ResolveInfo> launchables2=pm.queryIntentActivities(main, 0);
-
-        			int length=0;
-        	        for(ResolveInfo launchable : launchables2) 
-        	    	{
-        	        	String[] tmpSplit = new String[10];
-        	            tmpSplit=launchable.activityInfo.name.split("\\.");
- 					    length=tmpSplit.length;
-
-        	        	pkg.Name.add(launchable.activityInfo.packageName);
-        	        	pkg.Activity.add(launchable.activityInfo.name);
-        	        	tmpNick="";
-        	        	tmpNick=tmpSplit[1];
-        	        	for(j=2; j<length; j++) {
-        	        		tmpNick=tmpNick + ":" + tmpSplit[j];
-        	        	}
-        	        	
-        	        	pkg.Nick.add(tmpNick);
-        	    	}
-
-
-            break;
+                loadAll(main, pm);
+                break;
             case 2:
-
-    	        for(i=0; i<pkgExtra.Name.size(); i++  ) 
-    	    	{
-    	        	pkg.Name.add(pkgExtra.Name.get(i));
-    	        	pkg.Nick.add(pkgExtra.Nick.get(i));
-    	        	pkg.Activity.add(pkgExtra.Activity.get(i));
-    	    	}
-
-           break;
+                loadExtra();
+                break;
             case 3:
+                loadHidden();
+                break;
+        }
+        pkg.add(MENU_APP);
 
-    	        for(i=0; i<pkgHide.Name.size(); i++  ) 
-    	    	{
-
-    	        	pkg.Name.add(pkgHide.Name.get(i));
-    	        	pkg.Nick.add(pkgHide.Nick.get(i));
-    	        	pkg.Activity.add(pkgHide.Activity.get(i));
-    	    	}
-
-           break;
-           }
-           pkg.Name.add(APP_PACKAGE_NAME + ".Menu");
-       	   pkg.Nick.add(" Menu-Launcher");
-       	   pkg.Activity.add(APP_PACKAGE_NAME + ".Menu");
-
-     }
-        
-        
-    public void LoadExtRemLists(boolean check) {
-    	try{
-        	final Context myContext =  getApplicationContext();
-        	LoadList(pkgExtra.Name,"pkgExtra.Name", myContext);
-        	LoadList(pkgExtra.Nick,"pkgExtra.Nick", myContext);
-        	LoadList(pkgExtra.Activity,"pkgExtra.Activity", myContext);
-        	LoadList(pkgHide.Name,"pkgHide.Name", myContext);
-        	LoadList(pkgHide.Nick,"pkgHide.Nick", myContext);
-        	LoadList(pkgHide.Activity,"pkgHide.Activity", myContext);	
-        	LoadList(pkgRecent.Name,"pkgRecent.Name", myContext);
-        	LoadList(pkgRecent.Nick,"pkgRecent.Nick", myContext);
-        	LoadList(pkgRecent.Activity,"pkgRecent.Activity", myContext);
-    	}
-    	catch(Exception e) {
-    		//Log.d("DEBUG","excep. during load" + e.getStackTrace().toString());
-    		SaveExtRemLists(false);
-    	}
-    }
-    
-    public void SaveExtRemLists(boolean check) {
-    	final Context myContext =  getApplicationContext();
-    	SaveList(pkgExtra.Name,"pkgExtra.Name", myContext);
-    	SaveList(pkgExtra.Nick,"pkgExtra.Nick", myContext);
-    	SaveList(pkgExtra.Activity,"pkgExtra.Activity", myContext);
-    	SaveList(pkgHide.Name,"pkgHide.Name", myContext);
-    	SaveList(pkgHide.Nick,"pkgHide.Nick", myContext);
-    	SaveList(pkgHide.Activity,"pkgHide.Activity", myContext);
-    	SaveList(pkgRecent.Name,"pkgRecent.Name", myContext);
-    	SaveList(pkgRecent.Nick, "pkgRecent.Nick", myContext);
-    	SaveList(pkgRecent.Activity, "pkgRecent.Activity", myContext);
     }
 
-    public boolean SaveList(List<String> list, String listName, Context mContext) { 
-        SharedPreferences prefs = mContext.getSharedPreferences("preferencename", 0);  
-        SharedPreferences.Editor editor = prefs.edit();  
-        editor.putInt(listName + "_size", list.size());
-        for(int i=0;i<list.size();i++)  
-            editor.putString(listName + "_" + i, list.get(i));  
-        return editor.commit();  
-    } 
+    private void loadHidden() {
+        pkg.addAll(hidden);
+    }
 
-    
+    private void loadExtra() {
+        pkg.addAll(extra);
+    }
 
-    
-    public void LoadList(ArrayList<String> List, String ListName, Context mContext) {  
-        SharedPreferences prefs = mContext.getSharedPreferences("preferencename", 0);  
-        int size = prefs.getInt(ListName + "_size", 0);  
-        List.clear();
-        for(int i=0;i<size;i++)  
-            List.add(prefs.getString(ListName + "_" + i, null));  
-    }  
-    
+    private void loadAll(Intent main, PackageManager pm) {
+        final List<ResolveInfo> launchables = pm.queryIntentActivities(main, 0);
+        for (ResolveInfo launchable : launchables) {
+            App app = new App(launchable.activityInfo.packageName, deriveNick(launchable), launchable.activityInfo.name);
+            pkg.add(app);
+        }
+    }
+
+    private String deriveNick(ResolveInfo launchable) {
+        String[] split = launchable.activityInfo.name.split("\\.");
+        String nick = split[1];
+        for (int j = 2; j < split.length; j++) {
+            nick = nick + ":" + split[j];
+        }
+        return nick;
+    }
+
+    private void loadNormal(Intent main, PackageManager pm) {
+        pkg.addAll(extra);
+
+        main.addCategory(Intent.CATEGORY_LAUNCHER); // will show only Regular Apps
+        final List<ResolveInfo> launchables = pm.queryIntentActivities(main, 0);
+
+        for (ResolveInfo launchable : launchables) {
+            if (ItemNumInHide(launchable.activityInfo.name) == -1) {
+                App app = new App(launchable.activityInfo.packageName, launchable.activityInfo.name, launchable.activityInfo.loadLabel(pm).toString());
+                pkg.add(app);
+            }
+        }
+    }
+
+
+    public void loadExtRemLists(boolean check) {
+        try {
+            final Context myContext = getApplicationContext();
+            loadList(extra.Name, "extra.Name", myContext);
+            loadList(extra.Nick, "extra.Nick", myContext);
+            loadList(extra.Activity, "extra.Activity", myContext);
+            loadList(hidden.Name, "hidden.Name", myContext);
+            loadList(hidden.Nick, "hidden.Nick", myContext);
+            loadList(hidden.Activity, "hidden.Activity", myContext);
+            loadList(recent.Name, "recent.Name", myContext);
+            loadList(recent.Nick, "recent.Nick", myContext);
+            loadList(recent.Activity, "recent.Activity", myContext);
+        } catch (Exception e) {
+            //Log.d("DEBUG","excep. during load" + e.getStackTrace().toString());
+            saveExtRemLists(false);
+        }
+    }
+
+    public void saveExtRemLists(boolean check) {
+        final Context myContext = getApplicationContext();
+        save(extra, "extra", myContext);
+        save(hidden, "hidden", myContext);
+        save(recent, "recent", myContext);
+    }
+
+    public boolean save(List<App> list, String listName, Context mContext) throws JSONException {
+        SharedPreferences prefs = mContext.getSharedPreferences(listName, 0);
+        SharedPreferences.Editor editor = prefs.edit();
+        Set<String> set = new HashSet();
+        for (App app: list) {
+            set.add(app.getJsonString());
+        }
+        editor.putStringSet(listName, set);
+        return editor.commit();
+    }
+
+
+    public void loadList(ArrayList<App> list, String listName, Context mContext) throws JSONException {
+        SharedPreferences prefs = mContext.getSharedPreferences(listName, 0);
+
+        ist.add(prefs.getString(listName + "_" + i, null));
+    }
+
     @Override
-    public boolean onKeyUp(int keycode, KeyEvent event ) {
-     if(keycode == KeyEvent.KEYCODE_MENU){
-    	 myShowNext(false);
-     }
-     else if(keycode == KeyEvent.KEYCODE_SEARCH ) {
-    	 startSearch("",false,null,true);
-     }
-     else if(keycode == KeyEvent.KEYCODE_BACK ) {
-    	  ViewAnimator mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
-    	 	if(mViewAnimator.getDisplayedChild()==1) {
-    	 		myShowNext(false);
-    	 	}
-     }
-     else {
-    	 return super.onKeyUp(keycode,event);  
-     }
-         return true;
+    public boolean onKeyUp(int keycode, KeyEvent event) {
+        if (keycode == KeyEvent.KEYCODE_MENU) {
+            myShowNext(false);
+        } else if (keycode == KeyEvent.KEYCODE_SEARCH) {
+            startSearch("", false, null, true);
+        } else if (keycode == KeyEvent.KEYCODE_BACK) {
+            ViewAnimator mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
+            if (mViewAnimator.getDisplayedChild() == 1) {
+                myShowNext(false);
+            }
+        } else {
+            return super.onKeyUp(keycode, event);
+        }
+        return true;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 
-		appListView = new AppListView(this);
-		searchText = new SearchText(this);
-		autostartButton = new AutostartButton(this);
-		wifiButton = new WifiButton(this);
-		bluetoothButton = new BluetoothButton(this);
-		flashButton = new FlashButton(this);
-		cameraButton = new CameraButton(this);
-
-
-		//---------------MENU CODE
-            
-            
-            
-   	   	 findViewById(R.id.donateButton).setOnClickListener(new View.OnClickListener() {
-			 public void onClick(View v) {
-				 Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PACKAGE_NAME));
-				 marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-				 startActivity(marketIntent);
-			 }
-		 });
-   	    	 
-   	       	findViewById(R.id.donateButton).setOnClickListener(new View.OnClickListener() {
-				public void onClick(View v) {
-					Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PACKAGE_NAME + "_donate"));
-					marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-					startActivity(marketIntent);
-				}
-			});
-
-		radioButtons = new RadioButtons(this);
+        appListView = new AppListView(this);
+        searchText = new SearchText(this);
+        autostartButton = new AutostartButton(this);
+        wifiButton = new WifiButton(this);
+        bluetoothButton = new BluetoothButton(this);
+        flashButton = new FlashButton(this);
+        cameraButton = new CameraButton(this);
 
 
-		//android version check
-   	       	String Aversion = android.os.Build.VERSION.RELEASE;
-        	if(savedInstanceState==null) {
-        		if (Aversion.startsWith("1.") ||
-        				Aversion.startsWith("2.0") ||
-        				Aversion.startsWith("2.1"))
-        			 { NewerAndroid = false;}
-        		else {
-        				NewerAndroid = true;
-        		}
-        		
-        		LoadExtRemLists(false);
-        		loadApps();
-        	}
-        	else {
+        //---------------MENU CODE
 
-                NewerAndroid = savedInstanceState.getBoolean( "NewerAndroid");
-                
-                pkg.Name=savedInstanceState.getStringArrayList("pkg.Name");
-                pkg.Nick=savedInstanceState.getStringArrayList("pkg.Nick");
-                pkg.Activity=savedInstanceState.getStringArrayList("pkg.Activity");
-                
-                pkgExtra.Name=savedInstanceState.getStringArrayList("pkgExtra.Name");
-                pkgExtra.Nick=savedInstanceState.getStringArrayList("pkgExtra.Nick");
-                pkgExtra.Activity=savedInstanceState.getStringArrayList("pkgExtra.Activity");
-                
-                pkgHide.Name=savedInstanceState.getStringArrayList("pkgHide.Name");
-                pkgHide.Nick=savedInstanceState.getStringArrayList("pkgHide.Nick");
-                pkgHide.Activity=savedInstanceState.getStringArrayList("pkgHide.Activity");
-                
-                pkgRecent.Name=savedInstanceState.getStringArrayList("pkgRecent.Name");
-                pkgRecent.Nick=savedInstanceState.getStringArrayList("pkgRecent.Nick");
-                pkgRecent.Activity=savedInstanceState.getStringArrayList("pkgRecent.Activity");
-                
-        	}
-        	registerIntentReceivers();        
-        
-        
-    
+
+        findViewById(R.id.donateButton).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PACKAGE_NAME));
+                marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                startActivity(marketIntent);
+            }
+        });
+
+        findViewById(R.id.donateButton).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PACKAGE_NAME + "_donate"));
+                marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                startActivity(marketIntent);
+            }
+        });
+
+        radioButtons = new RadioButtons(this);
+
+
+        //android version check
+        String Aversion = android.os.Build.VERSION.RELEASE;
+        if (savedInstanceState == null) {
+            if (Aversion.startsWith("1.") ||
+                    Aversion.startsWith("2.0") ||
+                    Aversion.startsWith("2.1")) {
+                NewerAndroid = false;
+            } else {
+                NewerAndroid = true;
+            }
+
+            loadExtRemLists(false);
+            loadApps();
+        } else {
+
+            NewerAndroid = savedInstanceState.getBoolean("NewerAndroid");
+
+            pkg.Name = savedInstanceState.getStringArrayList("pkg.Name");
+            pkg.Nick = savedInstanceState.getStringArrayList("pkg.Nick");
+            pkg.Activity = savedInstanceState.getStringArrayList("pkg.Activity");
+
+            extra.Name = savedInstanceState.getStringArrayList("extra.Name");
+            extra.Nick = savedInstanceState.getStringArrayList("extra.Nick");
+            extra.Activity = savedInstanceState.getStringArrayList("extra.Activity");
+
+            hidden.Name = savedInstanceState.getStringArrayList("hidden.Name");
+            hidden.Nick = savedInstanceState.getStringArrayList("hidden.Nick");
+            hidden.Activity = savedInstanceState.getStringArrayList("hidden.Activity");
+
+            recent.Name = savedInstanceState.getStringArrayList("recent.Name");
+            recent.Nick = savedInstanceState.getStringArrayList("recent.Nick");
+            recent.Activity = savedInstanceState.getStringArrayList("recent.Activity");
+
+        }
+        registerIntentReceivers();
+
 
     }
 
-    
+
     public void myShowNext(Boolean DoLoadApps) {
-		searchText.setNormalColor();
-       	ViewAnimator mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
-    	//mViewAnimator.setInAnimation(null);  // Skipping this will cause trouble
-       // mViewAnimator.setOutAnimation(null);
-   	 	mViewAnimator.showNext();
-    	
-   	 	if(mViewAnimator.getDisplayedChild()==0) {
-   	 		//final TextView myToggleButton = (TextView) findViewById(R.id.toggleButton0);
-   	 		if (DoLoadApps) {loadApps();}
-   	 		
-   	 		if(radioButtons.getCheckedRadioButton() > 0) {
-   	 			searchText.setSpaceCharacterToText();
-				radioButtons.setInvisible();
-   	 		}
-   	 		else {
-				wifiButton.setVisibleIfAvailable();
-				bluetoothButton.setVisibleIfAvailable();
-				cameraButton.setVisibleIfAvailable();
-   	 			searchText.clearText();
-   	 		}
-   	 		
-   	 	}
-   	 	else {
-   	 		RadioGroup mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup1);
-   	 		mRadioGroup.requestFocus();
-   	 	}
-    	
- 
-    	
+        searchText.setNormalColor();
+        ViewAnimator mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
+        //mViewAnimator.setInAnimation(null);  // Skipping this will cause trouble
+        // mViewAnimator.setOutAnimation(null);
+        mViewAnimator.showNext();
+
+        if (mViewAnimator.getDisplayedChild() == 0) {
+            //final TextView myToggleButton = (TextView) findViewById(R.id.toggleButton0);
+            if (DoLoadApps) {
+                loadApps();
+            }
+
+            if (radioButtons.getCheckedRadioButton() > 0) {
+                searchText.setSpaceCharacterToText();
+                radioButtons.setInvisible();
+            } else {
+                wifiButton.setVisibleIfAvailable();
+                bluetoothButton.setVisibleIfAvailable();
+                cameraButton.setVisibleIfAvailable();
+                searchText.clearText();
+            }
+
+        } else {
+            RadioGroup mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup1);
+            mRadioGroup.requestFocus();
+        }
+
+
     }
-    
+
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-    // Save UI state changes to the savedInstanceState.
-    // This bundle will be passed to onCreate if the process is
-    // killed and restarted.
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
 
         radioButtons.save();
-        savedInstanceState.putBoolean( "NewerAndroid", NewerAndroid);
-        
+        savedInstanceState.putBoolean("NewerAndroid", NewerAndroid);
+
         savedInstanceState.putStringArrayList("pkg.Name", pkg.Name);
         savedInstanceState.putStringArrayList("pkg.Nick", pkg.Nick);
         savedInstanceState.putStringArrayList("pkg.Activity", pkg.Activity);
 
-        savedInstanceState.putStringArrayList("pkgExtra.Name", pkgExtra.Name);
-        savedInstanceState.putStringArrayList("pkgExtra.Nick", pkgExtra.Nick);
-        savedInstanceState.putStringArrayList("pkgExtra.Activity", pkgExtra.Activity);
-        
-        savedInstanceState.putStringArrayList("pkgHide.Name", pkgHide.Name);
-        savedInstanceState.putStringArrayList("pkgHide.Nick", pkgHide.Nick);
-        savedInstanceState.putStringArrayList("pkgHide.Activity", pkgHide.Activity);
-        
-        savedInstanceState.putStringArrayList("pkgRecent.Name", pkgRecent.Name);
-        savedInstanceState.putStringArrayList("pkgRecent.Nick", pkgRecent.Nick);
-        savedInstanceState.putStringArrayList("pkgRecent.Activity", pkgRecent.Activity);
-        
+        savedInstanceState.putStringArrayList("extra.Name", extra.Name);
+        savedInstanceState.putStringArrayList("extra.Nick", extra.Nick);
+        savedInstanceState.putStringArrayList("extra.Activity", extra.Activity);
+
+        savedInstanceState.putStringArrayList("hidden.Name", hidden.Name);
+        savedInstanceState.putStringArrayList("hidden.Nick", hidden.Nick);
+        savedInstanceState.putStringArrayList("hidden.Activity", hidden.Activity);
+
+        savedInstanceState.putStringArrayList("recent.Name", recent.Name);
+        savedInstanceState.putStringArrayList("recent.Nick", recent.Nick);
+        savedInstanceState.putStringArrayList("recent.Activity", recent.Activity);
+
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    
+
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         // Restore UI state from the savedInstanceState.
         // This bundle has also been passed to onCreate.
 
-     }
-    
+    }
+
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
         searchText.setNormalColor();
-		if((radioButtons.getCheckedRadioButton() == 0)  && autostartButton.isAutostart()) {
-			searchText.clearText();
-		 }
+        if ((radioButtons.getCheckedRadioButton() == 0) && autostartButton.isAutostart()) {
+            searchText.clearText();
+        }
 
-		if(!NewerAndroid) {
-			final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-			if (imm != null){
-			   imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
-	    	}
-		}
-	
-			
+        if (!NewerAndroid) {
+            final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+            }
+        }
+
+
     }
-    
-    
+
+
     @Override
     public void onDestroy() {
-		wifiButton.unregisterReceiver();
+        wifiButton.unregisterReceiver();
         unregisterReceiver(mPkgApplicationsReceiver);
-    	super.onDestroy();	
+        super.onDestroy();
     }
- 
-	public void runApp(int index) {
-		searchText.setActivatedColor();
 
-		int tmpint = ItemNumInRecent(pkgFiltered.Activity.get(index));
-		if((pkgRecent.Nick.size() >=10) && (tmpint==-1)){
-			pkgRecent.Name.remove(0);
-    		pkgRecent.Nick.remove(0);
-    		pkgRecent.Activity.remove(0);   		
-		}
-		else if  (tmpint!=-1) {
-			pkgRecent.Name.remove(tmpint);
-    		pkgRecent.Nick.remove(tmpint);
-    		pkgRecent.Activity.remove(tmpint);
-		}
-		final Context myContext =  getApplicationContext();
-    	SaveList(pkgRecent.Name, "pkgRecent.Name", myContext);
-    	SaveList(pkgRecent.Nick, "pkgRecent.Nick", myContext);
-    	SaveList(pkgRecent.Activity, "pkgRecent.Activity", myContext);
-		
-		String tmpNickBefore = pkgFiltered.Nick.get(index);
-		pkgRecent.Name.add(pkgFiltered.Name.get(index));
-			if((tmpNickBefore.matches("R:.*"))  ) {tmpNickBefore=tmpNickBefore.substring(2,tmpNickBefore.length());}
-		pkgRecent.Nick.add( tmpNickBefore);
-		pkgRecent.Activity.add(pkgFiltered.Activity.get(index));
-		
-		if(!NewerAndroid) {
-			final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-			if (imm != null){
-			   imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
-	    	}
-		}
-		
-		
-		if((APP_PACKAGE_NAME +".Menu").equals(pkgFiltered.Name.get(index))) {
-			myShowNext(false);
-		}
-		else {
-		 try{
-	
-	        	final Intent intent = new Intent(Intent.ACTION_MAIN, null);
-	        	intent.addCategory(Intent.CATEGORY_LAUNCHER);
+    public void runApp(int index) {
+        searchText.setActivatedColor();
 
-			 intent.setComponent(new ComponentName(pkgFiltered.Name.get(index) , pkgFiltered.Activity.get(index)));
+        int tmpint = ItemNumInRecent(pkgFiltered.Activity.get(index));
+        if ((recent.Nick.size() >= 10) && (tmpint == -1)) {
+            recent.Name.remove(0);
+            recent.Nick.remove(0);
+            recent.Activity.remove(0);
+        } else if (tmpint != -1) {
+            recent.Name.remove(tmpint);
+            recent.Nick.remove(tmpint);
+            recent.Activity.remove(tmpint);
+        }
+        final Context myContext = getApplicationContext();
+        save(recent.Name, "recent.Name", myContext);
+        save(recent.Nick, "recent.Nick", myContext);
+        save(recent.Activity, "recent.Activity", myContext);
 
-	        	
-	        	
-	        	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK  |
-	                    Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-	        	startActivity( intent);
-	        	
+        String tmpNickBefore = pkgFiltered.Nick.get(index);
+        recent.Name.add(pkgFiltered.Name.get(index));
+        if ((tmpNickBefore.matches("R:.*"))) {
+            tmpNickBefore = tmpNickBefore.substring(2, tmpNickBefore.length());
+        }
+        recent.Nick.add(tmpNickBefore);
+        recent.Activity.add(pkgFiltered.Activity.get(index));
+
+        if (!NewerAndroid) {
+            final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+            }
+        }
 
 
+        if ((APP_PACKAGE_NAME + ".Menu").equals(pkgFiltered.Name.get(index))) {
+            myShowNext(false);
+        } else {
+            try {
 
-		 }	
-		 catch(Exception e) {
-			// TODO Auto-generated catch block
-			Log.d("DEBUG", e.getMessage());
-			searchText.setNormalColor();
+                final Intent intent = new Intent(Intent.ACTION_MAIN, null);
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-			if(!NewerAndroid) {
-				final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-				if (imm != null){
-				   imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
-		    	}
-			}
-		  }
-		}
-		
-	}
+                intent.setComponent(new ComponentName(pkgFiltered.Name.get(index), pkgFiltered.Activity.get(index)));
 
 
-	public void refresh() {
-		pkgFiltered.Name.clear();
-		pkgFiltered.Nick.clear();
-		pkgFiltered.Activity.clear();
-			String FilterText = searchText.getFilterText();
-			
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                startActivity(intent);
 
-			int tmpsize = pkgRecent.Name.size();
-			for(int i=0; i<tmpsize; i++)
-			{
-				//Log.d("DEBUG", pkgRecent.Name.get(tmpsize-1-i));
-		           if (pkgRecent.Nick.get(tmpsize-1-i).toLowerCase().matches(FilterText) )  
-				   {
-		        	   pkgFiltered.Name.add(pkgRecent.Name.get(tmpsize-1-i));
-		        	   pkgFiltered.Activity.add(pkgRecent.Activity.get(tmpsize-1-i));
-		        	   pkgFiltered.Nick.add("R:" + pkgRecent.Nick.get(tmpsize-1-i));
-				   }
-			}
-			
-			for(int i=0; i<pkg.Name.size(); i++)
-			{
-			   
-	           if ((pkg.Nick.get(i).toLowerCase().matches(FilterText) ) && (ItemNumInRecent(pkg.Activity.get(i))==-1))  
-			   {
-					  pkgFiltered.Name.add(pkg.Name.get(i));
-					  pkgFiltered.Activity.add(pkg.Activity.get(i));
-					  pkgFiltered.Nick.add(pkg.Nick.get(i));
-				  //Log.d("DEBUG", pkg.Nick[i]);
-			   }
-	           
-		   }
-		   if(((pkgFiltered.Name.size())==1) && autostartButton.isAutostart()) {
-				runApp(FIRST_INDEX) ;
-			 }
-			 else {
-			   appListView.setAppList(pkgFiltered.Nick);
-			}
-			
-		//}
-		
 
-	}
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                Log.d("DEBUG", e.getMessage());
+                searchText.setNormalColor();
 
-	//@Override
-	public boolean showOptionsForApp(final int index) {
-		final String activity = pkgFiltered.Activity.get(index);
-		final String name= pkgFiltered.Name.get(index);
-		String nickBefore= pkgFiltered.Nick.get(index);
-		
-		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-		dialog.setTitle(pkgFiltered.Nick.get(index));
+                if (!NewerAndroid) {
+                    final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                    }
+                }
+            }
+        }
 
-		if((activity == APP_PACKAGE_NAME +".Menu")) {
-			return false;
-		}
+    }
 
-		String nick;
-		if((nickBefore.matches("R:.*"))) {
-			nick=nickBefore.substring(2,nickBefore.length());
-		} else {
-			nick = nickBefore;
-		}
 
-        switch(radioButtons.getCheckedRadioButton()) {
-        case 0:
-			showNormalOptions(activity, name, dialog, nick);
-			break;
-        case 1:
-			showAddExtraAppOptions(index, dialog);
-			break;
-        case 2:
-			showRemoveExtraAppOptions(index, activity, dialog);
-        	break;
-        case 3:
-			showUnhideAppOptions(index, activity, dialog);
-			break;
-        }	   
-		return false;
-	}
+    public void refresh() {
+        pkgFiltered.Name.clear();
+        pkgFiltered.Nick.clear();
+        pkgFiltered.Activity.clear();
+        String FilterText = searchText.getFilterText();
 
-	private void showUnhideAppOptions(int index, final String tmpActivity, AlertDialog.Builder dialog) {
-		DialogInput =   new EditText(this);
-		DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-		DialogInput.setText(pkgFiltered.Nick.get(index));
 
-		dialog.setView(DialogInput);
-		dialog.setMessage("Remove this activity (hidden app) from hidden applications list?");
-		dialog.setCancelable(true);
-		dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
-                   public void onClick(DialogInterface dialog, int id) {
-                          int tmpItemNumInHide=MainActivity.this.ItemNumInHide(tmpActivity);
-                          if(tmpItemNumInHide!=-1) {
-                              pkgHide.Activity.remove(tmpItemNumInHide);
-                              pkgHide.Name.remove(tmpItemNumInHide);
-                              pkgHide.Nick.remove(tmpItemNumInHide);
-                              MainActivity.this.SaveExtRemLists(false) ;
-                              loadApps();
-                              refresh();
-                              dialog.dismiss();
-                          }
-                   }
-               });
+        int tmpsize = recent.Name.size();
+        for (int i = 0; i < tmpsize; i++) {
+            //Log.d("DEBUG", recent.Name.get(tmpsize-1-i));
+            if (recent.Nick.get(tmpsize - 1 - i).toLowerCase().matches(FilterText)) {
+                pkgFiltered.Name.add(recent.Name.get(tmpsize - 1 - i));
+                pkgFiltered.Activity.add(recent.Activity.get(tmpsize - 1 - i));
+                pkgFiltered.Nick.add("R:" + recent.Nick.get(tmpsize - 1 - i));
+            }
+        }
 
-		dialog.create().show();
-	}
+        for (int i = 0; i < pkg.Name.size(); i++) {
 
-	private void showRemoveExtraAppOptions(int index, final String tmpActivity, AlertDialog.Builder dialog) {
-		DialogInput =   new EditText(this);
-		DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-		DialogInput.setText(pkgFiltered.Nick.get(index));
+            if ((pkg.Nick.get(i).toLowerCase().matches(FilterText)) && (ItemNumInRecent(pkg.Activity.get(i)) == -1)) {
+                pkgFiltered.Name.add(pkg.Name.get(i));
+                pkgFiltered.Activity.add(pkg.Activity.get(i));
+                pkgFiltered.Nick.add(pkg.Nick.get(i));
+                //Log.d("DEBUG", pkg.Nick[i]);
+            }
 
-		dialog.setView(DialogInput);
-		dialog.setMessage("Remove this (extra added list of all activities) activity from applications list?");
-		dialog.setCancelable(true);
-		dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
-                   public void onClick(DialogInterface dialog, int id) {
-                          int tmpItemNumInExtra=MainActivity.this.ItemNumInExtra(tmpActivity);
-                          if(tmpItemNumInExtra!=-1) {
-                              pkgExtra.Activity.remove(tmpItemNumInExtra);
-                              pkgExtra.Name.remove(tmpItemNumInExtra);
-                              pkgExtra.Nick.remove(tmpItemNumInExtra);
+        }
+        if (((pkgFiltered.Name.size()) == 1) && autostartButton.isAutostart()) {
+            runApp(FIRST_INDEX);
+        } else {
+            appListView.setAppList(pkgFiltered.Nick);
+        }
 
-                              int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
-                              if(tmpItemNumInRecent!=-1) {
-                                  pkgRecent.Nick.remove(tmpItemNumInRecent);
-                                  pkgRecent.Name.remove(tmpItemNumInRecent);
-                                  pkgRecent.Activity.remove(tmpItemNumInRecent);
-                              }
+        //}
 
-                              MainActivity.this.SaveExtRemLists(false) ;
-                              loadApps();
-                              refresh();
-                              dialog.dismiss();
-                          }
-                   }
-               });
 
-		dialog.create().show();
-	}
+    }
 
-	private void showAddExtraAppOptions(final int index, AlertDialog.Builder dialog) {
-		DialogInput =   new EditText(this);
-		DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-		DialogInput.setText(pkgFiltered.Nick.get(index));
+    //@Override
+    public boolean showOptionsForApp(final int index) {
+        final String activity = pkgFiltered.Activity.get(index);
+        final String name = pkgFiltered.Name.get(index);
+        final String nickBefore = pkgFiltered.Nick.get(index);
 
-		dialog.setView(DialogInput);
-		dialog.setMessage("Add this activity to applications list?");
-		dialog.setCancelable(true);
-		dialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                   public void onClick(DialogInterface dialog, int id) {
-                          pkgExtra.Name.add(pkgFiltered.Name.get(index));
-                             pkgExtra.Nick.add(DialogInput.getText().toString() );
-                             pkgExtra.Activity.add(pkgFiltered.Activity.get(index));
-                             SaveExtRemLists(true);
-                             loadApps();
-                             refresh();
-                             dialog.dismiss();
-                   }
-               });
+        if ((activity == APP_PACKAGE_NAME + ".Menu")) {
+            return false;
+        }
 
-		dialog.create().show();
-	}
+        String nick;
+        if ((nickBefore.matches("R:.*"))) {
+            nick = nickBefore.substring(2, nickBefore.length());
+        } else {
+            nick = nickBefore;
+        }
 
-	private void showNormalOptions(final String tmpActivity, final String tmpName, AlertDialog.Builder dialog, final String tmpNick) {
-		int tmpItemNumInExtra=MainActivity.this.ItemNumInExtra(tmpActivity);
+        switch (radioButtons.getCheckedRadioButton()) {
+            case 0:
+                showNormalOptions(activity, name, nick);
+                break;
+            case 1:
+                showAddExtraAppOptions(index, nick);
+                break;
+            case 2:
+                showRemoveExtraAppOptions(index, activity, nick);
+                break;
+            case 3:
+                showUnhideAppOptions(index, activity, nick);
+                break;
+        }
+        return false;
+    }
 
-		if((tmpItemNumInExtra==-1) && (MainActivity.this.ItemNumInHide(tmpActivity)==-1 ) ) {
-            DialogInput =   new EditText(this);
-            DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-            DialogInput.setText(tmpNick);
+    private void showUnhideAppOptions(int index, final String tmpActivity, String nick) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(nick);
 
-            dialog.setView(DialogInput);
-            dialog.setMessage("Hide this application from applications list, rename application (add to Hide and Extra list with diferent names) or uninstall it?");
-            dialog.setCancelable(true);
-            dialog.setPositiveButton("Hide", new DialogInterface.OnClickListener() {
-                       public void onClick(DialogInterface dialog, int id) {
-                          //int tmpItemNumInExtra=MainActivity.this.ItemNumInExtra(tmpActivity);
-                          if(MainActivity.this.ItemNumInHide(tmpActivity)==-1 )  {
-                              pkgHide.Name.add(tmpName);
-                              pkgHide.Nick.add(tmpNick);
-                              pkgHide.Activity.add(tmpActivity);
+        DialogInput = new EditText(this);
+        DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        DialogInput.setText(pkgFiltered.Nick.get(index));
 
-                              int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
-                              if(tmpItemNumInRecent!=-1) {
-                                  pkgRecent.Nick.remove(tmpItemNumInRecent);
-                                  pkgRecent.Name.remove(tmpItemNumInRecent);
-                                  pkgRecent.Activity.remove(tmpItemNumInRecent);
-                              }
-
-                              SaveExtRemLists(false);
-                              loadApps();
-                              refresh();
-                              dialog.dismiss();
-                          }
-                       }
-                   });
-
-            dialog.setNeutralButton("Uninstall", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + tmpName));
-                    startActivity(intent);
-                    //loadApps();
+        dialog.setView(DialogInput);
+        dialog.setMessage("Remove this activity (hidden app) from hidden applications list?");
+        dialog.setCancelable(true);
+        dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                int tmpItemNumInHide = MainActivity.this.ItemNumInHide(tmpActivity);
+                if (tmpItemNumInHide != -1) {
+                    hidden.Activity.remove(tmpItemNumInHide);
+                    hidden.Name.remove(tmpItemNumInHide);
+                    hidden.Nick.remove(tmpItemNumInHide);
+                    MainActivity.this.saveExtRemLists(false);
+                    loadApps();
                     refresh();
                     dialog.dismiss();
                 }
-            });
-            dialog.setNegativeButton("Rename", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                      if(MainActivity.this.ItemNumInHide(tmpActivity)==-1 )  {
-                          pkgHide.Name.add(tmpName);
-                          pkgHide.Nick.add(tmpNick);
-                          pkgHide.Activity.add(tmpActivity);
+            }
+        });
 
-                          pkgExtra.Nick.add(DialogInput.getText().toString());
-                          pkgExtra.Name.add(tmpName);
-                          pkgExtra.Activity.add(tmpActivity);
+        dialog.create().show();
+    }
 
-                          int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
-                          if(tmpItemNumInRecent!=-1) {
-                              pkgRecent.Nick.set(tmpItemNumInRecent,DialogInput.getText().toString());
-                          }
+    private void showRemoveExtraAppOptions(int index, final String tmpActivity, final String nick) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(nick);
 
-                          SaveExtRemLists(false);
-                          loadApps();
-                          refresh();
-                          dialog.dismiss();
-                      }
-                }
-            });
-        }
-        else if((tmpItemNumInExtra!=-1) && (MainActivity.this.ItemNumInHide(tmpActivity)!=-1 ) ) {
-            DialogInput =   new EditText(this);
-            DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-            DialogInput.setText(tmpNick);
+        DialogInput = new EditText(this);
+        DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        DialogInput.setText(pkgFiltered.Nick.get(index));
 
-            dialog.setView(DialogInput);
-            dialog.setMessage("This application is in both add and hide lists, thus is probably renamed.");
-            dialog.setCancelable(true);
-            dialog.setPositiveButton("Hide", new DialogInterface.OnClickListener() {
-                       public void onClick(DialogInterface dialog, int id) {
-                          int tmpItemNumInExtra=MainActivity.this.ItemNumInExtra(tmpActivity);
-                          if(MainActivity.this.ItemNumInHide(tmpActivity)==-1 )  {
-                              //pkgHide.Name.add(tmpName);
-                              //pkgHide.Nick.add(tmpNick);
-                              //pkgHide.Activity.add(tmpActivity);
-                              pkgExtra.Nick.remove(tmpItemNumInExtra);
-                              pkgExtra.Name.remove(tmpItemNumInExtra);
-                              pkgExtra.Activity.remove(tmpItemNumInExtra);
+        dialog.setView(DialogInput);
+        dialog.setMessage("Remove this (extra added list of all activities) activity from applications list?");
+        dialog.setCancelable(true);
+        dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                int tmpItemNumInExtra = MainActivity.this.ItemNumInExtra(tmpActivity);
+                if (tmpItemNumInExtra != -1) {
+                    extra.Activity.remove(tmpItemNumInExtra);
+                    extra.Name.remove(tmpItemNumInExtra);
+                    extra.Nick.remove(tmpItemNumInExtra);
 
-                              int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
-                              if(tmpItemNumInRecent!=-1) {
-                                  pkgRecent.Nick.remove(tmpItemNumInRecent);
-                                  pkgRecent.Name.remove(tmpItemNumInRecent);
-                                  pkgRecent.Activity.remove(tmpItemNumInRecent);
-                              }
+                    int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
+                    if (tmpItemNumInRecent != -1) {
+                        recent.Nick.remove(tmpItemNumInRecent);
+                        recent.Name.remove(tmpItemNumInRecent);
+                        recent.Activity.remove(tmpItemNumInRecent);
+                    }
 
-                              SaveExtRemLists(false);
-                              loadApps();
-                              refresh();
-                              dialog.dismiss();
-                          }
-                       }
-                   });
-
-            dialog.setNeutralButton("Uninstall", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + tmpName));
-                    startActivity(intent);
-                    //loadApps();
+                    MainActivity.this.saveExtRemLists(false);
+                    loadApps();
                     refresh();
                     dialog.dismiss();
                 }
-            });
-            dialog.setNegativeButton("Rename", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                          int tmpItemNumInExtra=MainActivity.this.ItemNumInExtra(tmpActivity);
-                          //pkgHide.Name.add(tmpName);
-                          //pkgHide.Nick.add(tmpNick);
-                          //pkgHide.Activity.add(tmpActivity);
+            }
+        });
 
-                          pkgExtra.Nick.remove(tmpItemNumInExtra);
-                          pkgExtra.Name.remove(tmpItemNumInExtra);
-                          pkgExtra.Activity.remove(tmpItemNumInExtra);
+        dialog.create().show();
+    }
 
-                          pkgExtra.Nick.add(DialogInput.getText().toString());
-                          pkgExtra.Name.add(tmpName);
-                          pkgExtra.Activity.add(tmpActivity);
+    private void showAddExtraAppOptions(final int index, String nick) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(nick);
 
-                          int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
-                          if(tmpItemNumInRecent!=-1) {
-                              pkgRecent.Nick.set(tmpItemNumInRecent,DialogInput.getText().toString());
-                          }
+        DialogInput = new EditText(this);
+        DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        DialogInput.setText(pkgFiltered.Nick.get(index));
 
-                          SaveExtRemLists(false);
-                          loadApps();
-                          refresh();
-                          dialog.dismiss();
+        dialog.setView(DialogInput);
+        dialog.setMessage("Add this activity to applications list?");
+        dialog.setCancelable(true);
+        dialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                extra.Name.add(pkgFiltered.Name.get(index));
+                extra.Nick.add(DialogInput.getText().toString());
+                extra.Activity.add(pkgFiltered.Activity.get(index));
+                saveExtRemLists(true);
+                loadApps();
+                refresh();
+                dialog.dismiss();
+            }
+        });
 
+        dialog.create().show();
+    }
+
+    private void showNormalOptions(final String tmpActivity, final String tmpName, final String nick) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(nick);
+
+        int tmpItemNumInExtra = MainActivity.this.ItemNumInExtra(tmpActivity);
+
+        if ((tmpItemNumInExtra == -1) && (MainActivity.this.ItemNumInHide(tmpActivity) == -1)) {
+            showHideApp(tmpActivity, tmpName, nick, dialog);
+        } else if ((tmpItemNumInExtra != -1) && (MainActivity.this.ItemNumInHide(tmpActivity) != -1)) {
+            showRenamedApp(tmpActivity, tmpName, nick, dialog);
+        } else if (tmpItemNumInExtra != -1) {
+            showExtraAddedApp(tmpActivity, dialog);
+        }
+
+        dialog.create().show();
+    }
+
+    private void showExtraAddedApp(final String tmpActivity, AlertDialog.Builder dialog) {
+        dialog.setMessage("Remove activity " + tmpActivity + " from extra added (to applications list) list ?");
+        dialog.setCancelable(true);
+        dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                int tmpItemNumInExtra = MainActivity.this.ItemNumInExtra(tmpActivity);
+                extra.Activity.remove(tmpItemNumInExtra);
+                extra.Name.remove(tmpItemNumInExtra);
+                extra.Nick.remove(tmpItemNumInExtra);
+
+                int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
+                if (tmpItemNumInRecent != -1) {
+                    recent.Nick.remove(tmpItemNumInRecent);
+                    recent.Name.remove(tmpItemNumInRecent);
+                    recent.Activity.remove(tmpItemNumInRecent);
                 }
-            });
+
+                saveExtRemLists(false);
+                loadApps();
+                refresh();
+                dialog.dismiss();
+
+            }
+        });
+    }
+
+    private void showRenamedApp(final String tmpActivity, final String tmpName, String nick, AlertDialog.Builder dialog) {
+        DialogInput = new EditText(this);
+        DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        DialogInput.setText(nick);
+
+        dialog.setView(DialogInput);
+        dialog.setMessage("This application is in both add and hide lists, thus is probably renamed.");
+        dialog.setCancelable(true);
+        dialog.setPositiveButton("Hide", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                int tmpItemNumInExtra = MainActivity.this.ItemNumInExtra(tmpActivity);
+                if (MainActivity.this.ItemNumInHide(tmpActivity) == -1) {
+                    //hidden.Name.add(tmpName);
+                    //hidden.Nick.add(tmpNick);
+                    //hidden.Activity.add(tmpActivity);
+                    extra.Nick.remove(tmpItemNumInExtra);
+                    extra.Name.remove(tmpItemNumInExtra);
+                    extra.Activity.remove(tmpItemNumInExtra);
+
+                    int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
+                    if (tmpItemNumInRecent != -1) {
+                        recent.Nick.remove(tmpItemNumInRecent);
+                        recent.Name.remove(tmpItemNumInRecent);
+                        recent.Activity.remove(tmpItemNumInRecent);
+                    }
+
+                    saveExtRemLists(false);
+                    loadApps();
+                    refresh();
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        dialog.setNeutralButton("Uninstall", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + tmpName));
+                startActivity(intent);
+                //loadApps();
+                refresh();
+                dialog.dismiss();
+            }
+        });
+        dialog.setNegativeButton("Rename", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                int tmpItemNumInExtra = MainActivity.this.ItemNumInExtra(tmpActivity);
+                //hidden.Name.add(tmpName);
+                //hidden.Nick.add(tmpNick);
+                //hidden.Activity.add(tmpActivity);
+
+                extra.Nick.remove(tmpItemNumInExtra);
+                extra.Name.remove(tmpItemNumInExtra);
+                extra.Activity.remove(tmpItemNumInExtra);
+
+                extra.Nick.add(DialogInput.getText().toString());
+                extra.Name.add(tmpName);
+                extra.Activity.add(tmpActivity);
+
+                int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
+                if (tmpItemNumInRecent != -1) {
+                    recent.Nick.set(tmpItemNumInRecent, DialogInput.getText().toString());
+                }
+
+                saveExtRemLists(false);
+                loadApps();
+                refresh();
+                dialog.dismiss();
+
+            }
+        });
+    }
+
+    private void showHideApp(final String tmpActivity, final String tmpName, final String nick, AlertDialog.Builder dialog) {
+        DialogInput = new EditText(this);
+        DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        DialogInput.setText(nick);
+
+        dialog.setView(DialogInput);
+        dialog.setMessage("Hide this application from applications list, rename application (add to Hide and Extra list with diferent names) or uninstall it?");
+        dialog.setCancelable(true);
+        dialog.setPositiveButton("Hide", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //int tmpItemNumInExtra=MainActivity.this.ItemNumInExtra(tmpActivity);
+                if (MainActivity.this.ItemNumInHide(tmpActivity) == -1) {
+                    hidden.Name.add(tmpName);
+                    hidden.Nick.add(nick);
+                    hidden.Activity.add(tmpActivity);
+
+                    int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
+                    if (tmpItemNumInRecent != -1) {
+                        recent.Nick.remove(tmpItemNumInRecent);
+                        recent.Name.remove(tmpItemNumInRecent);
+                        recent.Activity.remove(tmpItemNumInRecent);
+                    }
+
+                    saveExtRemLists(false);
+                    loadApps();
+                    refresh();
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        dialog.setNeutralButton("Uninstall", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + tmpName));
+                startActivity(intent);
+                //loadApps();
+                refresh();
+                dialog.dismiss();
+            }
+        });
+        dialog.setNegativeButton("Rename", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (MainActivity.this.ItemNumInHide(tmpActivity) == -1) {
+                    hidden.Name.add(tmpName);
+                    hidden.Nick.add(nick);
+                    hidden.Activity.add(tmpActivity);
+
+                    extra.Nick.add(DialogInput.getText().toString());
+                    extra.Name.add(tmpName);
+                    extra.Activity.add(tmpActivity);
+
+                    int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
+                    if (tmpItemNumInRecent != -1) {
+                        recent.Nick.set(tmpItemNumInRecent, DialogInput.getText().toString());
+                    }
+
+                    saveExtRemLists(false);
+                    loadApps();
+                    refresh();
+                    dialog.dismiss();
+                }
+            }
+        });
+    }
+
+    public int ItemNumInExtra(String Activity) { // NOTE: if not found returns -1
+        for (int i = 0; i < extra.Activity.size(); i++) {
+            if (Activity.equals(extra.Activity.get(i))) {
+                return i;
+            }
         }
-        else if(tmpItemNumInExtra!=-1) {
+        return -1;
+    }
 
-            dialog.setMessage("Remove activity " + tmpActivity +  " from extra added (to applications list) list ?");
-            dialog.setCancelable(true);
-            dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
-                       public void onClick(DialogInterface dialog, int id) {
-                          int tmpItemNumInExtra=MainActivity.this.ItemNumInExtra(tmpActivity);
-                              pkgExtra.Activity.remove(tmpItemNumInExtra);
-                              pkgExtra.Name.remove(tmpItemNumInExtra);
-                              pkgExtra.Nick.remove(tmpItemNumInExtra);
-
-                              int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
-                              if(tmpItemNumInRecent!=-1) {
-                                  pkgRecent.Nick.remove(tmpItemNumInRecent);
-                                  pkgRecent.Name.remove(tmpItemNumInRecent);
-                                  pkgRecent.Activity.remove(tmpItemNumInRecent);
-                              }
-
-                              SaveExtRemLists(false) ;
-                              loadApps();
-                              refresh();
-                              dialog.dismiss();
-
-                       }
-                   });
+    public int ItemNumInHide(String Activity) { // NOTE: if not found returns -1
+        for (int i = 0; i < hidden.Activity.size(); i++) {
+            if (Activity.equals(hidden.Activity.get(i))) {
+                return i;
+            }
         }
+        return -1;
+    }
 
-		dialog.create().show();
-	}
-
-	public int ItemNumInExtra(String Activity) { // NOTE: if not found returns -1
-		for(int i=0; i<pkgExtra.Activity.size(); i++) {
-			if(Activity.equals(pkgExtra.Activity.get(i))) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	public int ItemNumInHide(String Activity) { // NOTE: if not found returns -1
-		for(int i=0; i<pkgHide.Activity.size(); i++) {
-			if(Activity.equals(pkgHide.Activity.get(i))) {	
-				return i;
-			}
-		}
-		return -1;
-	}	
-	public int ItemNumInRecent(String Activity) { // NOTE: if not found returns -1
-		for(int i=0; i<pkgRecent.Activity.size(); i++) {
-			if(Activity.equals(pkgRecent.Activity.get(i))) {	
-				return i;
-			}
-		}
-		return -1;
-	}
+    public int ItemNumInRecent(String Activity) { // NOTE: if not found returns -1
+        for (int i = 0; i < recent.Activity.size(); i++) {
+            if (Activity.equals(recent.Activity.get(i))) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
 }
