@@ -143,6 +143,7 @@ public class MainActivity extends Activity {
 	private WifiButton wifiButton;
 	private BluetoothButton bluetoothButton;
 	private FlashButton flashButton;
+	private CameraButton cameraButton;
 
 	private void registerIntentReceivers() {
         IntentFilter pkgFilter = new IntentFilter( );
@@ -336,56 +337,28 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_main);
 
 		appListView = new AppListView(this);
 		searchText = new SearchText(this);
 		autostartButton = new AutostartButton(this);
-
-
-		final PackageManager pm = getPackageManager();
-        	HasCam = pm.hasSystemFeature(PackageManager.FEATURE_CAMERA);
-
 		wifiButton = new WifiButton(this);
 		bluetoothButton = new BluetoothButton(this);
 		flashButton = new FlashButton(this);
+		cameraButton = new CameraButton(this);
 
 
-		//-------------------------------- Camera -------------------------------------------
-        	
-
-        	
-        	final TextView myCamButton = (TextView) findViewById(R.id.button6);
-        
-        	if (!(HasCam)) {
-				colorService.setInvisible(myCamButton);
-        	}
-        	
-        	myCamButton.setOnClickListener(new View.OnClickListener()
-            {
-
-				public void onClick(View arg0) {
-						
-					startActivity( (new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)));	
-					
-				}
-
-            });                
-                   
-            
-            
-        	
-            //---------------MENU CODE
+		//---------------MENU CODE
             
             
             
    	   	 findViewById(R.id.donateButton).setOnClickListener(new View.OnClickListener() {
-   				public void onClick(View v) {
-   					Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+ APP_PACKAGE_NAME));
-   					marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-   					startActivity(marketIntent);
-   				}
-   			});
+			 public void onClick(View v) {
+				 Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PACKAGE_NAME));
+				 marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+				 startActivity(marketIntent);
+			 }
+		 });
    	    	 
    	       	findViewById(R.id.donateButton).setOnClickListener(new View.OnClickListener() {
    	 			public void onClick(View v) {
