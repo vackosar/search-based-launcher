@@ -46,11 +46,6 @@ public class MainActivity extends Activity {
 	public static final int FIRST_INDEX = 0;
 	static String APP_PACKAGE_NAME ="com.ideasfrombrain.search_based_launcher_v3";
 	
-	private ColorService colorService = new ColorService();
-	
-    int tmpArg;
-    boolean tmpYes;
-    boolean isFlashOn=false;
     boolean NewerAndroid=true;
 
     PackageList pkg = new PackageList();
@@ -148,13 +143,6 @@ public class MainActivity extends Activity {
         pkgFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
         pkgFilter.addDataScheme("package");
         registerReceiver(mPkgApplicationsReceiver, pkgFilter);
-        
-        IntentFilter filter = new IntentFilter( );
-        filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-		wifiBroadcastReceiver = new WifiBroadcastReceiver((WifiManager) getSystemService(Context.WIFI_SERVICE), (TextView) findViewById(R.id.button2));
-        registerReceiver(wifiBroadcastReceiver, filter);
-        
     }
     
     public void loadApps() {

@@ -1,11 +1,15 @@
 package com.ideasfrombrain.search_based_launcher_v3;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-public class WifiButton implements View.OnClickListener, Colorful {
+public class WifiButton extends BroadcastReceiver implements View.OnClickListener, Colorful {
     final MainActivity mainActivity;
     final ColorService colorService = new ColorService();
     private final WifiManager wifiManager;
@@ -25,6 +29,10 @@ public class WifiButton implements View.OnClickListener, Colorful {
             }
         }
         textView.setOnClickListener(this);
+        IntentFilter filter = new IntentFilter( );
+        filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        mainActivity.registerReceiver(this, filter);
     }
 
     @Override
@@ -51,4 +59,16 @@ public class WifiButton implements View.OnClickListener, Colorful {
         return textView;
     }
 
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        Log.d("DEBUG", "recieved Broadcast");
+        if(wifiManager !=null) {
+            if(wifiManager.isWifiEnabled()) {
+                setActivatedColor();
+            }
+            else {
+                setNormalColor();
+            }
+        }
+    }
 }
