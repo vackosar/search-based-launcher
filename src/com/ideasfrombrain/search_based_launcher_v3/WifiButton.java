@@ -71,4 +71,8 @@ public class WifiButton extends BroadcastReceiver implements View.OnClickListene
             }
         }
     }
+
+    public void unregisterReceiver () {
+        mainActivity.unregisterReceiver(this);
+    }
 }

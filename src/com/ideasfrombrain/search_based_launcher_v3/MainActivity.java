@@ -52,13 +52,10 @@ public class MainActivity extends Activity {
     PackageList pkgFiltered = new PackageList();
     PackageList pkgExtra = new PackageList();
     PackageList pkgHide = new PackageList();
-    
     PackageList pkgRecent = new PackageList();
     
     EditText DialogInput;
      
-    private BroadcastReceiver wifiBroadcastReceiver;
-
     private final BroadcastReceiver mPkgApplicationsReceiver = new BroadcastReceiver() {
 		@Override
         public void onReceive(Context context, Intent intent) {
@@ -311,14 +308,7 @@ public class MainActivity extends Activity {
      }
          return true;
     }
-   
 
-    
- 
-    
-    
-    
-    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -490,7 +480,7 @@ public class MainActivity extends Activity {
     
     @Override
     public void onDestroy() {
-        unregisterReceiver(wifiBroadcastReceiver);
+		wifiButton.unregisterReceiver();
         unregisterReceiver(mPkgApplicationsReceiver);
     	super.onDestroy();	
     }
