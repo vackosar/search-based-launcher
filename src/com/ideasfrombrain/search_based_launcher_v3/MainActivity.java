@@ -51,10 +51,8 @@ public class MainActivity extends Activity {
     int tmpArg;
     boolean tmpYes;
     boolean isFlashOn=false;
-    int checkedRadioButton=0;
     boolean NewerAndroid=true;
-    boolean HasCam = false;
-    
+
     PackageList pkg = new PackageList();
     PackageList pkgFiltered = new PackageList();
     PackageList pkgExtra = new PackageList();
@@ -69,7 +67,6 @@ public class MainActivity extends Activity {
     private final BroadcastReceiver mPkgApplicationsReceiver = new BroadcastReceiver() {
 		@Override
         public void onReceive(Context context, Intent intent) {
-				checkedRadioButton=1;	
 				loadApps();
 					boolean found = false;
 					//ArrayList<String> pkgRecentFound = new ArrayList<String>(200);
@@ -132,7 +129,6 @@ public class MainActivity extends Activity {
         	    	}
         	    
         	    SaveExtRemLists(false);
-				checkedRadioButton=0;	
 				loadApps();
 				refresh();
 		}
@@ -143,6 +139,8 @@ public class MainActivity extends Activity {
 	private WifiButton wifiButton;
 	private BluetoothButton bluetoothButton;
 	private FlashButton flashButton;
+	private CameraButton cameraButton;
+	private RadioButtons radioButtons;
 
 	private void registerIntentReceivers() {
         IntentFilter pkgFilter = new IntentFilter( );
@@ -173,7 +171,7 @@ public class MainActivity extends Activity {
             if(pkg.Name.size()!=0 ) {pkg.Name.clear(); pkg.Activity.clear(); pkg.Nick.clear();}
         
         	
-           switch(checkedRadioButton) {
+           switch(radioButtons.getCheckedRadioButton()) {
            case 0:
         	        // LAUCHABLES VARIANT OF LOAD APPS
         	        
@@ -336,88 +334,41 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_main);
 
 		appListView = new AppListView(this);
 		searchText = new SearchText(this);
 		autostartButton = new AutostartButton(this);
-
-
-		final PackageManager pm = getPackageManager();
-        	HasCam = pm.hasSystemFeature(PackageManager.FEATURE_CAMERA);
-
 		wifiButton = new WifiButton(this);
 		bluetoothButton = new BluetoothButton(this);
 		flashButton = new FlashButton(this);
+		cameraButton = new CameraButton(this);
 
 
-		//-------------------------------- Camera -------------------------------------------
-        	
-
-        	
-        	final TextView myCamButton = (TextView) findViewById(R.id.button6);
-        
-        	if (!(HasCam)) {
-				colorService.setInvisible(myCamButton);
-        	}
-        	
-        	myCamButton.setOnClickListener(new View.OnClickListener()
-            {
-
-				public void onClick(View arg0) {
-						
-					startActivity( (new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE)));	
-					
-				}
-
-            });                
-                   
-            
-            
-        	
-            //---------------MENU CODE
+		//---------------MENU CODE
             
             
             
    	   	 findViewById(R.id.donateButton).setOnClickListener(new View.OnClickListener() {
-   				public void onClick(View v) {
-   					Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+ APP_PACKAGE_NAME));
-   					marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-   					startActivity(marketIntent);
-   				}
-   			});
+			 public void onClick(View v) {
+				 Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PACKAGE_NAME));
+				 marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+				 startActivity(marketIntent);
+			 }
+		 });
    	    	 
    	       	findViewById(R.id.donateButton).setOnClickListener(new View.OnClickListener() {
-   	 			public void onClick(View v) {
-   	 				Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+ APP_PACKAGE_NAME + "_donate"));
-   	 				marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-   	 				startActivity(marketIntent);
-   	 			}
-   	 		});
-   	       	
-   	       	
-   	       	((RadioGroup) findViewById(R.id.radioGroup1)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-   				
-   				public void onCheckedChanged(RadioGroup group, int checkedId) {
+				public void onClick(View v) {
+					Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PACKAGE_NAME + "_donate"));
+					marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+					startActivity(marketIntent);
+				}
+			});
 
-   					switch (checkedId) {
-   						case R.id.radio0 : checkedRadioButton=0; break;
-   						case R.id.radio1 : checkedRadioButton=1; break;
-   						case R.id.radio2 : checkedRadioButton=2; break;
-   						case R.id.radio3 : checkedRadioButton=3; break;
-   					}
-   					//Log.d("DEBUG", "cid " + checkedRadioButton);
-   					
-   					//MainActivity.this.setContentView(R.layout.activity_main);
-   					myShowNext(true);
-   				}
-   				
-   	       	});   
+		radioButtons = new RadioButtons(this);
 
-   	        
-   	    
 
-   	       	//android version check
+		//android version check
    	       	String Aversion = android.os.Build.VERSION.RELEASE;
         	if(savedInstanceState==null) {
         		if (Aversion.startsWith("1.") ||
@@ -432,7 +383,7 @@ public class MainActivity extends Activity {
         		loadApps();
         	}
         	else {
-                checkedRadioButton = savedInstanceState.getInt( "checkedRadioButton");
+
                 NewerAndroid = savedInstanceState.getBoolean( "NewerAndroid");
                 
                 pkg.Name=savedInstanceState.getStringArrayList("pkg.Name");
@@ -471,30 +422,14 @@ public class MainActivity extends Activity {
    	 		//final TextView myToggleButton = (TextView) findViewById(R.id.toggleButton0);
    	 		if (DoLoadApps) {loadApps();}
    	 		
-   	 		if(checkedRadioButton > 0) { 
+   	 		if(radioButtons.getCheckedRadioButton() > 0) {
    	 			searchText.setSpaceCharacterToText();
-   	 			TextView b;
-   	 			b = (TextView) findViewById(R.id.button1);
-   	 			colorService.setInvisible(b);
-   	 			b = (TextView) findViewById(R.id.button2);
-	 			colorService.setInvisible(b);
-	 			b = (TextView) findViewById(R.id.button4);
-   	 			colorService.setInvisible(b);
-   	 			//b = (TextView) findViewById(R.id.button5);
-	 			//colorService.setInvisible(//b);
-	 			b = (TextView) findViewById(R.id.button6);
-   	 			colorService.setInvisible(b);
-   	 			
+				radioButtons.setInvisible();
    	 		}
    	 		else {
 				wifiButton.setVisibleIfAvailable();
 				bluetoothButton.setVisibleIfAvailable();
-
-   	        	final TextView myCamButton = (TextView) findViewById(R.id.button6);
-   	         
-   	        	if (HasCam) {
-   	        		colorService.setVisible(myCamButton);
-   	        	}
+				cameraButton.setVisibleIfAvailable();
    	 			searchText.clearText();
    	 		}
    	 		
@@ -514,7 +449,7 @@ public class MainActivity extends Activity {
     // This bundle will be passed to onCreate if the process is
     // killed and restarted.
 
-        savedInstanceState.putInt( "checkedRadioButton", checkedRadioButton);
+        radioButtons.save();
         savedInstanceState.putBoolean( "NewerAndroid", NewerAndroid);
         
         savedInstanceState.putStringArrayList("pkg.Name", pkg.Name);
@@ -550,7 +485,7 @@ public class MainActivity extends Activity {
     {
         super.onResume();
         searchText.setNormalColor();
-		if((checkedRadioButton == 0)  && autostartButton.isAutostart()) {
+		if((radioButtons.getCheckedRadioButton() == 0)  && autostartButton.isAutostart()) {
 			searchText.clearText();
 		 }
 
@@ -700,7 +635,7 @@ public class MainActivity extends Activity {
 		final String tmpNick=tmpNickBefore;
 			
 		
-        switch(checkedRadioButton) {
+        switch(radioButtons.getCheckedRadioButton()) {
         case 0:
         	int tmpItemNumInExtra=MainActivity.this.ItemNumInExtra(tmpActivity);
 
