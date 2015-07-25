@@ -4,7 +4,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class App {
     final String name;
@@ -57,20 +59,20 @@ public class App {
         }
     }
 
-    public static List<App> getAppList(List<String> jsonList) {
-        final List<App> list = new ArrayList<>();
-        for (String json: jsonList) {
-            list.add(new App(json));
+    public static Set<App> getApps(Set<String> jsonSet) {
+        final Set<App> set = new HashSet<>();
+        for (String json: jsonSet) {
+            set.add(new App(json));
         }
-        return list;
+        return set;
     }
 
-    public static List<String> getJsonList(List<App> list) {
-        final List<String> jsonList = new ArrayList<String>();
-        for (App app: list) {
-            jsonList.add(app.getJsonString());
+    public static Set<String> getJsonSet(Set<App> set) {
+        final Set<String> jsonSet = new HashSet<>();
+        for (App app: set) {
+            jsonSet.add(app.getJsonString());
         }
-        return jsonList;
+        return jsonSet;
     }
 
     @Override

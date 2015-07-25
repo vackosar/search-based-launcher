@@ -51,10 +51,10 @@ public class MainActivity extends Activity {
     boolean newerAndroidVersion = true;
 
     List<App> pkg = new ArrayList<>();
-    List<App> pkgFiltered = new ArrayList<>();
-    List<App> extra = new ArrayList<>();
-    List<App> hidden = new ArrayList<>();
-    List<App> recent = new ArrayList<>();
+    Set<App> pkgFiltered = new HashSet<>();
+    Set<App> extra = new HashSet<>();
+    Set<App> hidden = new HashSet<>();
+    Set<App> recent = new HashSet<>();
 
     EditText dialogInput;
 
@@ -147,10 +147,11 @@ public class MainActivity extends Activity {
 
         for (ResolveInfo launchable : launchables) {
             String nick = launchable.activityInfo.name;
-            if (getIndexInHide(nick) == -1) {
-                String name = launchable.activityInfo.packageName;
-                String activity = launchable.activityInfo.loadLabel(pm).toString();
-                pkg.add(new App(name, nick, activity));
+            String name = launchable.activityInfo.packageName;
+            String activity = launchable.activityInfo.loadLabel(pm).toString();
+            final App app = new App(name, nick, activity);
+            if (!hidden.contains(app)) {
+                pkg.add(app);
             }
         }
     }
@@ -173,18 +174,17 @@ public class MainActivity extends Activity {
         saveList(recent, "recent", myContext);
     }
 
-    public boolean saveList(List<App> list, String listName, Context mContext) {
+    public boolean saveList(Set<App> set, String listName, Context mContext) {
         SharedPreferences prefs = mContext.getSharedPreferences(listName, 0);
         SharedPreferences.Editor editor = prefs.edit();
-        Set<String> set = new HashSet<>(App.getJsonList(list));
-        editor.putStringSet(listName, set);
+        editor.putStringSet(listName, App.getJsonSet(set));
         return editor.commit();
     }
 
-    public List<App> loadList(String listName, Context mContext) throws JSONException {
+    public Set<App> loadList(String listName, Context mContext) throws JSONException {
         SharedPreferences prefs = mContext.getSharedPreferences(listName, 0);
         final Set<String> jsonSet = prefs.getStringSet(listName, null);
-        return App.getAppList(new ArrayList<>(jsonSet));
+        return App.getApps(jsonSet);
     }
 
     @Override
@@ -236,10 +236,10 @@ public class MainActivity extends Activity {
             loadExtRemLists();
             loadApps();
         } else {
-            pkg = App.getAppList(savedInstanceState.getStringArrayList("pkg"));
-            extra = App.getAppList(savedInstanceState.getStringArrayList("extra"));
-            hidden = App.getAppList(savedInstanceState.getStringArrayList("hidden"));
-            recent = App.getAppList(savedInstanceState.getStringArrayList("recent"));
+            pkg = new ArrayList<>(App.getApps(new HashSet<>(savedInstanceState.getStringArrayList("pkg"))));
+            extra = App.getApps(new HashSet<>(savedInstanceState.getStringArrayList("extra")));
+            hidden = App.getApps(new HashSet<>(savedInstanceState.getStringArrayList("hidden")));
+            recent = App.getApps(new HashSet<>(savedInstanceState.getStringArrayList("recent")));
         }
     }
 
@@ -285,10 +285,10 @@ public class MainActivity extends Activity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         radioButtons.save();
-        savedInstanceState.putStringArrayList("pkg", new ArrayList<>(App.getJsonList(pkg)));
-        savedInstanceState.putStringArrayList("extra", new ArrayList<>(App.getJsonList(extra)));
-        savedInstanceState.putStringArrayList("hidden", new ArrayList<>(App.getJsonList(hidden)));
-        savedInstanceState.putStringArrayList("recent", new ArrayList<>(App.getJsonList(recent)));
+        savedInstanceState.putStringArrayList("pkg", new ArrayList<>(App.getJsonSet(new HashSet<>(pkg))));
+        savedInstanceState.putStringArrayList("extra", new ArrayList<>(App.getJsonSet(extra)));
+        savedInstanceState.putStringArrayList("hidden", new ArrayList<>(App.getJsonSet(hidden)));
+        savedInstanceState.putStringArrayList("recent", new ArrayList<>(App.getJsonSet(recent)));
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -328,9 +328,7 @@ public class MainActivity extends Activity {
             recent.remove(tmpint);
         }
         final Context myContext = getApplicationContext();
-        saveList(recent.Name, "recent.Name", myContext);
-        saveList(recent.Nick, "recent.Nick", myContext);
-        saveList(recent.Activity, "recent.Activity", myContext);
+        saveList(recent, "recent", myContext);
 
         String tmpNickBefore = pkgFiltered.Nick.get(index);
         recent.Name.add(pkgFiltered.Name.get(index));
@@ -382,9 +380,7 @@ public class MainActivity extends Activity {
 
 
     public void refresh() {
-        pkgFiltered.Name.clear();
-        pkgFiltered.Nick.clear();
-        pkgFiltered.Activity.clear();
+        pkgFiltered.clear();
         String FilterText = searchText.getFilterText();
 
 
@@ -609,18 +605,7 @@ public class MainActivity extends Activity {
         dialog.setCancelable(true);
         dialog.setPositiveButton("Hide", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                if (MainActivity.this.getIndexInHide(app) == -1) {
-                    hidden.Name.add(tmpName);
-                    hidden.Nick.add(nick);
-                    hidden.Activity.add(app);
-
-                    int tmpItemNumInRecent = getIndexInRecent(app);
-                    if (tmpItemNumInRecent != -1) {
-                        recent.Nick.remove(tmpItemNumInRecent);
-                        recent.Name.remove(tmpItemNumInRecent);
-                        recent.Activity.remove(tmpItemNumInRecent);
-                    }
-
+                if (hidden.remove(app)) {
                     saveExtRemLists();
                     loadApps();
                     refresh();
@@ -640,12 +625,14 @@ public class MainActivity extends Activity {
         });
         dialog.setNegativeButton("Rename", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                if (MainActivity.this.getIndexInHide(app) == -1) {
-                    hidden.Name.add(tmpName);
-                    hidden.Nick.add(nick);
-                    hidden.Activity.add(app);
+                if (!hidden.contains(app)) {
+                    hidden.add(app);
+                }
+                    app.setNick(dialogInput.getText().toString());
 
-                    extra.Nick.add(dialogInput.getText().toString());
+                    extra.add(app);
+
+                    extra.Nick.add();
                     extra.Name.add(tmpName);
                     extra.Activity.add(app);
 
