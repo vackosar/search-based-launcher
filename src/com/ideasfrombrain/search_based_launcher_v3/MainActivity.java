@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
     Set<App> pkgFiltered = new HashSet<>();
     Set<App> extra = new HashSet<>();
     Set<App> hidden = new HashSet<>();
-    Set<App> recent = new HashSet<>();
+    List<App> recent = new ArrayList<>();
 
     EditText dialogInput;
 
@@ -161,7 +161,6 @@ public class MainActivity extends Activity {
             final Context context = getApplicationContext();
             extra = loadList("extra", context);
             hidden = loadList("hidden", context);
-            recent = loadList("recent", context);
         } catch (Exception e) {
             saveExtRemLists();
         }
@@ -171,7 +170,6 @@ public class MainActivity extends Activity {
         final Context myContext = getApplicationContext();
         saveList(extra, "extra", myContext);
         saveList(hidden, "hidden", myContext);
-        saveList(recent, "recent", myContext);
     }
 
     public boolean saveList(Set<App> set, String listName, Context mContext) {
@@ -318,12 +316,11 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
-    public void runApp(int index) {
+    public void runApp(App app) {
         searchText.setActivatedColor();
 
-        int tmpint = getIndexInRecent(pkgFiltered.get(index));
-        if ((recent.size() >= 10) && (tmpint == -1)) {
-            recent.remove(0);
+        if (recent.size() >= 10 && !recent.contains(app)) {
+            recent.remove(app);
         } else if (tmpint != -1) {
             recent.remove(tmpint);
         }
@@ -649,32 +646,4 @@ public class MainActivity extends Activity {
             }
         });
     }
-
-    public int getIndexInExtra(App app) { // NOTE: if not found returns -1
-        for (int i = 0; i < extra.size(); i++) {
-            if (app.equals(extra.get(i))) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public int getIndexInHide(App app) { // NOTE: if not found returns -1
-        for (int i = 0; i < hidden.size(); i++) {
-            if (app.equals(hidden.get(i))) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public int getIndexInRecent(App app) { // NOTE: if not found returns -1
-        for (int i = 0; i < recent.size(); i++) {
-            if (app.equals(recent.get(i))) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
 }
