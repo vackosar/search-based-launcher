@@ -38,7 +38,6 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 
 @SuppressWarnings("Convert2Lambda")
@@ -49,7 +48,7 @@ public class MainActivity extends Activity {
     static String APP_PACKAGE_NAME = "com.ideasfrombrain.search_based_launcher_v3";
     public static final App MENU_APP = new App(APP_PACKAGE_NAME + ".Menu", " Menu-Launcher", APP_PACKAGE_NAME + ".Menu");
 
-    boolean NewerAndroid = true;
+    boolean newerAndroidVersion = true;
 
     List<App> pkg = new ArrayList<App>();
     List<App> pkgFiltered = new ArrayList<App>();
@@ -219,7 +218,6 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         appListView = new AppListView(this);
         searchText = new SearchText(this);
         autostartButton = new AutostartButton(this);
@@ -227,11 +225,14 @@ public class MainActivity extends Activity {
         bluetoothButton = new BluetoothButton(this);
         flashButton = new FlashButton(this);
         cameraButton = new CameraButton(this);
+        createMenuDonateButton();
+        radioButtons = new RadioButtons(this);
+        setAndroidVersion();
+        setAppLists(savedInstanceState);
+        registerIntentReceivers();
+    }
 
-
-        //---------------MENU CODE
-
-
+    private void createMenuDonateButton() {
         findViewById(R.id.donateButton).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PACKAGE_NAME));
@@ -239,34 +240,15 @@ public class MainActivity extends Activity {
                 startActivity(marketIntent);
             }
         });
+    }
 
-        findViewById(R.id.donateButton).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PACKAGE_NAME + "_donate"));
-                marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                startActivity(marketIntent);
-            }
-        });
-
-        radioButtons = new RadioButtons(this);
-
-
-        //android version check
-        String Aversion = android.os.Build.VERSION.RELEASE;
+    private void setAppLists(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            if (Aversion.startsWith("1.") ||
-                    Aversion.startsWith("2.0") ||
-                    Aversion.startsWith("2.1")) {
-                NewerAndroid = false;
-            } else {
-                NewerAndroid = true;
-            }
+
 
             loadExtRemLists(false);
             loadApps();
         } else {
-
-            NewerAndroid = savedInstanceState.getBoolean("NewerAndroid");
 
             pkg.Name = savedInstanceState.getStringArrayList("pkg.Name");
             pkg.Nick = savedInstanceState.getStringArrayList("pkg.Nick");
@@ -285,9 +267,17 @@ public class MainActivity extends Activity {
             recent.Activity = savedInstanceState.getStringArrayList("recent.Activity");
 
         }
-        registerIntentReceivers();
+    }
 
-
+    private void setAndroidVersion() {
+        String Aversion = android.os.Build.VERSION.RELEASE;
+        if (Aversion.startsWith("1.") ||
+                Aversion.startsWith("2.0") ||
+                Aversion.startsWith("2.1")) {
+            newerAndroidVersion = false;
+        } else {
+            newerAndroidVersion = true;
+        }
     }
 
 
@@ -329,7 +319,7 @@ public class MainActivity extends Activity {
         // killed and restarted.
 
         radioButtons.save();
-        savedInstanceState.putBoolean("NewerAndroid", NewerAndroid);
+        savedInstanceState.putBoolean("newerAndroidVersion", newerAndroidVersion);
 
         savedInstanceState.putStringArrayList("pkg.Name", pkg.Name);
         savedInstanceState.putStringArrayList("pkg.Nick", pkg.Nick);
@@ -367,7 +357,7 @@ public class MainActivity extends Activity {
             searchText.clearText();
         }
 
-        if (!NewerAndroid) {
+        if (!newerAndroidVersion) {
             final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
@@ -411,7 +401,7 @@ public class MainActivity extends Activity {
         recent.Nick.add(tmpNickBefore);
         recent.Activity.add(pkgFiltered.Activity.get(index));
 
-        if (!NewerAndroid) {
+        if (!newerAndroidVersion) {
             final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
@@ -440,7 +430,7 @@ public class MainActivity extends Activity {
                 Log.d("DEBUG", e.getMessage());
                 searchText.setNormalColor();
 
-                if (!NewerAndroid) {
+                if (!newerAndroidVersion) {
                     final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (imm != null) {
                         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
