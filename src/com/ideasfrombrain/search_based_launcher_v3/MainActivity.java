@@ -237,7 +237,6 @@ public class MainActivity extends Activity {
             pkg = new ArrayList<>(App.getApps(new HashSet<>(savedInstanceState.getStringArrayList("pkg"))));
             extra = App.getApps(new HashSet<>(savedInstanceState.getStringArrayList("extra")));
             hidden = App.getApps(new HashSet<>(savedInstanceState.getStringArrayList("hidden")));
-            recent = App.getApps(new HashSet<>(savedInstanceState.getStringArrayList("recent")));
         }
     }
 
@@ -286,7 +285,6 @@ public class MainActivity extends Activity {
         savedInstanceState.putStringArrayList("pkg", new ArrayList<>(App.getJsonSet(new HashSet<>(pkg))));
         savedInstanceState.putStringArrayList("extra", new ArrayList<>(App.getJsonSet(extra)));
         savedInstanceState.putStringArrayList("hidden", new ArrayList<>(App.getJsonSet(hidden)));
-        savedInstanceState.putStringArrayList("recent", new ArrayList<>(App.getJsonSet(recent)));
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -297,15 +295,7 @@ public class MainActivity extends Activity {
         if ((radioButtons.getCheckedRadioButton() == 0) && autostartButton.isAutostart()) {
             searchText.clearText();
         }
-
-        if (!newerAndroidVersion) {
-            final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-            }
-        }
-
-
+        toggleKeyboard();
     }
 
 
@@ -318,73 +308,41 @@ public class MainActivity extends Activity {
 
     public void runApp(App app) {
         searchText.setActivatedColor();
-
-        if (recent.size() >= 10 && !recent.contains(app)) {
-            recent.remove(app);
-        } else if (tmpint != -1) {
-            recent.remove(tmpint);
+        recent.remove(app);
+        toggleKeyboard();
+        if (app.isMenu()) {
+            myShowNext(false);
+        } else {
+            try {
+                final Intent intent = new Intent(Intent.ACTION_MAIN, null);
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                intent.setComponent(new ComponentName(app.getName(), app.getActivity()));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                        Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+                searchText.setNormalColor();
+                toggleKeyboard();
+            }
         }
-        final Context myContext = getApplicationContext();
-        saveList(recent, "recent", myContext);
+    }
 
-        String tmpNickBefore = pkgFiltered.Nick.get(index);
-        recent.Name.add(pkgFiltered.Name.get(index));
-        if ((tmpNickBefore.matches("R:.*"))) {
-            tmpNickBefore = tmpNickBefore.substring(2, tmpNickBefore.length());
-        }
-        recent.Nick.add(tmpNickBefore);
-        recent.Activity.add(pkgFiltered.Activity.get(index));
-
+    private void toggleKeyboard() {
         if (!newerAndroidVersion) {
             final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
             }
         }
-
-
-        if ((APP_PACKAGE_NAME + ".Menu").equals(pkgFiltered.Name.get(index))) {
-            myShowNext(false);
-        } else {
-            try {
-
-                final Intent intent = new Intent(Intent.ACTION_MAIN, null);
-                intent.addCategory(Intent.CATEGORY_LAUNCHER);
-
-                intent.setComponent(new ComponentName(pkgFiltered.Name.get(index), pkgFiltered.Activity.get(index)));
-
-
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-                        Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                startActivity(intent);
-
-
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                Log.d("DEBUG", e.getMessage());
-                searchText.setNormalColor();
-
-                if (!newerAndroidVersion) {
-                    final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (imm != null) {
-                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                    }
-                }
-            }
-        }
-
     }
 
 
     public void refresh() {
         pkgFiltered.clear();
-        String FilterText = searchText.getFilterText();
-
-
-        int tmpsize = recent.Name.size();
+        String filterText = searchText.getFilterText();
         for (int i = 0; i < tmpsize; i++) {
-            //Log.d("DEBUG", recent.Name.get(tmpsize-1-i));
-            if (recent.Nick.get(tmpsize - 1 - i).toLowerCase().matches(FilterText)) {
+            if (recent.get(tmpsize - 1 - i).toLowerCase().matches(filterText)) {
                 pkgFiltered.Name.add(recent.Name.get(tmpsize - 1 - i));
                 pkgFiltered.Activity.add(recent.Activity.get(tmpsize - 1 - i));
                 pkgFiltered.Nick.add("R:" + recent.Nick.get(tmpsize - 1 - i));
@@ -393,7 +351,7 @@ public class MainActivity extends Activity {
 
         for (int i = 0; i < pkg.Name.size(); i++) {
 
-            if ((pkg.Nick.get(i).toLowerCase().matches(FilterText)) && (getIndexInRecent(pkg.Activity.get(i)) == -1)) {
+            if ((pkg.Nick.get(i).toLowerCase().matches(filterText)) && (getIndexInRecent(pkg.Activity.get(i)) == -1)) {
                 pkgFiltered.Name.add(pkg.Name.get(i));
                 pkgFiltered.Activity.add(pkg.Activity.get(i));
                 pkgFiltered.Nick.add(pkg.Nick.get(i));
@@ -406,27 +364,11 @@ public class MainActivity extends Activity {
         } else {
             appListView.setAppList(pkgFiltered.Nick);
         }
-
-        //}
-
-
     }
 
-    //@Override
-    public boolean showOptionsForApp(final int index) {
-        final App app = pkgFiltered.get(index);
-        final String name = pkgFiltered.Name.get(index);
-        final String nickBefore = pkgFiltered.Nick.get(index);
-
+    public boolean showOptionsForApp(final App app) {
         if ((app.getActivity().equals(APP_PACKAGE_NAME + ".Menu"))) {
             return false;
-        }
-
-        String nick;
-        if ((nickBefore.matches("R:.*"))) {
-            nick = nickBefore.substring(2, nickBefore.length());
-        } else {
-            nick = nickBefore;
         }
 
         switch (radioButtons.getCheckedRadioButton()) {
@@ -434,25 +376,25 @@ public class MainActivity extends Activity {
                 showNormalOptions(app);
                 break;
             case 1:
-                showAddExtraAppOptions(index, nick);
+                showAddExtraAppOptions(app);
                 break;
             case 2:
-                showRemoveExtraAppOptions(index, app, nick);
+                showRemoveExtraAppOptions(app);
                 break;
             case 3:
-                showUnhideAppOptions(index, app, nick);
+                showUnhideAppOptions(app);
                 break;
         }
         return false;
     }
 
-    private void showUnhideAppOptions(int index, final App app, String nick) {
+    private void showUnhideAppOptions(final App app) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(nick);
+        dialog.setTitle(app.getNick());
 
         dialogInput = new EditText(this);
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        dialogInput.setText(pkgFiltered.get(index).getNick());
+        dialogInput.setText(app.getNick());
 
         dialog.setView(dialogInput);
         dialog.setMessage("Remove this activity (hidden app) from hidden applications list?");
@@ -471,13 +413,13 @@ public class MainActivity extends Activity {
         dialog.create().show();
     }
 
-    private void showRemoveExtraAppOptions(int index, final App app, final String nick) {
+    private void showRemoveExtraAppOptions(final App app) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(nick);
+        dialog.setTitle(app.getNick());
 
         dialogInput = new EditText(this);
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        dialogInput.setText(pkgFiltered.get(index).getNick());
+        dialogInput.setText(app.getNick());
 
         dialog.setView(dialogInput);
         dialog.setMessage("Remove this (extra added list of all activities) activity from applications list?");
@@ -496,13 +438,13 @@ public class MainActivity extends Activity {
         dialog.create().show();
     }
 
-    private void showAddExtraAppOptions(final int index, App app) {
+    private void showAddExtraAppOptions(App app) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(app.getNick());
 
         dialogInput = new EditText(this);
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        dialogInput.setText(pkgFiltered.get(index).getNick());
+        dialogInput.setText(app.getNick());
 
         dialog.setView(dialogInput);
         dialog.setMessage("Add this activity to applications list?");
@@ -524,17 +466,15 @@ public class MainActivity extends Activity {
     private void showNormalOptions(final App app) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(app.getNick());
-
-        int tmpItemNumInExtra = MainActivity.this.getIndexInExtra(app);
-
-        if ((tmpItemNumInExtra == -1) && (MainActivity.this.getIndexInHide(app) == -1)) {
+        if (!extra.contains(app) && !hidden.contains(app)) {
             showHideApp(app, dialog);
-        } else if ((tmpItemNumInExtra != -1) && (MainActivity.this.getIndexInHide(app) != -1)) {
+        } else if (extra.contains(app) && hidden.contains(app)) {
             showRenamedApp(app, dialog);
-        } else if (tmpItemNumInExtra != -1) {
+        } else if (extra.contains(app)) {
             showExtraAddedApp(app, dialog);
+        } else {
+            //FIXME
         }
-
         dialog.create().show();
     }
 
@@ -543,8 +483,7 @@ public class MainActivity extends Activity {
         dialog.setCancelable(true);
         dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                int tmpItemNumInExtra = MainActivity.this.getIndexInExtra(app);
-                extra.remove(tmpItemNumInExtra);
+                extra.remove(app);
                 saveExtRemLists();
                 loadApps();
                 refresh();
@@ -625,24 +564,14 @@ public class MainActivity extends Activity {
                 if (!hidden.contains(app)) {
                     hidden.add(app);
                 }
-                    app.setNick(dialogInput.getText().toString());
-
-                    extra.add(app);
-
-                    extra.Nick.add();
-                    extra.Name.add(tmpName);
-                    extra.Activity.add(app);
-
-                    int tmpItemNumInRecent = getIndexInRecent(app);
-                    if (tmpItemNumInRecent != -1) {
-                        recent.set(tmpItemNumInRecent, app);
-                    }
-
-                    saveExtRemLists();
-                    loadApps();
-                    refresh();
-                    dialog.dismiss();
-                }
+                app.setNick(dialogInput.getText().toString());
+                extra.add(app);
+                recent.remove(app);
+                recent.add(app);
+                saveExtRemLists();
+                loadApps();
+                refresh();
+                dialog.dismiss();
             }
         });
     }

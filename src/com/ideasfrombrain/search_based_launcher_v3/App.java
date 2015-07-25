@@ -9,9 +9,10 @@ import java.util.List;
 import java.util.Set;
 
 public class App {
-    final String name;
-    String nick;
-    final String activity;
+    private final String name;
+    private String nick;
+    private final String activity;
+    private boolean recent = false;
 
     public App(String name, String nick, String activity) {
         this.name = name;
@@ -30,6 +31,12 @@ public class App {
         }
     }
 
+    public App(App app) {
+        this.name = app.getName();
+        this.activity = app.getName();
+        this.nick = app.getName();
+    }
+
     public String getName() {
         return name;
     }
@@ -40,11 +47,27 @@ public class App {
 
 
     public String getNick() {
-        return nick;
+        if (recent) {
+            return "R: " + nick;
+        } else {
+            return nick;
+        }
     }
 
     public void setNick(String nick) {
         this.nick = nick;
+    }
+
+    public boolean isRecent() {
+        return recent;
+    }
+
+    public void setRecent(boolean recent) {
+        this.recent = recent;
+    }
+
+    public boolean isMenu() {
+        return (MainActivity.APP_PACKAGE_NAME + ".Menu").equals(getActivity());
     }
 
     public String getJsonString(){
