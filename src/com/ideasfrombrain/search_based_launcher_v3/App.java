@@ -14,6 +14,17 @@ public class App {
         this.activity = activity;
     }
 
+    public App(String json) {
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            this.name = jsonObject.getString("name");
+            this.nick = jsonObject.getString("nick");
+            this.activity = jsonObject.getString("activity");
+        } catch (JSONException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
     public String getName() {
         return name;
     }
@@ -43,11 +54,15 @@ public class App {
         return activity != null ? activity.hashCode() : 0;
     }
 
-    public String getJsonString() throws JSONException {
-        return new JSONObject()
-                .put("name", name)
-                .put("nick", nick)
-                .put("activity", activity)
-                .toString();
+    public String getJsonString(){
+        try {
+            return new JSONObject()
+                    .put("name", name)
+                    .put("nick", nick)
+                    .put("activity", activity)
+                    .toString();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

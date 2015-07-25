@@ -38,6 +38,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 
 @SuppressWarnings("Convert2Lambda")
@@ -157,16 +158,10 @@ public class MainActivity extends Activity {
 
     public void loadExtRemLists(boolean check) {
         try {
-            final Context myContext = getApplicationContext();
-            loadList(extra.Name, "extra.Name", myContext);
-            loadList(extra.Nick, "extra.Nick", myContext);
-            loadList(extra.Activity, "extra.Activity", myContext);
-            loadList(hidden.Name, "hidden.Name", myContext);
-            loadList(hidden.Nick, "hidden.Nick", myContext);
-            loadList(hidden.Activity, "hidden.Activity", myContext);
-            loadList(recent.Name, "recent.Name", myContext);
-            loadList(recent.Nick, "recent.Nick", myContext);
-            loadList(recent.Activity, "recent.Activity", myContext);
+            final Context context = getApplicationContext();
+            extra = loadList("extra", context);
+            hidden = loadList("hidden", context);
+            recent = loadList("recent", context);
         } catch (Exception e) {
             //Log.d("DEBUG","excep. during load" + e.getStackTrace().toString());
             saveExtRemLists(false);
@@ -175,12 +170,12 @@ public class MainActivity extends Activity {
 
     public void saveExtRemLists(boolean check) {
         final Context myContext = getApplicationContext();
-        save(extra, "extra", myContext);
-        save(hidden, "hidden", myContext);
-        save(recent, "recent", myContext);
+        saveList(extra, "extra", myContext);
+        saveList(hidden, "hidden", myContext);
+        saveList(recent, "recent", myContext);
     }
 
-    public boolean save(List<App> list, String listName, Context mContext) throws JSONException {
+    public boolean saveList(List<App> list, String listName, Context mContext) {
         SharedPreferences prefs = mContext.getSharedPreferences(listName, 0);
         SharedPreferences.Editor editor = prefs.edit();
         Set<String> set = new HashSet();
@@ -192,10 +187,13 @@ public class MainActivity extends Activity {
     }
 
 
-    public void loadList(ArrayList<App> list, String listName, Context mContext) throws JSONException {
+    public List<App> loadList(String listName, Context mContext) throws JSONException {
+        List<App> list = new ArrayList<>();
         SharedPreferences prefs = mContext.getSharedPreferences(listName, 0);
-
-        ist.add(prefs.getString(listName + "_" + i, null));
+        for (String json: prefs.getStringSet(listName, null)) {
+            list.add(new App(json));
+        }
+        return list;
     }
 
     @Override
@@ -399,9 +397,9 @@ public class MainActivity extends Activity {
             recent.Activity.remove(tmpint);
         }
         final Context myContext = getApplicationContext();
-        save(recent.Name, "recent.Name", myContext);
-        save(recent.Nick, "recent.Nick", myContext);
-        save(recent.Activity, "recent.Activity", myContext);
+        saveList(recent.Name, "recent.Name", myContext);
+        saveList(recent.Nick, "recent.Nick", myContext);
+        saveList(recent.Activity, "recent.Activity", myContext);
 
         String tmpNickBefore = pkgFiltered.Nick.get(index);
         recent.Name.add(pkgFiltered.Name.get(index));
