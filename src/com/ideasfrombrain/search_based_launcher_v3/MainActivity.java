@@ -148,9 +148,11 @@ public class MainActivity extends Activity {
         final List<ResolveInfo> launchables = pm.queryIntentActivities(main, 0);
 
         for (ResolveInfo launchable : launchables) {
-            if (ItemNumInHide(launchable.activityInfo.name) == -1) {
-                App app = new App(launchable.activityInfo.packageName, launchable.activityInfo.name, launchable.activityInfo.loadLabel(pm).toString());
-                pkg.add(app);
+            String nick = launchable.activityInfo.name;
+            if (ItemNumInHide(nick) == -1) {
+                String name = launchable.activityInfo.packageName;
+                String activity = launchable.activityInfo.loadLabel(pm).toString();
+                pkg.add(new App(name, nick, activity));
             }
         }
     }
