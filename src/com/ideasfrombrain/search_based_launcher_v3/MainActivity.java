@@ -163,7 +163,6 @@ public class MainActivity extends Activity {
             hidden = loadList("hidden", context);
             recent = loadList("recent", context);
         } catch (Exception e) {
-            //Log.d("DEBUG","excep. during load" + e.getStackTrace().toString());
             saveExtRemLists(false);
         }
     }
@@ -237,40 +236,21 @@ public class MainActivity extends Activity {
 
     private void setAppLists(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-
-
             loadExtRemLists(false);
             loadApps();
         } else {
-
-            pkg.Name = savedInstanceState.getStringArrayList("pkg.Name");
-            pkg.Nick = savedInstanceState.getStringArrayList("pkg.Nick");
-            pkg.Activity = savedInstanceState.getStringArrayList("pkg.Activity");
-
-            extra.Name = savedInstanceState.getStringArrayList("extra.Name");
-            extra.Nick = savedInstanceState.getStringArrayList("extra.Nick");
-            extra.Activity = savedInstanceState.getStringArrayList("extra.Activity");
-
-            hidden.Name = savedInstanceState.getStringArrayList("hidden.Name");
-            hidden.Nick = savedInstanceState.getStringArrayList("hidden.Nick");
-            hidden.Activity = savedInstanceState.getStringArrayList("hidden.Activity");
-
-            recent.Name = savedInstanceState.getStringArrayList("recent.Name");
-            recent.Nick = savedInstanceState.getStringArrayList("recent.Nick");
-            recent.Activity = savedInstanceState.getStringArrayList("recent.Activity");
-
+            pkg = App.getAppList(savedInstanceState.getStringArrayList("pkg"));
+            extra = App.getAppList(savedInstanceState.getStringArrayList("extra"));
+            hidden = App.getAppList(savedInstanceState.getStringArrayList("hidden"));
+            recent = App.getAppList(savedInstanceState.getStringArrayList("recent"));
         }
     }
 
     private void setAndroidVersion() {
         String Aversion = android.os.Build.VERSION.RELEASE;
-        if (Aversion.startsWith("1.") ||
+        newerAndroidVersion = !(Aversion.startsWith("1.") ||
                 Aversion.startsWith("2.0") ||
-                Aversion.startsWith("2.1")) {
-            newerAndroidVersion = false;
-        } else {
-            newerAndroidVersion = true;
-        }
+                Aversion.startsWith("2.1"));
     }
 
 
@@ -307,39 +287,12 @@ public class MainActivity extends Activity {
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save UI state changes to the savedInstanceState.
-        // This bundle will be passed to onCreate if the process is
-        // killed and restarted.
-
         radioButtons.save();
-        savedInstanceState.putBoolean("newerAndroidVersion", newerAndroidVersion);
-
-        savedInstanceState.putStringArrayList("pkg.Name", pkg.Name);
-        savedInstanceState.putStringArrayList("pkg.Nick", pkg.Nick);
-        savedInstanceState.putStringArrayList("pkg.Activity", pkg.Activity);
-
-        savedInstanceState.putStringArrayList("extra.Name", extra.Name);
-        savedInstanceState.putStringArrayList("extra.Nick", extra.Nick);
-        savedInstanceState.putStringArrayList("extra.Activity", extra.Activity);
-
-        savedInstanceState.putStringArrayList("hidden.Name", hidden.Name);
-        savedInstanceState.putStringArrayList("hidden.Nick", hidden.Nick);
-        savedInstanceState.putStringArrayList("hidden.Activity", hidden.Activity);
-
-        savedInstanceState.putStringArrayList("recent.Name", recent.Name);
-        savedInstanceState.putStringArrayList("recent.Nick", recent.Nick);
-        savedInstanceState.putStringArrayList("recent.Activity", recent.Activity);
-
+        savedInstanceState.putStringArrayList("pkg", new ArrayList<>(App.getJsonList(pkg)));
+        savedInstanceState.putStringArrayList("extra", new ArrayList<>(App.getJsonList(extra)));
+        savedInstanceState.putStringArrayList("hidden", new ArrayList<>(App.getJsonList(hidden)));
+        savedInstanceState.putStringArrayList("recent", new ArrayList<>(App.getJsonList(recent)));
         super.onSaveInstanceState(savedInstanceState);
-    }
-
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        // Restore UI state from the savedInstanceState.
-        // This bundle has also been passed to onCreate.
-
     }
 
     @Override
