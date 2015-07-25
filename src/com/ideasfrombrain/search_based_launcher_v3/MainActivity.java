@@ -156,7 +156,6 @@ public class MainActivity extends Activity {
         }
     }
 
-
     public void loadExtRemLists(boolean check) {
         try {
             final Context context = getApplicationContext();
@@ -179,22 +178,16 @@ public class MainActivity extends Activity {
     public boolean saveList(List<App> list, String listName, Context mContext) {
         SharedPreferences prefs = mContext.getSharedPreferences(listName, 0);
         SharedPreferences.Editor editor = prefs.edit();
-        Set<String> set = new HashSet();
-        for (App app: list) {
-            set.add(app.getJsonString());
-        }
+        Set<String> set = new HashSet<>(App.getJsonList(list));
         editor.putStringSet(listName, set);
         return editor.commit();
     }
 
-
     public List<App> loadList(String listName, Context mContext) throws JSONException {
         List<App> list = new ArrayList<>();
         SharedPreferences prefs = mContext.getSharedPreferences(listName, 0);
-        for (String json: prefs.getStringSet(listName, null)) {
-            list.add(new App(json));
-        }
-        return list;
+        final Set<String> jsonSet = prefs.getStringSet(listName, null);
+        return App.getAppList(new ArrayList<>(jsonSet));
     }
 
     @Override

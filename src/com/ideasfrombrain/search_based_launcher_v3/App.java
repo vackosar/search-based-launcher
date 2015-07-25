@@ -3,6 +3,9 @@ package com.ideasfrombrain.search_based_launcher_v3;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class App {
     final String name;
     final String nick;
@@ -64,5 +67,21 @@ public class App {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static List<App> getAppList(List<String> jsonList) {
+        final List<App> list = new ArrayList<>();
+        for (String json: jsonList) {
+            list.add(new App(json));
+        }
+        return list;
+    }
+
+    public static List<String> getJsonList(List<App> list) {
+        final List<String> jsonList = new ArrayList<String>();
+        for (App app: list) {
+            jsonList.add(app.getJsonString());
+        }
+        return jsonList;
     }
 }
