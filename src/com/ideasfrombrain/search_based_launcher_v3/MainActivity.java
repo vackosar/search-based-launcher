@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
     List<App> hidden = new ArrayList<>();
     List<App> recent = new ArrayList<>();
 
-    EditText DialogInput;
+    EditText dialogInput;
 
     private final BroadcastReceiver mPkgApplicationsReceiver = new BroadcastReceiver() {
         @Override
@@ -325,9 +325,7 @@ public class MainActivity extends Activity {
         if ((recent.size() >= 10) && (tmpint == -1)) {
             recent.remove(0);
         } else if (tmpint != -1) {
-            recent.Name.remove(tmpint);
-            recent.Nick.remove(tmpint);
-            recent.Activity.remove(tmpint);
+            recent.remove(tmpint);
         }
         final Context myContext = getApplicationContext();
         saveList(recent.Name, "recent.Name", myContext);
@@ -423,11 +421,11 @@ public class MainActivity extends Activity {
 
     //@Override
     public boolean showOptionsForApp(final int index) {
-        final String activity = pkgFiltered.Activity.get(index);
+        final App app = pkgFiltered.get(index);
         final String name = pkgFiltered.Name.get(index);
         final String nickBefore = pkgFiltered.Nick.get(index);
 
-        if ((activity == APP_PACKAGE_NAME + ".Menu")) {
+        if ((app.getActivity().equals(APP_PACKAGE_NAME + ".Menu"))) {
             return false;
         }
 
@@ -440,40 +438,40 @@ public class MainActivity extends Activity {
 
         switch (radioButtons.getCheckedRadioButton()) {
             case 0:
-                showNormalOptions(activity, name, nick);
+                showNormalOptions(app);
                 break;
             case 1:
                 showAddExtraAppOptions(index, nick);
                 break;
             case 2:
-                showRemoveExtraAppOptions(index, activity, nick);
+                showRemoveExtraAppOptions(index, app, nick);
                 break;
             case 3:
-                showUnhideAppOptions(index, activity, nick);
+                showUnhideAppOptions(index, app, nick);
                 break;
         }
         return false;
     }
 
-    private void showUnhideAppOptions(int index, final String tmpActivity, String nick) {
+    private void showUnhideAppOptions(int index, final App app, String nick) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(nick);
 
-        DialogInput = new EditText(this);
-        DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        DialogInput.setText(pkgFiltered.Nick.get(index));
+        dialogInput = new EditText(this);
+        dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        dialogInput.setText(pkgFiltered.get(index).getNick());
 
-        dialog.setView(DialogInput);
+        dialog.setView(dialogInput);
         dialog.setMessage("Remove this activity (hidden app) from hidden applications list?");
         dialog.setCancelable(true);
         dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                int tmpItemNumInHide = MainActivity.this.getIndexInHide(tmpActivity);
+                int tmpItemNumInHide = MainActivity.this.getIndexInHide(app);
                 if (tmpItemNumInHide != -1) {
                     hidden.Activity.remove(tmpItemNumInHide);
                     hidden.Name.remove(tmpItemNumInHide);
                     hidden.Nick.remove(tmpItemNumInHide);
-                    MainActivity.this.saveExtRemLists(false);
+                    MainActivity.this.saveExtRemLists();
                     loadApps();
                     refresh();
                     dialog.dismiss();
@@ -484,33 +482,33 @@ public class MainActivity extends Activity {
         dialog.create().show();
     }
 
-    private void showRemoveExtraAppOptions(int index, final String tmpActivity, final String nick) {
+    private void showRemoveExtraAppOptions(int index, final App app, final String nick) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(nick);
 
-        DialogInput = new EditText(this);
-        DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        DialogInput.setText(pkgFiltered.Nick.get(index));
+        dialogInput = new EditText(this);
+        dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        dialogInput.setText(pkgFiltered.get(index).getNick());
 
-        dialog.setView(DialogInput);
+        dialog.setView(dialogInput);
         dialog.setMessage("Remove this (extra added list of all activities) activity from applications list?");
         dialog.setCancelable(true);
         dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                int tmpItemNumInExtra = MainActivity.this.getIndexInExtra(tmpActivity);
+                int tmpItemNumInExtra = MainActivity.this.getIndexInExtra(app);
                 if (tmpItemNumInExtra != -1) {
                     extra.Activity.remove(tmpItemNumInExtra);
                     extra.Name.remove(tmpItemNumInExtra);
                     extra.Nick.remove(tmpItemNumInExtra);
 
-                    int tmpItemNumInRecent = getIndexInRecent(tmpActivity);
+                    int tmpItemNumInRecent = getIndexInRecent(app);
                     if (tmpItemNumInRecent != -1) {
                         recent.Nick.remove(tmpItemNumInRecent);
                         recent.Name.remove(tmpItemNumInRecent);
                         recent.Activity.remove(tmpItemNumInRecent);
                     }
 
-                    MainActivity.this.saveExtRemLists(false);
+                    MainActivity.this.saveExtRemLists();
                     loadApps();
                     refresh();
                     dialog.dismiss();
@@ -525,17 +523,17 @@ public class MainActivity extends Activity {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(nick);
 
-        DialogInput = new EditText(this);
-        DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        DialogInput.setText(pkgFiltered.Nick.get(index));
+        dialogInput = new EditText(this);
+        dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        dialogInput.setText(pkgFiltered.get(index).getNick());
 
-        dialog.setView(DialogInput);
+        dialog.setView(dialogInput);
         dialog.setMessage("Add this activity to applications list?");
         dialog.setCancelable(true);
         dialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 extra.Name.add(pkgFiltered.Name.get(index));
-                extra.Nick.add(DialogInput.getText().toString());
+                extra.Nick.add(dialogInput.getText().toString());
                 extra.Activity.add(pkgFiltered.Activity.get(index));
                 saveExtRemLists(true);
                 loadApps();
@@ -547,41 +545,37 @@ public class MainActivity extends Activity {
         dialog.create().show();
     }
 
-    private void showNormalOptions(final String tmpActivity, final String tmpName, final String nick) {
+    private void showNormalOptions(final App app) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle(nick);
+        dialog.setTitle(app.getNick());
 
-        int tmpItemNumInExtra = MainActivity.this.getIndexInExtra(tmpActivity);
+        int tmpItemNumInExtra = MainActivity.this.getIndexInExtra(app);
 
-        if ((tmpItemNumInExtra == -1) && (MainActivity.this.getIndexInHide(tmpActivity) == -1)) {
-            showHideApp(tmpActivity, tmpName, nick, dialog);
-        } else if ((tmpItemNumInExtra != -1) && (MainActivity.this.getIndexInHide(tmpActivity) != -1)) {
-            showRenamedApp(tmpActivity, tmpName, nick, dialog);
+        if ((tmpItemNumInExtra == -1) && (MainActivity.this.getIndexInHide(app) == -1)) {
+            showHideApp(app, dialog);
+        } else if ((tmpItemNumInExtra != -1) && (MainActivity.this.getIndexInHide(app) != -1)) {
+            showRenamedApp(app, dialog);
         } else if (tmpItemNumInExtra != -1) {
-            showExtraAddedApp(tmpActivity, dialog);
+            showExtraAddedApp(app, dialog);
         }
 
         dialog.create().show();
     }
 
-    private void showExtraAddedApp(final String tmpActivity, AlertDialog.Builder dialog) {
-        dialog.setMessage("Remove activity " + tmpActivity + " from extra added (to applications list) list ?");
+    private void showExtraAddedApp(final App app, AlertDialog.Builder dialog) {
+        dialog.setMessage("Remove activity " + app + " from extra added (to applications list) list ?");
         dialog.setCancelable(true);
         dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                int tmpItemNumInExtra = MainActivity.this.getIndexInExtra(tmpActivity);
-                extra.Activity.remove(tmpItemNumInExtra);
-                extra.Name.remove(tmpItemNumInExtra);
-                extra.Nick.remove(tmpItemNumInExtra);
+                int tmpItemNumInExtra = MainActivity.this.getIndexInExtra(app);
+                extra.remove(tmpItemNumInExtra);
 
-                int tmpItemNumInRecent = getIndexInRecent(tmpActivity);
+                int tmpItemNumInRecent = getIndexInRecent(app);
                 if (tmpItemNumInRecent != -1) {
-                    recent.Nick.remove(tmpItemNumInRecent);
-                    recent.Name.remove(tmpItemNumInRecent);
-                    recent.Activity.remove(tmpItemNumInRecent);
+                    recent.remove(tmpItemNumInRecent);
                 }
 
-                saveExtRemLists(false);
+                saveExtRemLists();
                 loadApps();
                 refresh();
                 dialog.dismiss();
@@ -590,33 +584,25 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void showRenamedApp(final String tmpActivity, final String tmpName, String nick, AlertDialog.Builder dialog) {
-        DialogInput = new EditText(this);
-        DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        DialogInput.setText(nick);
+    private void showRenamedApp(final App app, AlertDialog.Builder dialog) {
+        dialogInput = new EditText(this);
+        dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        dialogInput.setText(app.getNick());
 
-        dialog.setView(DialogInput);
+        dialog.setView(dialogInput);
         dialog.setMessage("This application is in both add and hide lists, thus is probably renamed.");
         dialog.setCancelable(true);
         dialog.setPositiveButton("Hide", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                int tmpItemNumInExtra = MainActivity.this.getIndexInExtra(tmpActivity);
-                if (MainActivity.this.getIndexInHide(tmpActivity) == -1) {
-                    //hidden.Name.add(tmpName);
-                    //hidden.Nick.add(tmpNick);
-                    //hidden.Activity.add(tmpActivity);
-                    extra.Nick.remove(tmpItemNumInExtra);
-                    extra.Name.remove(tmpItemNumInExtra);
-                    extra.Activity.remove(tmpItemNumInExtra);
+                int tmpItemNumInExtra = MainActivity.this.getIndexInExtra(app);
+                if (MainActivity.this.getIndexInHide(app) == -1) {
+                    extra.remove(tmpItemNumInExtra);
 
-                    int tmpItemNumInRecent = getIndexInRecent(tmpActivity);
+                    int tmpItemNumInRecent = getIndexInRecent(app);
                     if (tmpItemNumInRecent != -1) {
-                        recent.Nick.remove(tmpItemNumInRecent);
-                        recent.Name.remove(tmpItemNumInRecent);
-                        recent.Activity.remove(tmpItemNumInRecent);
+                        recent.remove(tmpItemNumInRecent);
                     }
-
-                    saveExtRemLists(false);
+                    saveExtRemLists();
                     loadApps();
                     refresh();
                     dialog.dismiss();
@@ -626,7 +612,7 @@ public class MainActivity extends Activity {
 
         dialog.setNeutralButton("Uninstall", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + tmpName));
+                Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + app.getName()));
                 startActivity(intent);
                 //loadApps();
                 refresh();
@@ -635,22 +621,15 @@ public class MainActivity extends Activity {
         });
         dialog.setNegativeButton("Rename", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                int tmpItemNumInExtra = MainActivity.this.getIndexInExtra(tmpActivity);
-                //hidden.Name.add(tmpName);
-                //hidden.Nick.add(tmpNick);
-                //hidden.Activity.add(tmpActivity);
-
-                extra.Nick.remove(tmpItemNumInExtra);
-                extra.Name.remove(tmpItemNumInExtra);
-                extra.Activity.remove(tmpItemNumInExtra);
-
-                extra.Nick.add(DialogInput.getText().toString());
+                int tmpItemNumInExtra = MainActivity.this.getIndexInExtra(app);
+                extra.remove(tmpItemNumInExtra);
+                extra.Nick.add(dialogInput.getText().toString());
                 extra.Name.add(tmpName);
-                extra.Activity.add(tmpActivity);
+                extra.Activity.add(app);
 
-                int tmpItemNumInRecent = getIndexInRecent(tmpActivity);
+                int tmpItemNumInRecent = getIndexInRecent(app);
                 if (tmpItemNumInRecent != -1) {
-                    recent.Nick.set(tmpItemNumInRecent, DialogInput.getText().toString());
+                    recent.Nick.set(tmpItemNumInRecent, dialogInput.getText().toString());
                 }
 
                 saveExtRemLists(false);
@@ -662,30 +641,29 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void showHideApp(final String tmpActivity, final String tmpName, final String nick, AlertDialog.Builder dialog) {
-        DialogInput = new EditText(this);
-        DialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        DialogInput.setText(nick);
+    private void showHideApp(final App app, AlertDialog.Builder dialog) {
+        dialogInput = new EditText(this);
+        dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        dialogInput.setText(app.getNick());
 
-        dialog.setView(DialogInput);
+        dialog.setView(dialogInput);
         dialog.setMessage("Hide this application from applications list, rename application (add to Hide and Extra list with diferent names) or uninstall it?");
         dialog.setCancelable(true);
         dialog.setPositiveButton("Hide", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //int tmpItemNumInExtra=MainActivity.this.getIndexInExtra(tmpActivity);
-                if (MainActivity.this.getIndexInHide(tmpActivity) == -1) {
+                if (MainActivity.this.getIndexInHide(app) == -1) {
                     hidden.Name.add(tmpName);
                     hidden.Nick.add(nick);
-                    hidden.Activity.add(tmpActivity);
+                    hidden.Activity.add(app);
 
-                    int tmpItemNumInRecent = getIndexInRecent(tmpActivity);
+                    int tmpItemNumInRecent = getIndexInRecent(app);
                     if (tmpItemNumInRecent != -1) {
                         recent.Nick.remove(tmpItemNumInRecent);
                         recent.Name.remove(tmpItemNumInRecent);
                         recent.Activity.remove(tmpItemNumInRecent);
                     }
 
-                    saveExtRemLists(false);
+                    saveExtRemLists();
                     loadApps();
                     refresh();
                     dialog.dismiss();
@@ -695,7 +673,7 @@ public class MainActivity extends Activity {
 
         dialog.setNeutralButton("Uninstall", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + tmpName));
+                Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + app.getName()));
                 startActivity(intent);
                 //loadApps();
                 refresh();
@@ -704,21 +682,21 @@ public class MainActivity extends Activity {
         });
         dialog.setNegativeButton("Rename", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                if (MainActivity.this.getIndexInHide(tmpActivity) == -1) {
+                if (MainActivity.this.getIndexInHide(app) == -1) {
                     hidden.Name.add(tmpName);
                     hidden.Nick.add(nick);
-                    hidden.Activity.add(tmpActivity);
+                    hidden.Activity.add(app);
 
-                    extra.Nick.add(DialogInput.getText().toString());
+                    extra.Nick.add(dialogInput.getText().toString());
                     extra.Name.add(tmpName);
-                    extra.Activity.add(tmpActivity);
+                    extra.Activity.add(app);
 
-                    int tmpItemNumInRecent = getIndexInRecent(tmpActivity);
+                    int tmpItemNumInRecent = getIndexInRecent(app);
                     if (tmpItemNumInRecent != -1) {
-                        recent.Nick.set(tmpItemNumInRecent, DialogInput.getText().toString());
+                        recent.set(tmpItemNumInRecent, app);
                     }
 
-                    saveExtRemLists(false);
+                    saveExtRemLists();
                     loadApps();
                     refresh();
                     dialog.dismiss();
@@ -727,27 +705,27 @@ public class MainActivity extends Activity {
         });
     }
 
-    public int getIndexInExtra(String Activity) { // NOTE: if not found returns -1
+    public int getIndexInExtra(App app) { // NOTE: if not found returns -1
         for (int i = 0; i < extra.size(); i++) {
-            if (Activity.equals(extra.get(i))) {
+            if (app.equals(extra.get(i))) {
                 return i;
             }
         }
         return -1;
     }
 
-    public int getIndexInHide(String Activity) { // NOTE: if not found returns -1
+    public int getIndexInHide(App app) { // NOTE: if not found returns -1
         for (int i = 0; i < hidden.size(); i++) {
-            if (Activity.equals(hidden.get(i))) {
+            if (app.equals(hidden.get(i))) {
                 return i;
             }
         }
         return -1;
     }
 
-    public int getIndexInRecent(String Activity) { // NOTE: if not found returns -1
+    public int getIndexInRecent(App app) { // NOTE: if not found returns -1
         for (int i = 0; i < recent.size(); i++) {
-            if (Activity.equals(recent.get(i))) {
+            if (app.equals(recent.get(i))) {
                 return i;
             }
         }

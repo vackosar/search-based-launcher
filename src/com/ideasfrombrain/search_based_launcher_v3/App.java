@@ -41,22 +41,6 @@ public class App {
         return nick;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        App app = (App) o;
-
-        return !(activity != null ? !activity.equals(app.activity) : app.activity != null);
-
-    }
-
-    @Override
-    public int hashCode() {
-        return activity != null ? activity.hashCode() : 0;
-    }
-
     public String getJsonString(){
         try {
             return new JSONObject()
@@ -83,5 +67,26 @@ public class App {
             jsonList.add(app.getJsonString());
         }
         return jsonList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        App app = (App) o;
+
+        if (!name.equals(app.name)) return false;
+        if (!nick.equals(app.nick)) return false;
+        return activity.equals(app.activity);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + nick.hashCode();
+        result = 31 * result + activity.hashCode();
+        return result;
     }
 }
