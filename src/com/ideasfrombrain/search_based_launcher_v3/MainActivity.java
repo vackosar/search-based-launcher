@@ -50,11 +50,11 @@ public class MainActivity extends Activity {
 
     boolean newerAndroidVersion = true;
 
-    List<App> pkg = new ArrayList<App>();
-    List<App> pkgFiltered = new ArrayList<App>();
-    List<App> extra = new ArrayList<App>();
-    List<App> hidden = new ArrayList<App>();
-    List<App> recent = new ArrayList<App>();
+    List<App> pkg = new ArrayList<>();
+    List<App> pkgFiltered = new ArrayList<>();
+    List<App> extra = new ArrayList<>();
+    List<App> hidden = new ArrayList<>();
+    List<App> recent = new ArrayList<>();
 
     EditText DialogInput;
 
@@ -66,7 +66,7 @@ public class MainActivity extends Activity {
             extra.retainAll(pkg);
             hidden.retainAll(pkg);
             pkgFiltered.retainAll(pkg);
-            saveExtRemLists(false);
+            saveExtRemLists();
             loadApps();
             refresh();
         }
@@ -76,7 +76,6 @@ public class MainActivity extends Activity {
     private AutostartButton autostartButton;
     private WifiButton wifiButton;
     private BluetoothButton bluetoothButton;
-    private FlashButton flashButton;
     private CameraButton cameraButton;
     private RadioButtons radioButtons;
 
@@ -148,7 +147,7 @@ public class MainActivity extends Activity {
 
         for (ResolveInfo launchable : launchables) {
             String nick = launchable.activityInfo.name;
-            if (ItemNumInHide(nick) == -1) {
+            if (getIndexInHide(nick) == -1) {
                 String name = launchable.activityInfo.packageName;
                 String activity = launchable.activityInfo.loadLabel(pm).toString();
                 pkg.add(new App(name, nick, activity));
@@ -156,18 +155,18 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void loadExtRemLists(boolean check) {
+    public void loadExtRemLists() {
         try {
             final Context context = getApplicationContext();
             extra = loadList("extra", context);
             hidden = loadList("hidden", context);
             recent = loadList("recent", context);
         } catch (Exception e) {
-            saveExtRemLists(false);
+            saveExtRemLists();
         }
     }
 
-    public void saveExtRemLists(boolean check) {
+    public void saveExtRemLists() {
         final Context myContext = getApplicationContext();
         saveList(extra, "extra", myContext);
         saveList(hidden, "hidden", myContext);
@@ -183,7 +182,6 @@ public class MainActivity extends Activity {
     }
 
     public List<App> loadList(String listName, Context mContext) throws JSONException {
-        List<App> list = new ArrayList<>();
         SharedPreferences prefs = mContext.getSharedPreferences(listName, 0);
         final Set<String> jsonSet = prefs.getStringSet(listName, null);
         return App.getAppList(new ArrayList<>(jsonSet));
@@ -215,7 +213,6 @@ public class MainActivity extends Activity {
         autostartButton = new AutostartButton(this);
         wifiButton = new WifiButton(this);
         bluetoothButton = new BluetoothButton(this);
-        flashButton = new FlashButton(this);
         cameraButton = new CameraButton(this);
         createMenuDonateButton();
         radioButtons = new RadioButtons(this);
@@ -236,7 +233,7 @@ public class MainActivity extends Activity {
 
     private void setAppLists(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            loadExtRemLists(false);
+            loadExtRemLists();
             loadApps();
         } else {
             pkg = App.getAppList(savedInstanceState.getStringArrayList("pkg"));
@@ -324,11 +321,9 @@ public class MainActivity extends Activity {
     public void runApp(int index) {
         searchText.setActivatedColor();
 
-        int tmpint = ItemNumInRecent(pkgFiltered.Activity.get(index));
-        if ((recent.Nick.size() >= 10) && (tmpint == -1)) {
-            recent.Name.remove(0);
-            recent.Nick.remove(0);
-            recent.Activity.remove(0);
+        int tmpint = getIndexInRecent(pkgFiltered.get(index));
+        if ((recent.size() >= 10) && (tmpint == -1)) {
+            recent.remove(0);
         } else if (tmpint != -1) {
             recent.Name.remove(tmpint);
             recent.Nick.remove(tmpint);
@@ -407,7 +402,7 @@ public class MainActivity extends Activity {
 
         for (int i = 0; i < pkg.Name.size(); i++) {
 
-            if ((pkg.Nick.get(i).toLowerCase().matches(FilterText)) && (ItemNumInRecent(pkg.Activity.get(i)) == -1)) {
+            if ((pkg.Nick.get(i).toLowerCase().matches(FilterText)) && (getIndexInRecent(pkg.Activity.get(i)) == -1)) {
                 pkgFiltered.Name.add(pkg.Name.get(i));
                 pkgFiltered.Activity.add(pkg.Activity.get(i));
                 pkgFiltered.Nick.add(pkg.Nick.get(i));
@@ -473,7 +468,7 @@ public class MainActivity extends Activity {
         dialog.setCancelable(true);
         dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                int tmpItemNumInHide = MainActivity.this.ItemNumInHide(tmpActivity);
+                int tmpItemNumInHide = MainActivity.this.getIndexInHide(tmpActivity);
                 if (tmpItemNumInHide != -1) {
                     hidden.Activity.remove(tmpItemNumInHide);
                     hidden.Name.remove(tmpItemNumInHide);
@@ -502,13 +497,13 @@ public class MainActivity extends Activity {
         dialog.setCancelable(true);
         dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                int tmpItemNumInExtra = MainActivity.this.ItemNumInExtra(tmpActivity);
+                int tmpItemNumInExtra = MainActivity.this.getIndexInExtra(tmpActivity);
                 if (tmpItemNumInExtra != -1) {
                     extra.Activity.remove(tmpItemNumInExtra);
                     extra.Name.remove(tmpItemNumInExtra);
                     extra.Nick.remove(tmpItemNumInExtra);
 
-                    int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
+                    int tmpItemNumInRecent = getIndexInRecent(tmpActivity);
                     if (tmpItemNumInRecent != -1) {
                         recent.Nick.remove(tmpItemNumInRecent);
                         recent.Name.remove(tmpItemNumInRecent);
@@ -556,11 +551,11 @@ public class MainActivity extends Activity {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(nick);
 
-        int tmpItemNumInExtra = MainActivity.this.ItemNumInExtra(tmpActivity);
+        int tmpItemNumInExtra = MainActivity.this.getIndexInExtra(tmpActivity);
 
-        if ((tmpItemNumInExtra == -1) && (MainActivity.this.ItemNumInHide(tmpActivity) == -1)) {
+        if ((tmpItemNumInExtra == -1) && (MainActivity.this.getIndexInHide(tmpActivity) == -1)) {
             showHideApp(tmpActivity, tmpName, nick, dialog);
-        } else if ((tmpItemNumInExtra != -1) && (MainActivity.this.ItemNumInHide(tmpActivity) != -1)) {
+        } else if ((tmpItemNumInExtra != -1) && (MainActivity.this.getIndexInHide(tmpActivity) != -1)) {
             showRenamedApp(tmpActivity, tmpName, nick, dialog);
         } else if (tmpItemNumInExtra != -1) {
             showExtraAddedApp(tmpActivity, dialog);
@@ -574,12 +569,12 @@ public class MainActivity extends Activity {
         dialog.setCancelable(true);
         dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                int tmpItemNumInExtra = MainActivity.this.ItemNumInExtra(tmpActivity);
+                int tmpItemNumInExtra = MainActivity.this.getIndexInExtra(tmpActivity);
                 extra.Activity.remove(tmpItemNumInExtra);
                 extra.Name.remove(tmpItemNumInExtra);
                 extra.Nick.remove(tmpItemNumInExtra);
 
-                int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
+                int tmpItemNumInRecent = getIndexInRecent(tmpActivity);
                 if (tmpItemNumInRecent != -1) {
                     recent.Nick.remove(tmpItemNumInRecent);
                     recent.Name.remove(tmpItemNumInRecent);
@@ -605,8 +600,8 @@ public class MainActivity extends Activity {
         dialog.setCancelable(true);
         dialog.setPositiveButton("Hide", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                int tmpItemNumInExtra = MainActivity.this.ItemNumInExtra(tmpActivity);
-                if (MainActivity.this.ItemNumInHide(tmpActivity) == -1) {
+                int tmpItemNumInExtra = MainActivity.this.getIndexInExtra(tmpActivity);
+                if (MainActivity.this.getIndexInHide(tmpActivity) == -1) {
                     //hidden.Name.add(tmpName);
                     //hidden.Nick.add(tmpNick);
                     //hidden.Activity.add(tmpActivity);
@@ -614,7 +609,7 @@ public class MainActivity extends Activity {
                     extra.Name.remove(tmpItemNumInExtra);
                     extra.Activity.remove(tmpItemNumInExtra);
 
-                    int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
+                    int tmpItemNumInRecent = getIndexInRecent(tmpActivity);
                     if (tmpItemNumInRecent != -1) {
                         recent.Nick.remove(tmpItemNumInRecent);
                         recent.Name.remove(tmpItemNumInRecent);
@@ -640,7 +635,7 @@ public class MainActivity extends Activity {
         });
         dialog.setNegativeButton("Rename", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                int tmpItemNumInExtra = MainActivity.this.ItemNumInExtra(tmpActivity);
+                int tmpItemNumInExtra = MainActivity.this.getIndexInExtra(tmpActivity);
                 //hidden.Name.add(tmpName);
                 //hidden.Nick.add(tmpNick);
                 //hidden.Activity.add(tmpActivity);
@@ -653,7 +648,7 @@ public class MainActivity extends Activity {
                 extra.Name.add(tmpName);
                 extra.Activity.add(tmpActivity);
 
-                int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
+                int tmpItemNumInRecent = getIndexInRecent(tmpActivity);
                 if (tmpItemNumInRecent != -1) {
                     recent.Nick.set(tmpItemNumInRecent, DialogInput.getText().toString());
                 }
@@ -677,13 +672,13 @@ public class MainActivity extends Activity {
         dialog.setCancelable(true);
         dialog.setPositiveButton("Hide", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                //int tmpItemNumInExtra=MainActivity.this.ItemNumInExtra(tmpActivity);
-                if (MainActivity.this.ItemNumInHide(tmpActivity) == -1) {
+                //int tmpItemNumInExtra=MainActivity.this.getIndexInExtra(tmpActivity);
+                if (MainActivity.this.getIndexInHide(tmpActivity) == -1) {
                     hidden.Name.add(tmpName);
                     hidden.Nick.add(nick);
                     hidden.Activity.add(tmpActivity);
 
-                    int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
+                    int tmpItemNumInRecent = getIndexInRecent(tmpActivity);
                     if (tmpItemNumInRecent != -1) {
                         recent.Nick.remove(tmpItemNumInRecent);
                         recent.Name.remove(tmpItemNumInRecent);
@@ -709,7 +704,7 @@ public class MainActivity extends Activity {
         });
         dialog.setNegativeButton("Rename", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                if (MainActivity.this.ItemNumInHide(tmpActivity) == -1) {
+                if (MainActivity.this.getIndexInHide(tmpActivity) == -1) {
                     hidden.Name.add(tmpName);
                     hidden.Nick.add(nick);
                     hidden.Activity.add(tmpActivity);
@@ -718,7 +713,7 @@ public class MainActivity extends Activity {
                     extra.Name.add(tmpName);
                     extra.Activity.add(tmpActivity);
 
-                    int tmpItemNumInRecent = ItemNumInRecent(tmpActivity);
+                    int tmpItemNumInRecent = getIndexInRecent(tmpActivity);
                     if (tmpItemNumInRecent != -1) {
                         recent.Nick.set(tmpItemNumInRecent, DialogInput.getText().toString());
                     }
@@ -732,27 +727,27 @@ public class MainActivity extends Activity {
         });
     }
 
-    public int ItemNumInExtra(String Activity) { // NOTE: if not found returns -1
-        for (int i = 0; i < extra.Activity.size(); i++) {
-            if (Activity.equals(extra.Activity.get(i))) {
+    public int getIndexInExtra(String Activity) { // NOTE: if not found returns -1
+        for (int i = 0; i < extra.size(); i++) {
+            if (Activity.equals(extra.get(i))) {
                 return i;
             }
         }
         return -1;
     }
 
-    public int ItemNumInHide(String Activity) { // NOTE: if not found returns -1
-        for (int i = 0; i < hidden.Activity.size(); i++) {
-            if (Activity.equals(hidden.Activity.get(i))) {
+    public int getIndexInHide(String Activity) { // NOTE: if not found returns -1
+        for (int i = 0; i < hidden.size(); i++) {
+            if (Activity.equals(hidden.get(i))) {
                 return i;
             }
         }
         return -1;
     }
 
-    public int ItemNumInRecent(String Activity) { // NOTE: if not found returns -1
-        for (int i = 0; i < recent.Activity.size(); i++) {
-            if (Activity.equals(recent.Activity.get(i))) {
+    public int getIndexInRecent(String Activity) { // NOTE: if not found returns -1
+        for (int i = 0; i < recent.size(); i++) {
+            if (Activity.equals(recent.get(i))) {
                 return i;
             }
         }
