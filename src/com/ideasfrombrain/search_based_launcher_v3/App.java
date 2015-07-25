@@ -8,7 +8,7 @@ import java.util.List;
 
 public class App {
     final String name;
-    final String nick;
+    String nick;
     final String activity;
 
     public App(String name, String nick, String activity) {
@@ -39,6 +39,10 @@ public class App {
 
     public String getNick() {
         return nick;
+    }
+
+    public void setNick(String nick) {
+        this.nick = nick;
     }
 
     public String getJsonString(){
@@ -76,17 +80,12 @@ public class App {
 
         App app = (App) o;
 
-        if (!name.equals(app.name)) return false;
-        if (!nick.equals(app.nick)) return false;
         return activity.equals(app.activity);
 
     }
 
     @Override
     public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + nick.hashCode();
-        result = 31 * result + activity.hashCode();
-        return result;
+        return activity.hashCode();
     }
 }
