@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@SuppressWarnings("Convert2Lambda")
 public class AppsManager {
     final MainActivity mainActivity;
     private final AppListView appListView;
@@ -32,7 +33,7 @@ public class AppsManager {
         this.mainActivity = mainActivity;
         preferencesAdapter = new PreferencesAdapter(mainActivity);
         appListView = new AppListView(mainActivity);
-        setAppLists(savedInstanceState);
+        loadFromSavedState(savedInstanceState);
     }
 
     public void reload() {
@@ -77,10 +78,10 @@ public class AppsManager {
 
         switch (mainActivity.getRadioButtons().getCheckedRadioButton()) {
             case 0:
-                loadNormal(main, pm);
+                loadApplicationActivities(main, pm);
                 break;
             case 1:
-                loadAll(main, pm);
+                loadAllActivities(main, pm);
                 break;
             case 2:
                 pkg.addAll(extra);
@@ -93,7 +94,7 @@ public class AppsManager {
         generateFiltered();
     }
 
-    private void loadAll(Intent main, PackageManager pm) {
+    private void loadAllActivities(Intent main, PackageManager pm) {
         final List<ResolveInfo> launchables = pm.queryIntentActivities(main, 0);
         for (ResolveInfo launchable : launchables) {
             App app = new App(launchable.activityInfo.packageName, deriveNick(launchable), launchable.activityInfo.name);
@@ -110,7 +111,7 @@ public class AppsManager {
         return nick;
     }
 
-    private void loadNormal(Intent main, PackageManager pm) {
+    private void loadApplicationActivities(Intent main, PackageManager pm) {
         pkg.addAll(extra);
 
         main.addCategory(Intent.CATEGORY_LAUNCHER); // will show only Regular AppsManager
@@ -141,7 +142,7 @@ public class AppsManager {
         preferencesAdapter.saveSet(hidden, "hidden");
     }
 
-    private void setAppLists(Bundle savedInstanceState) {
+    private void loadFromSavedState(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             loadExtRemLists();
             refreshView();
@@ -180,7 +181,7 @@ public class AppsManager {
 
     public boolean showOptionsForApp(final int appIndex) {
         final App app = filtered.get(appIndex);
-        if (app.equals(MENU_APP.getActivity())) {
+        if (app.equals(MENU_APP)) {
             return false;
         }
 

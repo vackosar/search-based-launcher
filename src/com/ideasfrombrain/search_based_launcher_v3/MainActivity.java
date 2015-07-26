@@ -10,17 +10,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.RadioGroup;
 import android.widget.ViewAnimator;
 
 
 @SuppressWarnings("Convert2Lambda")
 public class MainActivity extends Activity {
-
-
-    public static final int FIRST_INDEX = 0;
-    static String APP_PACKAGE_NAME = "com.ideasfrombrain.search_based_launcher_v3";
+    public static String APP_PACKAGE_NAME = "com.ideasfrombrain.search_based_launcher_v3";
 
     boolean newerAndroidVersion = true;
 
@@ -31,7 +27,6 @@ public class MainActivity extends Activity {
         }
     };
     private SearchText searchText;
-    private AppListView appListView;
     private AutostartButton autostartButton;
     private WifiButton wifiButton;
     private BluetoothButton bluetoothButton;
@@ -153,23 +148,12 @@ public class MainActivity extends Activity {
         if ((radioButtons.getCheckedRadioButton() == 0) && autostartButton.isOn()) {
             searchText.clearText();
         }
-        toggleKeyboard();
     }
-
 
     @Override
     public void onDestroy() {
         wifiButton.unregisterReceiver();
         unregisterReceiver(mPkgApplicationsReceiver);
         super.onDestroy();
-    }
-
-    private void toggleKeyboard() {
-        if (!newerAndroidVersion) {
-            final InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-            }
-        }
     }
 }
