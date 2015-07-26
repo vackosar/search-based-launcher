@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
         findViewById(R.id.donateButton).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PACKAGE_NAME));
-                marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(marketIntent);
             }
         });
