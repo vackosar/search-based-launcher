@@ -163,13 +163,13 @@ public class MainActivity extends Activity {
     @Override
     public boolean onKeyUp(int keycode, KeyEvent event) {
         if (keycode == KeyEvent.KEYCODE_MENU) {
-            myShowNext(false);
+            showNext(false);
         } else if (keycode == KeyEvent.KEYCODE_SEARCH) {
             startSearch("", false, null, true);
         } else if (keycode == KeyEvent.KEYCODE_BACK) {
             ViewAnimator mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
             if (mViewAnimator.getDisplayedChild() == 1) {
-                myShowNext(false);
+                showNext(false);
             }
         } else {
             return super.onKeyUp(keycode, event);
@@ -224,7 +224,7 @@ public class MainActivity extends Activity {
     }
 
 
-    public void myShowNext(Boolean DoLoadApps) {
+    public void showNext(Boolean DoLoadApps) {
         searchText.setNormalColor();
         ViewAnimator mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
         mViewAnimator.showNext();
@@ -283,7 +283,7 @@ public class MainActivity extends Activity {
         recent.remove(app);
         toggleKeyboard();
         if (app.isMenu()) {
-            myShowNext(false);
+            showNext(false);
         } else {
             try {
                 final Intent intent = new Intent(Intent.ACTION_MAIN, null);

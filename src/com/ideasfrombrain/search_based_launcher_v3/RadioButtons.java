@@ -43,7 +43,7 @@ public class RadioButtons implements RadioGroup.OnCheckedChangeListener {
                 checkedRadioButton = 3;
                 break;
         }
-        mainActivity.myShowNext(true);
+        mainActivity.showNext(true);
     }
 
     public void setInvisible() {
