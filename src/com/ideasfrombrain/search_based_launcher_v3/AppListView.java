@@ -21,12 +21,12 @@ public class AppListView implements AdapterView.OnItemClickListener, AdapterView
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        mainActivity.getAppsManager().runApp(position);
+        mainActivity.getAppListManager().runApp(position);
     }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        return mainActivity.getAppsManager().showOptionsForApp(position);
+        return mainActivity.getAppListManager().showOptionsForApp(position);
     }
 
     public void viewAppList(List<App> appList) {

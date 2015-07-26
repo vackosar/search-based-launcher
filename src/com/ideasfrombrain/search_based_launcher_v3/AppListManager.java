@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("Convert2Lambda")
-public class AppsManager {
+public class AppListManager {
     final MainActivity mainActivity;
     private final AppListView appListView;
     List<App> pkg = new ArrayList<>();
@@ -29,7 +29,7 @@ public class AppsManager {
     final private PreferencesAdapter preferencesAdapter;
     public static final App MENU_APP = new App(MainActivity.APP_PACKAGE_NAME + ".Menu", " Menu-Launcher", MainActivity.APP_PACKAGE_NAME + ".Menu");
 
-    public AppsManager(MainActivity mainActivity, Bundle savedInstanceState) {
+    public AppListManager(MainActivity mainActivity, Bundle savedInstanceState) {
         this.mainActivity = mainActivity;
         preferencesAdapter = new PreferencesAdapter(mainActivity);
         appListView = new AppListView(mainActivity);
@@ -42,7 +42,7 @@ public class AppsManager {
         extra.retainAll(pkg);
         hidden.retainAll(pkg);
         filtered.retainAll(pkg);
-        saveExtRemLists();
+        save();
         refreshView();
         generateFiltered();
     }
@@ -114,7 +114,7 @@ public class AppsManager {
     private void loadApplicationActivities(Intent main, PackageManager pm) {
         pkg.addAll(extra);
 
-        main.addCategory(Intent.CATEGORY_LAUNCHER); // will show only Regular AppsManager
+        main.addCategory(Intent.CATEGORY_LAUNCHER); // will show only Regular AppListManager
         final List<ResolveInfo> launchables = pm.queryIntentActivities(main, 0);
 
         for (ResolveInfo launchable : launchables) {
@@ -128,23 +128,23 @@ public class AppsManager {
         }
     }
 
-    public void loadExtRemLists() {
+    public void load() {
         try {
             extra = preferencesAdapter.loadSet("extra");
             hidden = preferencesAdapter.loadSet("hidden");
         } catch (Exception e) {
-            saveExtRemLists();
+            save();
         }
     }
 
-    public void saveExtRemLists() {
+    public void save() {
         preferencesAdapter.saveSet(extra, "extra");
         preferencesAdapter.saveSet(hidden, "hidden");
     }
 
     private void loadFromSavedState(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            loadExtRemLists();
+            load();
             refreshView();
         } else {
             pkg = new ArrayList<>(App.getApps(new HashSet<>(savedInstanceState.getStringArrayList("pkg"))));
@@ -216,7 +216,7 @@ public class AppsManager {
         dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 if (hidden.remove(app)) {
-                    saveExtRemLists();
+                    save();
                     refreshView();
                     dialog.dismiss();
                 }
@@ -240,7 +240,7 @@ public class AppsManager {
         dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 if (extra.remove(app) | recent.remove(app)) {
-                    saveExtRemLists();
+                    save();
                     refreshView();
                     dialog.dismiss();
                 }
@@ -265,7 +265,7 @@ public class AppsManager {
             public void onClick(DialogInterface dialog, int id) {
                 extra.add(app);
                 app.setNick(dialogInput.getText().toString());
-                saveExtRemLists();
+                save();
                 refreshView();
                 dialog.dismiss();
             }
@@ -295,7 +295,7 @@ public class AppsManager {
         dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 extra.remove(app);
-                saveExtRemLists();
+                save();
                 refreshView();
                 dialog.dismiss();
             }
@@ -314,7 +314,7 @@ public class AppsManager {
             public void onClick(DialogInterface dialog, int id) {
                 if (hidden.contains(app)) {
                     extra.remove(app);
-                    saveExtRemLists();
+                    save();
                     refreshView();
                     dialog.dismiss();
                 }
@@ -332,7 +332,7 @@ public class AppsManager {
         dialog.setNegativeButton("Rename", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 app.setNick(dialogInput.getText().toString());
-                saveExtRemLists();
+                save();
                 refreshView();
                 dialog.dismiss();
             }
@@ -350,7 +350,7 @@ public class AppsManager {
         dialog.setPositiveButton("Hide", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 if (hidden.remove(app)) {
-                    saveExtRemLists();
+                    save();
                     refreshView();
                     dialog.dismiss();
                 }
@@ -374,7 +374,7 @@ public class AppsManager {
                 extra.add(app);
                 recent.remove(app);
                 recent.add(app);
-                saveExtRemLists();
+                save();
                 refreshView();
                 dialog.dismiss();
             }

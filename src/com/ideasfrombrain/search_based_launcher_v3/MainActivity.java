@@ -20,12 +20,12 @@ public class MainActivity extends Activity {
     private final BroadcastReceiver mPkgApplicationsReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            appsManager.reload();
+            appListManager.reload();
         }
     };
     private SearchText searchText;
     private AutostartButton autostartButton;
-    private AppsManager appsManager;
+    private AppListManager appListManager;
     private Menu menu;
 
     private void registerIntentReceivers() {
@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        appsManager = new AppsManager(this, savedInstanceState);
+        appListManager = new AppListManager(this, savedInstanceState);
         setContentView(R.layout.activity_main);
         searchText = new SearchText(this);
         autostartButton = new AutostartButton(this);
@@ -76,8 +76,8 @@ public class MainActivity extends Activity {
         return searchText;
     }
 
-    public AppsManager getAppsManager() {
-        return appsManager;
+    public AppListManager getAppListManager() {
+        return appListManager;
     }
 
     public AutostartButton getAutostartButton() {
@@ -91,7 +91,7 @@ public class MainActivity extends Activity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         menu.getAppListSelector().save();
-        appsManager.saveState(savedInstanceState);
+        appListManager.saveState(savedInstanceState);
         super.onSaveInstanceState(savedInstanceState);
     }
 

@@ -29,7 +29,7 @@ public class Menu {
 
         if (mViewAnimator.getDisplayedChild() == 0) {
             if (doLoadApps) {
-                mainActivity.getAppsManager().reload();
+                mainActivity.getAppListManager().reload();
             }
 
             if (appListSelector.getSelected() > 0) {
