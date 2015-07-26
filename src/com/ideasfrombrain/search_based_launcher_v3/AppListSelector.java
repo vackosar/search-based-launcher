@@ -4,9 +4,9 @@ import android.content.SharedPreferences;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-public class RadioButtons implements RadioGroup.OnCheckedChangeListener {
+public class AppListSelector implements RadioGroup.OnCheckedChangeListener {
     final private MainActivity mainActivity;
-    private int checkedRadioButton;
+    private int selected;
     private final RadioGroup radioGroup;
     private final SharedPreferences sharedPreferences;
     private final ColorService colorService = new ColorService();
@@ -15,12 +15,12 @@ public class RadioButtons implements RadioGroup.OnCheckedChangeListener {
     private final TextView button3;
     private final TextView button4;
 
-    public RadioButtons(MainActivity mainActivity) {
+    public AppListSelector(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         radioGroup = (RadioGroup) mainActivity.findViewById(R.id.radioGroup1);
         radioGroup.setOnCheckedChangeListener(this);
         sharedPreferences = mainActivity.getApplicationContext().getSharedPreferences("preferencename", 0);
-        checkedRadioButton = sharedPreferences.getInt("checkedRadioButton", 0);
+        selected = sharedPreferences.getInt("selected", 0);
         button1 = (TextView) mainActivity.findViewById(R.id.button1);
         button2 = (TextView) mainActivity.findViewById(R.id.button2);
         button3 = (TextView) mainActivity.findViewById(R.id.button4);
@@ -31,19 +31,19 @@ public class RadioButtons implements RadioGroup.OnCheckedChangeListener {
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
             case R.id.radio0:
-                checkedRadioButton = 0;
+                selected = 0;
                 break;
             case R.id.radio1:
-                checkedRadioButton = 1;
+                selected = 1;
                 break;
             case R.id.radio2:
-                checkedRadioButton = 2;
+                selected = 2;
                 break;
             case R.id.radio3:
-                checkedRadioButton = 3;
+                selected = 3;
                 break;
         }
-        mainActivity.toggleMenu(true);
+        mainActivity.getMenu().toggle(true);
     }
 
     public void setInvisible() {
@@ -53,13 +53,13 @@ public class RadioButtons implements RadioGroup.OnCheckedChangeListener {
         colorService.setInvisible(button4);
     }
 
-    public int getCheckedRadioButton() {
-        return checkedRadioButton;
+    public int getSelected() {
+        return selected;
     }
 
     public void save() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("checkedRadioButton", checkedRadioButton);
+        editor.putInt("selected", selected);
         editor.commit();
     }
 }

@@ -76,7 +76,7 @@ public class AppsManager {
 
         pkg.clear();
 
-        switch (mainActivity.getRadioButtons().getCheckedRadioButton()) {
+        switch (mainActivity.getMenu().getAppListSelector().getSelected()) {
             case 0:
                 loadApplicationActivities(main, pm);
                 break;
@@ -158,7 +158,7 @@ public class AppsManager {
         mainActivity.getSearchText().setActivatedColor();
         recent.remove(app);
         if (app.isMenu()) {
-            mainActivity.toggleMenu(false);
+            mainActivity.getMenu().toggle(false);
         } else {
             try {
                 final Intent intent = new Intent(Intent.ACTION_MAIN, null);
@@ -185,7 +185,7 @@ public class AppsManager {
             return false;
         }
 
-        switch (mainActivity.getRadioButtons().getCheckedRadioButton()) {
+        switch (mainActivity.getMenu().getAppListSelector().getSelected()) {
             case 0:
                 showNormalOptions(app);
                 break;
