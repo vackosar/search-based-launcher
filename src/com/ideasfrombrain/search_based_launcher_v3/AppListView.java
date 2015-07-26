@@ -5,6 +5,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AppListView implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
@@ -28,7 +29,11 @@ public class AppListView implements AdapterView.OnItemClickListener, AdapterView
         return mainActivity.showOptionsForApp(position);
     }
 
-    public void setAppList(List<String> list) {
+    public void setAppList(List<App> appList) {
+        final List<String> list = new ArrayList<String>();
+        for (App app: appList) {
+            list.add(app.getNick());
+        }
         listView.setAdapter(new ArrayAdapter<String>(mainActivity, android.R.layout.simple_list_item_1, android.R.id.text1, list));
     }
 }

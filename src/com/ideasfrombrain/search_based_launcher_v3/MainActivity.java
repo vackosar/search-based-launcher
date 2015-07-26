@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
     boolean newerAndroidVersion = true;
 
     List<App> pkg = new ArrayList<>();
-    Set<App> pkgFiltered = new HashSet<>();
+    List<App> filtered = new ArrayList<>();
     Set<App> extra = new HashSet<>();
     Set<App> hidden = new HashSet<>();
     List<App> recent = new ArrayList<>();
@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
             recent.retainAll(pkg);
             extra.retainAll(pkg);
             hidden.retainAll(pkg);
-            pkgFiltered.retainAll(pkg);
+            filtered.retainAll(pkg);
             saveExtRemLists();
             loadApps();
             refresh();
@@ -292,7 +292,7 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         searchText.setNormalColor();
-        if ((radioButtons.getCheckedRadioButton() == 0) && autostartButton.isAutostart()) {
+        if ((radioButtons.getCheckedRadioButton() == 0) && autostartButton.isOn()) {
             searchText.clearText();
         }
         toggleKeyboard();
@@ -306,7 +306,8 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
-    public void runApp(App app) {
+    public void runApp(int appIndex) {
+        final App app = filtered.get(appIndex);
         searchText.setActivatedColor();
         recent.remove(app);
         toggleKeyboard();
@@ -337,36 +338,28 @@ public class MainActivity extends Activity {
         }
     }
 
-
     public void refresh() {
-        pkgFiltered.clear();
+        filtered.clear();
         String filterText = searchText.getFilterText();
-        for (int i = 0; i < tmpsize; i++) {
-            if (recent.get(tmpsize - 1 - i).toLowerCase().matches(filterText)) {
-                pkgFiltered.Name.add(recent.Name.get(tmpsize - 1 - i));
-                pkgFiltered.Activity.add(recent.Activity.get(tmpsize - 1 - i));
-                pkgFiltered.Nick.add("R:" + recent.Nick.get(tmpsize - 1 - i));
+        for (App app: recent) {
+            if (app.getNick().toLowerCase().matches(filterText)) {
+                filtered.add(app.getAsRecent());
             }
         }
-
-        for (int i = 0; i < pkg.Name.size(); i++) {
-
-            if ((pkg.Nick.get(i).toLowerCase().matches(filterText)) && (getIndexInRecent(pkg.Activity.get(i)) == -1)) {
-                pkgFiltered.Name.add(pkg.Name.get(i));
-                pkgFiltered.Activity.add(pkg.Activity.get(i));
-                pkgFiltered.Nick.add(pkg.Nick.get(i));
-                //Log.d("DEBUG", pkg.Nick[i]);
+        for (App app: pkg) {
+            if (app.getNick().toLowerCase().matches(filterText) && (recent.contains(app))) {
+                filtered.add(app);
             }
-
         }
-        if (((pkgFiltered.Name.size()) == 1) && autostartButton.isAutostart()) {
+        if (filtered.size() == 1 && autostartButton.isOn()) {
             runApp(FIRST_INDEX);
         } else {
-            appListView.setAppList(pkgFiltered.Nick);
+            appListView.setAppList(filtered);
         }
     }
 
-    public boolean showOptionsForApp(final App app) {
+    public boolean showOptionsForApp(final int appIndex) {
+        final App app = filtered.get(appIndex);
         if ((app.getActivity().equals(APP_PACKAGE_NAME + ".Menu"))) {
             return false;
         }

@@ -24,7 +24,7 @@ public class AutostartButton implements View.OnClickListener {
         colorService.setActive(autostart, textView);
     }
 
-    public boolean isAutostart() {
+    public boolean isOn() {
         return autostart;
     }
 }

@@ -12,7 +12,6 @@ public class App {
     private final String name;
     private String nick;
     private final String activity;
-    private boolean recent = false;
 
     public App(String name, String nick, String activity) {
         this.name = name;
@@ -45,29 +44,26 @@ public class App {
         return activity;
     }
 
-
     public String getNick() {
-        if (recent) {
-            return "R: " + nick;
-        } else {
-            return nick;
-        }
+        return nick;
     }
 
     public void setNick(String nick) {
         this.nick = nick;
     }
 
-    public boolean isRecent() {
-        return recent;
-    }
-
-    public void setRecent(boolean recent) {
-        this.recent = recent;
+    private String getRecentNick() {
+        return "R: " + nick;
     }
 
     public boolean isMenu() {
         return (MainActivity.APP_PACKAGE_NAME + ".Menu").equals(getActivity());
+    }
+
+    public App getAsRecent() {
+        final App recent = new App(this);
+        recent.setNick(getRecentNick());
+        return recent;
     }
 
     public String getJsonString(){
