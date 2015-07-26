@@ -29,7 +29,7 @@ public class AppListView implements AdapterView.OnItemClickListener, AdapterView
         return mainActivity.showOptionsForApp(position);
     }
 
-    public void setAppList(List<App> appList) {
+    public void viewAppList(List<App> appList) {
         final List<String> list = new ArrayList<String>();
         for (App app: appList) {
             list.add(app.getNick());

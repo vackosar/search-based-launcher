@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -86,7 +87,7 @@ public class App {
         return set;
     }
 
-    public static Set<String> getJsonSet(Set<App> set) {
+    public static Collection<String> getJson(Collection<App> set) {
         final Set<String> jsonSet = new HashSet<>();
         for (App app: set) {
             jsonSet.add(app.getJsonString());

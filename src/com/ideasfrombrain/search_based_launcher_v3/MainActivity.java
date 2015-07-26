@@ -19,7 +19,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -36,8 +35,6 @@ import android.widget.ViewAnimator;
 
 import android.widget.EditText;
 import android.widget.RadioGroup;
-
-import org.json.JSONException;
 
 
 @SuppressWarnings("Convert2Lambda")
@@ -78,6 +75,7 @@ public class MainActivity extends Activity {
     private BluetoothButton bluetoothButton;
     private CameraButton cameraButton;
     private RadioButtons radioButtons;
+    private PreferencesAdapter preferencesAdapter;
 
     private void registerIntentReceivers() {
         IntentFilter pkgFilter = new IntentFilter();
@@ -104,22 +102,14 @@ public class MainActivity extends Activity {
                 loadAll(main, pm);
                 break;
             case 2:
-                loadExtra();
+                pkg.addAll(extra);
                 break;
             case 3:
-                loadHidden();
+                pkg.addAll(hidden);
                 break;
         }
         pkg.add(MENU_APP);
 
-    }
-
-    private void loadHidden() {
-        pkg.addAll(hidden);
-    }
-
-    private void loadExtra() {
-        pkg.addAll(extra);
     }
 
     private void loadAll(Intent main, PackageManager pm) {
@@ -158,31 +148,16 @@ public class MainActivity extends Activity {
 
     public void loadExtRemLists() {
         try {
-            final Context context = getApplicationContext();
-            extra = loadList("extra", context);
-            hidden = loadList("hidden", context);
+            extra = preferencesAdapter.loadSet("extra");
+            hidden = preferencesAdapter.loadSet("hidden");
         } catch (Exception e) {
             saveExtRemLists();
         }
     }
 
     public void saveExtRemLists() {
-        final Context myContext = getApplicationContext();
-        saveList(extra, "extra", myContext);
-        saveList(hidden, "hidden", myContext);
-    }
-
-    public boolean saveList(Set<App> set, String listName, Context mContext) {
-        SharedPreferences prefs = mContext.getSharedPreferences(listName, 0);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putStringSet(listName, App.getJsonSet(set));
-        return editor.commit();
-    }
-
-    public Set<App> loadList(String listName, Context mContext) throws JSONException {
-        SharedPreferences prefs = mContext.getSharedPreferences(listName, 0);
-        final Set<String> jsonSet = prefs.getStringSet(listName, null);
-        return App.getApps(jsonSet);
+        preferencesAdapter.saveSet(extra, "extra");
+        preferencesAdapter.saveSet(hidden, "hidden");
     }
 
     @Override
@@ -206,6 +181,7 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        preferencesAdapter = new PreferencesAdapter(this);
         appListView = new AppListView(this);
         searchText = new SearchText(this);
         autostartButton = new AutostartButton(this);
@@ -277,9 +253,9 @@ public class MainActivity extends Activity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         radioButtons.save();
-        savedInstanceState.putStringArrayList("pkg", new ArrayList<>(App.getJsonSet(new HashSet<>(pkg))));
-        savedInstanceState.putStringArrayList("extra", new ArrayList<>(App.getJsonSet(extra)));
-        savedInstanceState.putStringArrayList("hidden", new ArrayList<>(App.getJsonSet(hidden)));
+        savedInstanceState.putStringArrayList("pkg", new ArrayList<>(App.getJson(new HashSet<>(pkg))));
+        savedInstanceState.putStringArrayList("extra", new ArrayList<>(App.getJson(extra)));
+        savedInstanceState.putStringArrayList("hidden", new ArrayList<>(App.getJson(hidden)));
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -349,7 +325,7 @@ public class MainActivity extends Activity {
         if (filtered.size() == 1 && autostartButton.isOn()) {
             runApp(FIRST_INDEX);
         } else {
-            appListView.setAppList(filtered);
+            appListView.viewAppList(filtered);
         }
     }
 
