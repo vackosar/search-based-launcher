@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.text.InputType;
 import android.widget.EditText;
 
+@SuppressWarnings("Convert2Lambda")
 public class DialogFactory {
     private final MainActivity mainActivity;
     private final AppListManager appListManager;
