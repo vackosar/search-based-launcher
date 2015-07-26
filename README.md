@@ -18,3 +18,4 @@ https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=vackosar%40gmail%2
 Note:
 
 This repository was moved from my previous github account ideasfrombrain.
+Code quality is not very good as it was my first Java project. I am putting in some refactoring effort on separate branch.
