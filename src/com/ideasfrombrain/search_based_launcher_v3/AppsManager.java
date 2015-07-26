@@ -158,7 +158,7 @@ public class AppsManager {
         mainActivity.getSearchText().setActivatedColor();
         recent.remove(app);
         if (app.isMenu()) {
-            mainActivity.showNext(false);
+            mainActivity.toggleMenu(false);
         } else {
             try {
                 final Intent intent = new Intent(Intent.ACTION_MAIN, null);

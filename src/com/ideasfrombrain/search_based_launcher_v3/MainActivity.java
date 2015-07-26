@@ -45,13 +45,13 @@ public class MainActivity extends Activity {
     @Override
     public boolean onKeyUp(int keycode, KeyEvent event) {
         if (keycode == KeyEvent.KEYCODE_MENU) {
-            showNext(false);
+            toggleMenu(false);
         } else if (keycode == KeyEvent.KEYCODE_SEARCH) {
             startSearch("", false, null, true);
         } else if (keycode == KeyEvent.KEYCODE_BACK) {
             ViewAnimator mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
             if (mViewAnimator.getDisplayedChild() == 1) {
-                showNext(false);
+                toggleMenu(false);
             }
         } else {
             return super.onKeyUp(keycode, event);
@@ -108,7 +108,7 @@ public class MainActivity extends Activity {
         return autostartButton;
     }
 
-    public void showNext(Boolean doLoadApps) {
+    public void toggleMenu(Boolean doLoadApps) {
         searchText.setNormalColor();
         ViewAnimator mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
         mViewAnimator.showNext();
