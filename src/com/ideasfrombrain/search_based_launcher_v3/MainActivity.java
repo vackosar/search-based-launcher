@@ -251,12 +251,9 @@ public class MainActivity extends Activity {
     public void myShowNext(Boolean DoLoadApps) {
         searchText.setNormalColor();
         ViewAnimator mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
-        //mViewAnimator.setInAnimation(null);  // Skipping this will cause trouble
-        // mViewAnimator.setOutAnimation(null);
         mViewAnimator.showNext();
 
         if (mViewAnimator.getDisplayedChild() == 0) {
-            //final TextView myToggleButton = (TextView) findViewById(R.id.toggleButton0);
             if (DoLoadApps) {
                 loadApps();
             }
@@ -275,8 +272,6 @@ public class MainActivity extends Activity {
             RadioGroup mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup1);
             mRadioGroup.requestFocus();
         }
-
-
     }
 
     @Override
