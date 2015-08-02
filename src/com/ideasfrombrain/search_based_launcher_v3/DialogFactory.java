@@ -68,7 +68,7 @@ public class DialogFactory {
         dialog.setCancelable(true);
         dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                if (appListManager.getExtra().remove(app) | appListManager.getRecent().remove(app)) {
+                if (appListManager.getExtra().remove(app)) {
                     appListManager.save();
                     dialog.dismiss();
                 }
@@ -136,7 +136,7 @@ public class DialogFactory {
             public void onClick(DialogInterface dialog, int id) {
                 Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + app.getName()));
                 mainActivity.startActivity(intent);
-                appListManager.refreshView();
+                appListManager.reload();
                 dialog.dismiss();
             }
         });
@@ -169,7 +169,7 @@ public class DialogFactory {
             public void onClick(DialogInterface dialog, int id) {
                 Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + app.getName()));
                 mainActivity.startActivity(intent);
-                appListManager.refreshView();
+                appListManager.reload();
                 dialog.dismiss();
             }
         });
@@ -180,8 +180,6 @@ public class DialogFactory {
                 }
                 app.setNick(dialogInput.getText().toString());
                 appListManager.getExtra().add(app);
-                appListManager.getRecent().remove(app);
-                appListManager.getRecent().add(app);
                 appListManager.save();
                 dialog.dismiss();
             }

@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class App {
+public class App implements Comparable<App> {
     private final String name;
     private String nick;
     private final String activity;
@@ -33,8 +33,8 @@ public class App {
 
     public App(App app) {
         this.name = app.getName();
-        this.activity = app.getName();
-        this.nick = app.getName();
+        this.activity = app.getActivity();
+        this.nick = app.getNick();
     }
 
     public String getName() {
@@ -109,5 +109,13 @@ public class App {
     @Override
     public int hashCode() {
         return activity.hashCode();
+    }
+
+    @Override
+    public int compareTo(App another) {
+        if (another == null) {
+            return nick.compareTo(null);
+        }
+        return nick.compareTo(another.getNick());
     }
 }

@@ -27,6 +27,7 @@ public class MainActivity extends Activity {
     private AutostartButton autostartButton;
     private AppListManager appListManager;
     private Menu menu;
+    private AppListView appListView;
 
     private void registerIntentReceivers() {
         IntentFilter filter = new IntentFilter();
@@ -58,11 +59,13 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         registerIntentReceivers();
+        appListView = new AppListView(this);
         menu = new Menu(this);
-        searchText = new SearchText(this);
         autostartButton = new AutostartButton(this);
         setAndroidVersion();
-        appListManager = new AppListManager(this, savedInstanceState);
+        appListManager = new AppListManager(this);
+        searchText = new SearchText(this);
+        appListManager.loadFromSavedState(savedInstanceState);
     }
 
     private void setAndroidVersion() {
@@ -82,6 +85,10 @@ public class MainActivity extends Activity {
 
     public AutostartButton getAutostartButton() {
         return autostartButton;
+    }
+
+    public AppListView getAppListView() {
+        return appListView;
     }
 
     public Menu getMenu() {

@@ -11,15 +11,16 @@ public class FlashButton implements View.OnClickListener {
 
     public FlashButton(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        final TextView textView = (TextView) mainActivity.findViewById(R.id.button1);
         PackageManager pm = mainActivity.getPackageManager();
         hasCam = pm.hasSystemFeature(PackageManager.FEATURE_CAMERA);
-
+        final TextView textView = (TextView) mainActivity.findViewById(R.id.button1);
         colorService.setInvisible(textView);
-        if (!(hasCam)) {
-            colorService.setInvisible(textView);
-        }
-        textView.setOnClickListener(this);
+//
+//        colorService.setInvisible(textView);
+//        if (!(hasCam)) {
+//            colorService.setInvisible(textView);
+//        }
+//        textView.setOnClickListener(this);
     }
 
     @Override
