@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,11 +16,11 @@ public class AppListManager {
     final MainActivity mainActivity;
     private final AppListView appListView;
     private final DialogFactory dialogFactory;
-    List<App> pkg = new ArrayList<>();
-    List<App> filtered = new ArrayList<>();
+    List<App> pkg = getEmptyAppList();
+    List<App> filtered = getEmptyAppList();
     Set<App> extra = new HashSet<>();
     Set<App> hidden = new HashSet<>();
-    final List<App> recent = new ArrayList<>();
+    final List<App> recent = getEmptyAppList();
     final private PreferencesAdapter preferencesAdapter;
     public static final App MENU_APP = new App(MainActivity.APP_PACKAGE_NAME + ".Menu", " Menu-Launcher", MainActivity.APP_PACKAGE_NAME + ".Menu");
 
@@ -33,17 +32,6 @@ public class AppListManager {
         loadFromSavedState(savedInstanceState);
     }
 
-    public void reload() {
-        refreshView();
-        recent.retainAll(pkg);
-        extra.retainAll(pkg);
-        hidden.retainAll(pkg);
-        filtered.retainAll(pkg);
-        save();
-        refreshView();
-        generateFiltered();
-    }
-
     public void generateFiltered() {
         filtered.clear();
         String filterText = mainActivity.getSearchText().getFilterText();
@@ -53,7 +41,7 @@ public class AppListManager {
             }
         }
         for (App app: pkg) {
-            if (app.getNick().toLowerCase().matches(filterText) && (recent.contains(app))) {
+            if (app.getNick().toLowerCase().matches(filterText) && !recent.contains(app)) {
                 filtered.add(app);
             }
         }
@@ -65,20 +53,18 @@ public class AppListManager {
     }
 
     public void refreshView() {
-        Log.d("DEBUG", "start loading apps");
-        Log.d("DEBUG", "activity arrays prepared");
-
         final Intent main = new Intent(Intent.ACTION_MAIN, null);
         final PackageManager pm = mainActivity.getPackageManager();
-
-        pkg.clear();
-
         switch (mainActivity.getMenu().getAppListSelector().getSelected()) {
             case 0:
-                loadApplicationActivities(main, pm);
+                pkg = getApplicationActivities(main, pm);
+                pkg.removeAll(hidden);
+                pkg.addAll(extra);
                 break;
             case 1:
-                loadAllActivities(main, pm);
+                pkg = getAllActivities(main, pm);
+                pkg.removeAll(hidden);
+                pkg.addAll(extra);
                 break;
             case 2:
                 pkg.addAll(extra);
@@ -87,16 +73,23 @@ public class AppListManager {
                 pkg.addAll(hidden);
                 break;
         }
+        recent.retainAll(pkg);
         pkg.add(MENU_APP);
         generateFiltered();
     }
 
-    private void loadAllActivities(Intent main, PackageManager pm) {
+    private List<App> getAllActivities(Intent main, PackageManager pm) {
+        final List<App> pkg = getEmptyAppList();
         final List<ResolveInfo> launchables = pm.queryIntentActivities(main, 0);
         for (ResolveInfo launchable : launchables) {
             App app = new App(launchable.activityInfo.packageName, deriveNick(launchable), launchable.activityInfo.name);
             pkg.add(app);
         }
+        return pkg;
+    }
+
+    private static List<App> getEmptyAppList() {
+        return new ArrayList<>();
     }
 
     private String deriveNick(ResolveInfo launchable) {
@@ -108,21 +101,19 @@ public class AppListManager {
         return nick;
     }
 
-    private void loadApplicationActivities(Intent main, PackageManager pm) {
-        pkg.addAll(extra);
-
+    private List<App> getApplicationActivities(Intent main, PackageManager pm) {
+        final List<App> pkg = getEmptyAppList();
         main.addCategory(Intent.CATEGORY_LAUNCHER); // will show only Regular AppListManager
         final List<ResolveInfo> launchables = pm.queryIntentActivities(main, 0);
 
         for (ResolveInfo launchable : launchables) {
-            String nick = launchable.activityInfo.name;
+            String nick = launchable.activityInfo.loadLabel(pm).toString();
             String name = launchable.activityInfo.packageName;
-            String activity = launchable.activityInfo.loadLabel(pm).toString();
+            String activity = launchable.activityInfo.name;
             final App app = new App(name, nick, activity);
-            if (!hidden.contains(app)) {
-                pkg.add(app);
-            }
+            pkg.add(app);
         }
+        return pkg;
     }
 
     public void load() {
@@ -132,18 +123,17 @@ public class AppListManager {
         } catch (Exception e) {
             save();
         }
+        refreshView();
     }
 
     public void save() {
         preferencesAdapter.saveSet(extra, "extra");
         preferencesAdapter.saveSet(hidden, "hidden");
-        refreshView();
     }
 
     private void loadFromSavedState(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             load();
-            refreshView();
         } else {
             pkg = new ArrayList<>(App.getApps(new HashSet<>(savedInstanceState.getStringArrayList("pkg"))));
             extra = App.getApps(new HashSet<>(savedInstanceState.getStringArrayList("extra")));

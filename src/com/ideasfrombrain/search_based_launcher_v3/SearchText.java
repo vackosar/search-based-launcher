@@ -29,7 +29,7 @@ public class SearchText implements TextWatcher, Colorful {
 
     @Override
     public void afterTextChanged(Editable s) {
-        mainActivity.getAppListManager().refreshView();
+        mainActivity.getAppListManager().generateFiltered();
     }
 
     @Override

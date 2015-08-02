@@ -5,8 +5,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class AppListSelector implements RadioGroup.OnCheckedChangeListener {
+    public static final int DEFAULT_SELECTED = 0;
     final private MainActivity mainActivity;
-    private int selected;
+    private int selected = DEFAULT_SELECTED;
     private final RadioGroup radioGroup;
     private final SharedPreferences sharedPreferences;
     private final ColorService colorService = new ColorService();

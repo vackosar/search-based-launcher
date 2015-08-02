@@ -20,7 +20,7 @@ public class MainActivity extends Activity {
     private final BroadcastReceiver mPkgApplicationsReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            appListManager.reload();
+            appListManager.load();
         }
     };
     private SearchText searchText;
@@ -56,13 +56,13 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        appListManager = new AppListManager(this, savedInstanceState);
         setContentView(R.layout.activity_main);
+        registerIntentReceivers();
+        menu = new Menu(this);
         searchText = new SearchText(this);
         autostartButton = new AutostartButton(this);
-        menu = new Menu(this);
         setAndroidVersion();
-        registerIntentReceivers();
+        appListManager = new AppListManager(this, savedInstanceState);
     }
 
     private void setAndroidVersion() {

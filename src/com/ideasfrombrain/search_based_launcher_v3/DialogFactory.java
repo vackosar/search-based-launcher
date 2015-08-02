@@ -136,7 +136,7 @@ public class DialogFactory {
             public void onClick(DialogInterface dialog, int id) {
                 Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + app.getName()));
                 mainActivity.startActivity(intent);
-                appListManager.reload();
+                appListManager.refreshView();
                 dialog.dismiss();
             }
         });
@@ -153,7 +153,6 @@ public class DialogFactory {
         EditText dialogInput = new EditText(mainActivity);
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
-
         dialog.setView(dialogInput);
         dialog.setMessage("Hide this application from applications list, rename application (add to Hide and Extra list with diferent names) or uninstall it?");
         dialog.setCancelable(true);
@@ -170,7 +169,7 @@ public class DialogFactory {
             public void onClick(DialogInterface dialog, int id) {
                 Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + app.getName()));
                 mainActivity.startActivity(intent);
-                appListManager.reload();
+                appListManager.refreshView();
                 dialog.dismiss();
             }
         });
