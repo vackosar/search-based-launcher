@@ -106,6 +106,7 @@ public class AppListManager {
     public void save() {
         preferencesAdapter.saveSet(extra, "extra");
         preferencesAdapter.saveSet(hidden, "hidden");
+        refreshView();
     }
 
     public void loadFromSavedState(Bundle savedInstanceState) {

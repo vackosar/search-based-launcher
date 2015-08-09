@@ -10,16 +10,15 @@ import android.widget.EditText;
 @SuppressWarnings("Convert2Lambda")
 public class DialogFactory {
     private final MainActivity mainActivity;
-    private final AppListManager appListManager;
 
     public DialogFactory(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        appListManager = mainActivity.getAppListManager();
     }
 
     public void showNormalOptions(final App app) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(mainActivity);
         dialog.setTitle(app.getNick());
+        AppListManager appListManager = mainActivity.getAppListManager();
         if (!appListManager.getExtra().contains(app) && !appListManager.getHidden().contains(app)) {
             showHideApp(app, dialog);
         } else if (appListManager.getExtra().contains(app) && appListManager.getHidden().contains(app)) {
@@ -35,7 +34,7 @@ public class DialogFactory {
     public void showUnhideAppOptions(final App app) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(mainActivity);
         dialog.setTitle(app.getNick());
-
+        AppListManager appListManager = mainActivity.getAppListManager();
         EditText dialogInput = new EditText(mainActivity);
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
@@ -58,7 +57,7 @@ public class DialogFactory {
     public void showRemoveExtraAppOptions(final App app) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(mainActivity);
         dialog.setTitle(app.getNick());
-
+        AppListManager appListManager = mainActivity.getAppListManager();
         EditText dialogInput = new EditText(mainActivity);
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
@@ -82,7 +81,7 @@ public class DialogFactory {
     public void showAddExtraAppOptions(App app) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(mainActivity);
         dialog.setTitle(app.getNick());
-
+        AppListManager appListManager = mainActivity.getAppListManager();
         EditText dialogInput = new EditText(mainActivity);
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
@@ -103,6 +102,7 @@ public class DialogFactory {
     }
 
     public void showExtraAddedApp(final App app, AlertDialog.Builder dialog) {
+        AppListManager appListManager = mainActivity.getAppListManager();
         dialog.setMessage("Remove activity " + app + " from appListManager.getExtra() added (to applications list) list ?");
         dialog.setCancelable(true);
         dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
@@ -118,7 +118,7 @@ public class DialogFactory {
         EditText dialogInput = new EditText(mainActivity);
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
-
+        AppListManager appListManager = mainActivity.getAppListManager();
         dialog.setView(dialogInput);
         dialog.setMessage("This application is in both add and hide lists, thus is probably renamed.");
         dialog.setCancelable(true);
@@ -150,6 +150,7 @@ public class DialogFactory {
     }
 
     public void showHideApp(final App app, AlertDialog.Builder dialog) {
+        AppListManager appListManager = mainActivity.getAppListManager();
         EditText dialogInput = new EditText(mainActivity);
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
