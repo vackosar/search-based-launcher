@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class AppListView implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
@@ -41,7 +42,7 @@ public class AppListView implements AdapterView.OnItemClickListener, AdapterView
         filtered.clear();
         recent.retainAll(mainActivity.getAppListManager().getPkg());
         String filterText = mainActivity.getSearchText().getFilterText();
-        for (App app: recent) {
+        for (App app: getReversedRecent()) {
             if (app.getNick().toLowerCase().matches(filterText)) {
                 filtered.add(app.getAsRecent());
             }
@@ -56,6 +57,12 @@ public class AppListView implements AdapterView.OnItemClickListener, AdapterView
         } else {
             viewAppList(filtered);
         }
+    }
+
+    private List<App> getReversedRecent() {
+        final ArrayList<App> reverseRecent = new ArrayList<App>(recent);
+        Collections.reverse(reverseRecent);
+        return reverseRecent;
     }
 
     private void viewAppList(List<App> appList) {

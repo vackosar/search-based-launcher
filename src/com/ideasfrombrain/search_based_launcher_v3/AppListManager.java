@@ -44,9 +44,11 @@ public class AppListManager {
                 pkg.addAll(extra);
                 break;
             case 2:
+                pkg = getEmptyAppList();
                 pkg.addAll(extra);
                 break;
             case 3:
+                pkg = getEmptyAppList();
                 pkg.addAll(hidden);
                 break;
         }
