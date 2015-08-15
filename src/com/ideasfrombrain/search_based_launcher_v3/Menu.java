@@ -43,7 +43,7 @@ public class Menu {
             }
 
         } else {
-            RadioGroup mRadioGroup = (RadioGroup) mainActivity.findViewById(R.id.radioGroup1);
+            RadioGroup mRadioGroup = (RadioGroup) mainActivity.findViewById(R.id.appListRadioGroup);
             mRadioGroup.requestFocus();
         }
     }

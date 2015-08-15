@@ -18,7 +18,7 @@ public class AppListSelector implements RadioGroup.OnCheckedChangeListener {
 
     public AppListSelector(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        radioGroup = (RadioGroup) mainActivity.findViewById(R.id.radioGroup1);
+        radioGroup = (RadioGroup) mainActivity.findViewById(R.id.appListRadioGroup);
         radioGroup.setOnCheckedChangeListener(this);
         sharedPreferences = mainActivity.getApplicationContext().getSharedPreferences("preferencename", 0);
         selected = sharedPreferences.getInt("selected", 0);
@@ -31,16 +31,16 @@ public class AppListSelector implements RadioGroup.OnCheckedChangeListener {
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
-            case R.id.radio0:
+            case R.id.normalAppsRadioButton:
                 selected = 0;
                 break;
-            case R.id.radio1:
+            case R.id.allAppsRadioButton:
                 selected = 1;
                 break;
-            case R.id.radio2:
+            case R.id.extraAppsRadioButton:
                 selected = 2;
                 break;
-            case R.id.radio3:
+            case R.id.hiddenAppsRadioButton:
                 selected = 3;
                 break;
         }

@@ -135,37 +135,37 @@
 
 
         <RadioGroup
-            android:id="@+id/radioGroup1"
+            android:id="@+id/appListRadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:clickable="true"
             android:duplicateParentState="false"
-            android:checkedButton="@+id/radio0"
+            android:checkedButton="@+id/normalAppsRadioButton"
             android:longClickable="false" 
             android:text="tet" >
 
             <RadioButton
-                android:id="@+id/radio0"
+                android:id="@+id/normalAppsRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="List of applications" />
 
             <RadioButton
-                android:id="@+id/radio1"
+                android:id="@+id/allAppsRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="List of all activities of all packages" />
 
             <RadioButton
-                android:id="@+id/radio2"
+                android:id="@+id/extraAppsRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Extra added activities to the list of applications" />
             
             <RadioButton
-                android:id="@+id/radio3"
+                android:id="@+id/hiddenAppsRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hidden applications from list of applications" />
