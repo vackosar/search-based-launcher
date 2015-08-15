@@ -22,7 +22,7 @@ public class AppListView implements AdapterView.OnItemClickListener, AdapterView
 
     public AppListView (MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        listView = (ListView) mainActivity.findViewById(R.id.listView1);
+        listView = (ListView) mainActivity.findViewById(R.id.appListView);
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
         dialogFactory = new DialogFactory(mainActivity);
