@@ -40,13 +40,13 @@ public class MainActivity extends Activity {
     @Override
     public boolean onKeyUp(int keycode, KeyEvent event) {
         if (keycode == KeyEvent.KEYCODE_MENU) {
-            menu.toggle(false);
+            menu.toggle();
         } else if (keycode == KeyEvent.KEYCODE_SEARCH) {
             startSearch("", false, null, true);
         } else if (keycode == KeyEvent.KEYCODE_BACK) {
             ViewAnimator mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
             if (mViewAnimator.getDisplayedChild() == 1) {
-                menu.toggle(false);
+                menu.toggle();
             }
         } else {
             return super.onKeyUp(keycode, event);

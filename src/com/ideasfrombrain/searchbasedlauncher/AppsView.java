@@ -91,7 +91,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         mainActivity.getSearchText().setActivatedColor();
         addRecent(app);
         if (app.isMenu()) {
-            mainActivity.getMenu().toggle(false);
+            mainActivity.getMenu().toggle();
         } else {
             try {
                 final Intent intent = new Intent(Intent.ACTION_MAIN, null);

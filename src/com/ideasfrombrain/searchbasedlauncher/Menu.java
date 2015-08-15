@@ -22,7 +22,7 @@ public class Menu {
         createMenuDonateButton();
     }
 
-    public void toggle(Boolean doLoadApps) {
+    public void toggle() {
         mainActivity.getSearchText().setNormalColor();
         toggleView();
         if (! isMenuShown()) {
