@@ -121,16 +121,16 @@ public class AppListView implements AdapterView.OnItemClickListener, AdapterView
         }
 
         switch (mainActivity.getMenu().getAppListSelector().getSelected()) {
-            case 0:
+            case normal:
                 dialogFactory.showNormalOptions(app);
                 break;
-            case 1:
+            case activity:
                 dialogFactory.showAddExtraAppOptions(app);
                 break;
-            case 2:
+            case extra:
                 dialogFactory.showRemoveExtraAppOptions(app);
                 break;
-            case 3:
+            case hidden:
                 dialogFactory.showUnhideAppOptions(app);
                 break;
         }

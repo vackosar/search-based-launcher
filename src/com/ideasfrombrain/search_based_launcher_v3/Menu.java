@@ -32,7 +32,7 @@ public class Menu {
                 mainActivity.getAppListManager().reload();
             }
 
-            if (appListSelector.getSelected() > 0) {
+            if (appListSelector.getSelected() != AppsType.normal) {
                 mainActivity.getSearchText().setSpaceCharacterToText();
                 appListSelector.setInvisible();
             } else {

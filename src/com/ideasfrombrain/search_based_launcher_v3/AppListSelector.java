@@ -5,9 +5,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class AppListSelector implements RadioGroup.OnCheckedChangeListener {
-    public static final int DEFAULT_SELECTED = 0;
+    public static final AppsType DEFAULT_SELECTED = AppsType.normal;
     final private MainActivity mainActivity;
-    private int selected = DEFAULT_SELECTED;
+    private AppsType selected = DEFAULT_SELECTED;
     private final RadioGroup radioGroup;
     private final SharedPreferences sharedPreferences;
     private final ColorService colorService = new ColorService();
@@ -21,7 +21,7 @@ public class AppListSelector implements RadioGroup.OnCheckedChangeListener {
         radioGroup = (RadioGroup) mainActivity.findViewById(R.id.appListRadioGroup);
         radioGroup.setOnCheckedChangeListener(this);
         sharedPreferences = mainActivity.getApplicationContext().getSharedPreferences("preferencename", 0);
-        selected = sharedPreferences.getInt("selected", 0);
+        selected = AppsType.of(sharedPreferences.getInt("selected", 0));
         flashButton = (TextView) mainActivity.findViewById(R.id.flashButton);
         wifiButton = (TextView) mainActivity.findViewById(R.id.wifiButton);
         button3 = (TextView) mainActivity.findViewById(R.id.bluetoothButton);
@@ -30,20 +30,7 @@ public class AppListSelector implements RadioGroup.OnCheckedChangeListener {
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId) {
-            case R.id.normalAppsRadioButton:
-                selected = 0;
-                break;
-            case R.id.allAppsRadioButton:
-                selected = 1;
-                break;
-            case R.id.extraAppsRadioButton:
-                selected = 2;
-                break;
-            case R.id.hiddenAppsRadioButton:
-                selected = 3;
-                break;
-        }
+        selected = AppsType.of(checkedId);
         mainActivity.getMenu().toggle(true);
     }
 
@@ -54,13 +41,13 @@ public class AppListSelector implements RadioGroup.OnCheckedChangeListener {
         colorService.setInvisible(bluetoothButton);
     }
 
-    public int getSelected() {
+    public AppsType getSelected() {
         return selected;
     }
 
     public void save() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("selected", selected);
+        editor.putInt("selected", selected.ordinal());
         editor.commit();
     }
 }

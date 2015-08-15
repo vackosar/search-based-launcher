@@ -33,21 +33,21 @@ public class AppListManager {
         final Intent main = new Intent(Intent.ACTION_MAIN, null);
         final PackageManager pm = mainActivity.getPackageManager();
         switch (mainActivity.getMenu().getAppListSelector().getSelected()) {
-            case 0:
+            case normal:
                 pkg = getApplicationActivities(main, pm);
                 pkg.removeAll(hidden);
                 pkg.addAll(extra);
                 break;
-            case 1:
+            case activity:
                 pkg = getAllActivities(main, pm);
                 pkg.removeAll(hidden);
                 pkg.addAll(extra);
                 break;
-            case 2:
+            case extra:
                 pkg = getEmptyAppList();
                 pkg.addAll(extra);
                 break;
-            case 3:
+            case hidden:
                 pkg = getEmptyAppList();
                 pkg.addAll(hidden);
                 break;

@@ -106,7 +106,7 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         searchText.setNormalColor();
-        if ((menu.getAppListSelector().getSelected() == 0) && autostartButton.isOn()) {
+        if ((menu.getAppListSelector().getSelected() == AppsType.normal) && autostartButton.isOn()) {
             searchText.clearText();
         }
     }
