@@ -14,7 +14,7 @@ public class CameraButton implements View.OnClickListener {
 
     public CameraButton(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        textView = (TextView) mainActivity.findViewById(R.id.button6);
+        textView = (TextView) mainActivity.findViewById(R.id.cameraButton);
         PackageManager pm = mainActivity.getPackageManager();
         hasCam = pm.hasSystemFeature(PackageManager.FEATURE_CAMERA);
         if (!(hasCam)) {

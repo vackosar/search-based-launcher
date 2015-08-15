@@ -17,7 +17,7 @@ public class WifiButton extends BroadcastReceiver implements View.OnClickListene
 
     public WifiButton(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        textView = (TextView) mainActivity.findViewById(R.id.button2);
+        textView = (TextView) mainActivity.findViewById(R.id.wifiButton);
         wifiManager = (WifiManager) mainActivity.getSystemService(Context.WIFI_SERVICE);
         setVisibleIfAvailable();
         if (isAvailable()) {

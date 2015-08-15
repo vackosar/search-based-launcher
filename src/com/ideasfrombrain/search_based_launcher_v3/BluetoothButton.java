@@ -12,7 +12,7 @@ public class BluetoothButton implements View.OnClickListener {
 
     public BluetoothButton (MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        textView = (TextView) mainActivity.findViewById(R.id.button4);
+        textView = (TextView) mainActivity.findViewById(R.id.bluetoothButton);
         textView.setOnClickListener(this);
     }
 

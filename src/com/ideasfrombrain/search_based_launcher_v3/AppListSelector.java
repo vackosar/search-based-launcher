@@ -11,10 +11,10 @@ public class AppListSelector implements RadioGroup.OnCheckedChangeListener {
     private final RadioGroup radioGroup;
     private final SharedPreferences sharedPreferences;
     private final ColorService colorService = new ColorService();
-    private final TextView button1;
-    private final TextView button2;
+    private final TextView flashButton;
+    private final TextView wifiButton;
     private final TextView button3;
-    private final TextView button4;
+    private final TextView bluetoothButton;
 
     public AppListSelector(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -22,10 +22,10 @@ public class AppListSelector implements RadioGroup.OnCheckedChangeListener {
         radioGroup.setOnCheckedChangeListener(this);
         sharedPreferences = mainActivity.getApplicationContext().getSharedPreferences("preferencename", 0);
         selected = sharedPreferences.getInt("selected", 0);
-        button1 = (TextView) mainActivity.findViewById(R.id.button1);
-        button2 = (TextView) mainActivity.findViewById(R.id.button2);
-        button3 = (TextView) mainActivity.findViewById(R.id.button4);
-        button4 = (TextView) mainActivity.findViewById(R.id.button6);
+        flashButton = (TextView) mainActivity.findViewById(R.id.flashButton);
+        wifiButton = (TextView) mainActivity.findViewById(R.id.wifiButton);
+        button3 = (TextView) mainActivity.findViewById(R.id.bluetoothButton);
+        bluetoothButton = (TextView) mainActivity.findViewById(R.id.cameraButton);
     }
 
     @Override
@@ -48,10 +48,10 @@ public class AppListSelector implements RadioGroup.OnCheckedChangeListener {
     }
 
     public void setInvisible() {
-        colorService.setInvisible(button1);
-        colorService.setInvisible(button2);
+        colorService.setInvisible(flashButton);
+        colorService.setInvisible(wifiButton);
         colorService.setInvisible(button3);
-        colorService.setInvisible(button4);
+        colorService.setInvisible(bluetoothButton);
     }
 
     public int getSelected() {
