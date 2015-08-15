@@ -18,7 +18,6 @@ public class AppsManager {
     Set<App> extra = new HashSet<>();
     Set<App> hidden = new HashSet<>();
     final private PreferencesAdapter preferencesAdapter;
-    public static final App MENU_APP = new App(MainActivity.APP_PACKAGE_NAME + ".Menu", " Menu-Launcher", MainActivity.APP_PACKAGE_NAME + ".Menu");
 
     public AppsManager(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -52,7 +51,6 @@ public class AppsManager {
                 pkg.addAll(hidden);
                 break;
         }
-        pkg.add(MENU_APP);
         Collections.sort(pkg);
         mainActivity.getAppsView().refeshView();
     }

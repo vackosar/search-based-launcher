@@ -17,8 +17,8 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     private final DialogFactory dialogFactory;
     List<App> filtered = new ArrayList<>();
     List<App> recent = new ArrayList<>();
-
     public static final int FIRST_INDEX = 0;
+    public static final App MENU_APP = new App(MainActivity.APP_PACKAGE_NAME + ".Menu", "#Menu", MainActivity.APP_PACKAGE_NAME + ".Menu");
 
     public AppsView(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -40,7 +40,6 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
 
     public void refeshView() {
         String filterText = mainActivity.getSearchText().getFilterText();
-        addRecent(filterText);
         addFiltered(filterText);
         if (autostartFirstApp()) {
             executeActivity(FIRST_INDEX);
@@ -51,20 +50,30 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
 
     private void addFiltered(String filterText) {
         filtered.clear();
+        addRecent(filterText);
         for (App app: mainActivity.getAppsManager().getPkg()) {
-            if (app.getNick().toLowerCase().matches(filterText) && !recent.contains(app)) {
-                filtered.add(app);
-            }
+            addFiltredIfMatch(filterText, app);
+        }
+        addFiltredIfMatch(filterText, MENU_APP);
+    }
+
+    private void addFiltredIfMatch(String filterText, App app) {
+        if (checkMatch(filterText, app) && !recent.contains(app)) {
+            filtered.add(app);
         }
     }
 
     private void addRecent(String filterText) {
         recent.retainAll(mainActivity.getAppsManager().getPkg());
         for (App app: getReversedRecent()) {
-            if (app.getNick().toLowerCase().matches(filterText)) {
+            if (checkMatch(filterText, app)) {
                 filtered.add(app.getAsRecent());
             }
         }
+    }
+
+    private boolean checkMatch(String filterText, App app) {
+        return app.getNick().toLowerCase().matches(filterText);
     }
 
     private boolean autostartFirstApp() {
@@ -124,10 +133,9 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
 
     public boolean showOptionsForApp(final int appIndex) {
         final App app = filtered.get(appIndex);
-        if (app.equals(AppsManager.MENU_APP)) {
+        if (app.equals(MENU_APP)) {
             return false;
         }
-
         switch (mainActivity.getMenu().getAppTypeSelector().getSelected()) {
             case normal:
                 dialogFactory.showNormalOptions(app);
