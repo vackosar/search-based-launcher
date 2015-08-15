@@ -16,7 +16,7 @@
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/button0"
+        android:layout_toLeftOf="@+id/autostartButton"
         android:longClickable="true"
         android:ems="10"
         android:inputType="textNoSuggestions"  
@@ -39,7 +39,7 @@
 
     <TextView
         android:layout_marginRight="7dp" 
-        android:id="@+id/toggleButton0"
+        android:id="@+id/autostartButton"
         android:gravity="center"
         android:layout_height="35dp"
         android:layout_width="70dp"
@@ -56,7 +56,7 @@
         android:gravity="center"
         android:layout_height="35dp"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/toggleButton0"
+        android:layout_alignTop="@+id/autostartButton"
         android:layout_marginTop="50dp"
         android:layout_width="70dp"
         android:background="@android:color/darker_gray"

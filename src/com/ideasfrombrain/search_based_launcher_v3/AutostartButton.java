@@ -12,7 +12,7 @@ public class AutostartButton implements View.OnClickListener {
 
     public AutostartButton (MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        textView = (TextView) mainActivity.findViewById(R.id.toggleButton0);
+        textView = (TextView) mainActivity.findViewById(R.id.autostartButton);
         textView.setOnClickListener(this);
         autostart = false;
         onClick(null);
