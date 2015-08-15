@@ -120,7 +120,7 @@ public class AppListView implements AdapterView.OnItemClickListener, AdapterView
             return false;
         }
 
-        switch (mainActivity.getMenu().getAppListSelector().getSelected()) {
+        switch (mainActivity.getMenu().getAppTypeSelector().getSelected()) {
             case normal:
                 dialogFactory.showNormalOptions(app);
                 break;

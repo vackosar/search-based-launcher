@@ -8,14 +8,14 @@ import android.widget.ViewAnimator;
 
 public class Menu {
     private final MainActivity mainActivity;
-    private final AppListSelector appListSelector;
+    private final AppTypeSelector appTypeSelector;
     private final WifiButton wifiButton;
     private final BluetoothButton bluetoothButton;
     private final CameraButton cameraButton;
 
     public Menu(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        appListSelector = new AppListSelector(mainActivity);
+        appTypeSelector = new AppTypeSelector(mainActivity);
         wifiButton = new WifiButton(mainActivity);
         bluetoothButton = new BluetoothButton(mainActivity);
         cameraButton = new CameraButton(mainActivity);
@@ -32,9 +32,9 @@ public class Menu {
                 mainActivity.getAppListManager().reload();
             }
 
-            if (appListSelector.getSelected() != AppsType.normal) {
+            if (appTypeSelector.getSelected() != AppsType.normal) {
                 mainActivity.getSearchText().setSpaceCharacterToText();
-                appListSelector.setInvisible();
+                appTypeSelector.setInvisible();
             } else {
                 wifiButton.setVisibleIfAvailable();
                 bluetoothButton.setVisibleIfAvailable();
@@ -58,8 +58,8 @@ public class Menu {
         });
     }
 
-    public AppListSelector getAppListSelector() {
-        return appListSelector;
+    public AppTypeSelector getAppTypeSelector() {
+        return appTypeSelector;
     }
 
     public void onDestroy() {

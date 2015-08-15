@@ -4,7 +4,7 @@ import android.content.SharedPreferences;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-public class AppListSelector implements RadioGroup.OnCheckedChangeListener {
+public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
     public static final AppsType DEFAULT_SELECTED = AppsType.normal;
     final private MainActivity mainActivity;
     private AppsType selected = DEFAULT_SELECTED;
@@ -16,7 +16,7 @@ public class AppListSelector implements RadioGroup.OnCheckedChangeListener {
     private final TextView button3;
     private final TextView bluetoothButton;
 
-    public AppListSelector(MainActivity mainActivity) {
+    public AppTypeSelector(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         radioGroup = (RadioGroup) mainActivity.findViewById(R.id.appListRadioGroup);
         radioGroup.setOnCheckedChangeListener(this);

@@ -97,7 +97,7 @@ public class MainActivity extends Activity {
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        menu.getAppListSelector().save();
+        menu.getAppTypeSelector().save();
         appListManager.saveState(savedInstanceState);
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -106,7 +106,7 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         searchText.setNormalColor();
-        if ((menu.getAppListSelector().getSelected() == AppsType.normal) && autostartButton.isOn()) {
+        if ((menu.getAppTypeSelector().getSelected() == AppsType.normal) && autostartButton.isOn()) {
             searchText.clearText();
         }
     }

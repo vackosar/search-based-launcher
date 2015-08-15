@@ -32,7 +32,7 @@ public class AppListManager {
     public void reload() {
         final Intent main = new Intent(Intent.ACTION_MAIN, null);
         final PackageManager pm = mainActivity.getPackageManager();
-        switch (mainActivity.getMenu().getAppListSelector().getSelected()) {
+        switch (mainActivity.getMenu().getAppTypeSelector().getSelected()) {
             case normal:
                 pkg = getApplicationActivities(main, pm);
                 pkg.removeAll(hidden);
