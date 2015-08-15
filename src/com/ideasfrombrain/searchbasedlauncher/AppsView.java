@@ -30,7 +30,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        runApp(position);
+        executeActivity(position);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         addRecent(filterText);
         addFiltered(filterText);
         if (autostartFirstApp()) {
-            runApp(FIRST_INDEX);
+            executeActivity(FIRST_INDEX);
         } else {
             viewAppList(filtered);
         }
@@ -85,25 +85,33 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         listView.setAdapter(new ArrayAdapter<String>(mainActivity, android.R.layout.simple_list_item_1, android.R.id.text1, list));
     }
 
-    public void runApp(int index) {
-        final List<App> pkg = mainActivity.getAppsManager().getPkg();
-        final App app = pkg.get(pkg.indexOf(filtered.get(index)));
+    public void executeActivity(int index) {
+        final App app = getApp(index);
         mainActivity.getSearchText().setActivatedColor();
         addRecent(app);
         if (app.isMenu()) {
             mainActivity.getMenu().toggle();
         } else {
-            try {
-                final Intent intent = new Intent(Intent.ACTION_MAIN, null);
-                intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                intent.setComponent(new ComponentName(app.getName(), app.getActivity()));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                mainActivity.startActivity(intent);
-            } catch (Exception e) {
-                e.printStackTrace();
-                mainActivity.getSearchText().setNormalColor();
-            }
+            executeActivity(app);
         }
+    }
+
+    private void executeActivity(App app) {
+        try {
+            final Intent intent = new Intent(Intent.ACTION_MAIN, null);
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+            intent.setComponent(new ComponentName(app.getName(), app.getActivity()));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            mainActivity.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            mainActivity.getSearchText().setNormalColor();
+        }
+    }
+
+    private App getApp(int index) {
+        final List<App> pkg = mainActivity.getAppsManager().getPkg();
+        return pkg.get(pkg.indexOf(filtered.get(index)));
     }
 
     public void addRecent(App app) {
