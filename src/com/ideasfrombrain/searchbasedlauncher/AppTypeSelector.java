@@ -50,4 +50,8 @@ public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
         editor.putInt("selected", selected.ordinal());
         editor.commit();
     }
+
+    public void requestFocus() {
+        radioGroup.requestFocus();
+    }
 }

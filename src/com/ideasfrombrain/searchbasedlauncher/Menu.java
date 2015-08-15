@@ -3,10 +3,10 @@ package com.ideasfrombrain.searchbasedlauncher;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
-import android.widget.RadioGroup;
 import android.widget.ViewAnimator;
 
 public class Menu {
+    public static final int MENU_CHILD_ID = 1;
     private final MainActivity mainActivity;
     private final AppTypeSelector appTypeSelector;
     private final WifiButton wifiButton;
@@ -24,28 +24,25 @@ public class Menu {
 
     public void toggle(Boolean doLoadApps) {
         mainActivity.getSearchText().setNormalColor();
-        ViewAnimator mViewAnimator = (ViewAnimator) mainActivity.findViewById(R.id.viewAnimator);
-        mViewAnimator.showNext();
-
-        if (mViewAnimator.getDisplayedChild() == 0) {
-            if (doLoadApps) {
-                mainActivity.getAppsManager().reload();
-            }
-
-            if (appTypeSelector.getSelected() != AppsType.normal) {
-                mainActivity.getSearchText().setSpaceCharacterToText();
-                appTypeSelector.setInvisible();
-            } else {
-                wifiButton.setVisibleIfAvailable();
-                bluetoothButton.setVisibleIfAvailable();
-                cameraButton.setVisibleIfAvailable();
-                mainActivity.getSearchText().clearText();
-            }
-
+        toggleView();
+        if (! isMenuShown()) {
+            mainActivity.getAppsManager().reload();
         } else {
-            RadioGroup mRadioGroup = (RadioGroup) mainActivity.findViewById(R.id.appListRadioGroup);
-            mRadioGroup.requestFocus();
+            appTypeSelector.requestFocus();
         }
+    }
+
+    private boolean isMenuShown() {
+        return getViewAnimator().getDisplayedChild() == MENU_CHILD_ID;
+    }
+
+    private void toggleView() {
+        ViewAnimator mViewAnimator = getViewAnimator();
+        mViewAnimator.showNext();
+    }
+
+    private ViewAnimator getViewAnimator() {
+        return (ViewAnimator) mainActivity.findViewById(R.id.viewAnimator);
     }
 
     private void createMenuDonateButton() {

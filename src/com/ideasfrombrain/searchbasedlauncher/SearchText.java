@@ -8,6 +8,7 @@ import android.widget.EditText;
 public class SearchText implements TextWatcher, Colorful {
     public static final String EMPTY = "";
     public static final String SPACE = " ";
+    public static final String REGEX_MATCH_ALL = ".*";
     final MainActivity mainActivity;
     final EditText editText;
 
@@ -46,7 +47,6 @@ public class SearchText implements TextWatcher, Colorful {
     }
 
     public String getFilterText () {
-        // space is replaced with REGEX  symbols ".*"
-        return editText.getText().toString().toLowerCase().replace(" ", ".*") + ".*";
+        return editText.getText().toString().toLowerCase().replace(SPACE, REGEX_MATCH_ALL) + REGEX_MATCH_ALL;
     }
 }
