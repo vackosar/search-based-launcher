@@ -1,19 +1,17 @@
 <ViewAnimator xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-		android:id="@+id/viewAnimator"
+    android:id="@+id/viewAnimator"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
     
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
+        android:layout_width="fill_parent"
  	android:layout_height="fill_parent"
     android:id="@+id/layoutMain" 
     android:layout_gravity="bottom" >
     
     
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/searchText"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
@@ -33,7 +31,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/editText1" 
+        android:layout_below="@+id/searchText"
         android:focusable="false" 
         android:focusableInTouchMode="false"
         android:textFilterEnabled="false">
@@ -105,14 +103,13 @@
         android:background="@android:color/darker_gray"
         android:textColor="@android:color/white"
         android:text="Cam."  />
-	</RelativeLayout> 
+	</RelativeLayout>
 
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:id="@+id/layoutMenu" >
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/layoutMenu">
 
     <TextView
         android:id="@+id/textView1"

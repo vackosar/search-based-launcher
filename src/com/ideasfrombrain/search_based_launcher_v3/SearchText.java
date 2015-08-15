@@ -13,7 +13,7 @@ public class SearchText implements TextWatcher, Colorful {
 
     public SearchText (MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        editText = (EditText) mainActivity.findViewById(R.id.editText1);
+        editText = (EditText) mainActivity.findViewById(R.id.searchText);
         editText.addTextChangedListener(this);
     }
 
