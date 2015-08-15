@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 @SuppressWarnings("Convert2Lambda")
-public class AppListManager {
+public class AppsManager {
     final MainActivity mainActivity;
     List<App> pkg = getEmptyAppList();
     Set<App> extra = new HashSet<>();
@@ -20,13 +20,13 @@ public class AppListManager {
     final private PreferencesAdapter preferencesAdapter;
     public static final App MENU_APP = new App(MainActivity.APP_PACKAGE_NAME + ".Menu", " Menu-Launcher", MainActivity.APP_PACKAGE_NAME + ".Menu");
 
-    public AppListManager(MainActivity mainActivity) {
+    public AppsManager(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         preferencesAdapter = new PreferencesAdapter(mainActivity);
     }
 
     public void refreshView() {
-        mainActivity.getAppListView().refeshView();
+        mainActivity.getAppsView().refeshView();
     }
 
     public void reload() {
@@ -54,7 +54,7 @@ public class AppListManager {
         }
         pkg.add(MENU_APP);
         Collections.sort(pkg);
-        mainActivity.getAppListView().refeshView();
+        mainActivity.getAppsView().refeshView();
     }
 
     private List<App> getAllActivities(Intent main, PackageManager pm) {
@@ -82,7 +82,7 @@ public class AppListManager {
 
     private List<App> getApplicationActivities(Intent main, PackageManager pm) {
         final List<App> pkg = getEmptyAppList();
-        main.addCategory(Intent.CATEGORY_LAUNCHER); // will show only Regular AppListManager
+        main.addCategory(Intent.CATEGORY_LAUNCHER); // will show only Regular AppsManager
         final List<ResolveInfo> launchables = pm.queryIntentActivities(main, 0);
 
         for (ResolveInfo launchable : launchables) {

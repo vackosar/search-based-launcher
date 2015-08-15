@@ -20,14 +20,14 @@ public class MainActivity extends Activity {
     private final BroadcastReceiver mPkgApplicationsReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            appListManager.load();
+            appsManager.load();
         }
     };
     private SearchText searchText;
     private AutostartButton autostartButton;
-    private AppListManager appListManager;
+    private AppsManager appsManager;
     private Menu menu;
-    private AppListView appListView;
+    private AppsView appsView;
 
     private void registerIntentReceivers() {
         IntentFilter filter = new IntentFilter();
@@ -59,13 +59,13 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         registerIntentReceivers();
-        appListView = new AppListView(this);
+        appsView = new AppsView(this);
         menu = new Menu(this);
         autostartButton = new AutostartButton(this);
         setAndroidVersion();
-        appListManager = new AppListManager(this);
+        appsManager = new AppsManager(this);
         searchText = new SearchText(this);
-        appListManager.loadFromSavedState(savedInstanceState);
+        appsManager.loadFromSavedState(savedInstanceState);
     }
 
     private void setAndroidVersion() {
@@ -79,16 +79,16 @@ public class MainActivity extends Activity {
         return searchText;
     }
 
-    public AppListManager getAppListManager() {
-        return appListManager;
+    public AppsManager getAppsManager() {
+        return appsManager;
     }
 
     public AutostartButton getAutostartButton() {
         return autostartButton;
     }
 
-    public AppListView getAppListView() {
-        return appListView;
+    public AppsView getAppsView() {
+        return appsView;
     }
 
     public Menu getMenu() {
@@ -98,7 +98,7 @@ public class MainActivity extends Activity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         menu.getAppTypeSelector().save();
-        appListManager.saveState(savedInstanceState);
+        appsManager.saveState(savedInstanceState);
         super.onSaveInstanceState(savedInstanceState);
     }
 

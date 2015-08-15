@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AppListView implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+public class AppsView implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     final MainActivity mainActivity;
     final ListView listView;
     private final DialogFactory dialogFactory;
@@ -20,7 +20,7 @@ public class AppListView implements AdapterView.OnItemClickListener, AdapterView
 
     public static final int FIRST_INDEX = 0;
 
-    public AppListView (MainActivity mainActivity) {
+    public AppsView(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         listView = (ListView) mainActivity.findViewById(R.id.appListView);
         listView.setOnItemClickListener(this);
@@ -51,7 +51,7 @@ public class AppListView implements AdapterView.OnItemClickListener, AdapterView
 
     private void addFiltered(String filterText) {
         filtered.clear();
-        for (App app: mainActivity.getAppListManager().getPkg()) {
+        for (App app: mainActivity.getAppsManager().getPkg()) {
             if (app.getNick().toLowerCase().matches(filterText) && !recent.contains(app)) {
                 filtered.add(app);
             }
@@ -59,7 +59,7 @@ public class AppListView implements AdapterView.OnItemClickListener, AdapterView
     }
 
     private void addRecent(String filterText) {
-        recent.retainAll(mainActivity.getAppListManager().getPkg());
+        recent.retainAll(mainActivity.getAppsManager().getPkg());
         for (App app: getReversedRecent()) {
             if (app.getNick().toLowerCase().matches(filterText)) {
                 filtered.add(app.getAsRecent());
@@ -68,7 +68,7 @@ public class AppListView implements AdapterView.OnItemClickListener, AdapterView
     }
 
     private boolean autostartFirstApp() {
-        return filtered.size() == 1 && mainActivity.getAppListManager().getPkg().size() > 1 && mainActivity.getAutostartButton().isOn();
+        return filtered.size() == 1 && mainActivity.getAppsManager().getPkg().size() > 1 && mainActivity.getAutostartButton().isOn();
     }
 
     private List<App> getReversedRecent() {
@@ -86,7 +86,7 @@ public class AppListView implements AdapterView.OnItemClickListener, AdapterView
     }
 
     public void runApp(int index) {
-        final List<App> pkg = mainActivity.getAppListManager().getPkg();
+        final List<App> pkg = mainActivity.getAppsManager().getPkg();
         final App app = pkg.get(pkg.indexOf(filtered.get(index)));
         mainActivity.getSearchText().setActivatedColor();
         addRecent(app);
@@ -116,7 +116,7 @@ public class AppListView implements AdapterView.OnItemClickListener, AdapterView
 
     public boolean showOptionsForApp(final int appIndex) {
         final App app = filtered.get(appIndex);
-        if (app.equals(AppListManager.MENU_APP)) {
+        if (app.equals(AppsManager.MENU_APP)) {
             return false;
         }
 
