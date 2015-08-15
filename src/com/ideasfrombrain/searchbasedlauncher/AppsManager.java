@@ -1,4 +1,4 @@
-package com.ideasfrombrain.search_based_launcher_v3;
+package com.ideasfrombrain.searchbasedlauncher;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;

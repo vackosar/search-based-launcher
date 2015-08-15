@@ -1,4 +1,4 @@
-package com.ideasfrombrain.search_based_launcher_v3;
+package com.ideasfrombrain.searchbasedlauncher;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;

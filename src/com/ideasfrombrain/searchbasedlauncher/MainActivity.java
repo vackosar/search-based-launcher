@@ -1,4 +1,4 @@
-package com.ideasfrombrain.search_based_launcher_v3;
+package com.ideasfrombrain.searchbasedlauncher;
 
 
 import android.app.Activity;
@@ -13,7 +13,7 @@ import android.widget.ViewAnimator;
 
 @SuppressWarnings("Convert2Lambda")
 public class MainActivity extends Activity {
-    public static String APP_PACKAGE_NAME = "com.ideasfrombrain.search_based_launcher_v3";
+    public static String APP_PACKAGE_NAME = "com.ideasfrombrain.searchbasedlauncher";
 
     boolean newerAndroidVersion = true;
 
