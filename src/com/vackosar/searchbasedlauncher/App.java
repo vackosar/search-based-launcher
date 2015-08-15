@@ -1,4 +1,4 @@
-package com.ideasfrombrain.searchbasedlauncher;
+package com.vackosar.searchbasedlauncher;
 
 import org.json.JSONException;
 import org.json.JSONObject;

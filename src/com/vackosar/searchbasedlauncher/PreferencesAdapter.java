@@ -1,4 +1,4 @@
-package com.ideasfrombrain.searchbasedlauncher;
+package com.vackosar.searchbasedlauncher;
 
 import android.content.Context;
 import android.content.SharedPreferences;

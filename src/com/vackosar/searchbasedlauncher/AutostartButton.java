@@ -1,4 +1,4 @@
-package com.ideasfrombrain.searchbasedlauncher;
+package com.vackosar.searchbasedlauncher;
 
 import android.view.View;
 import android.widget.TextView;

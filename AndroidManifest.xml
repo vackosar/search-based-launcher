@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ideasfrombrain.searchbasedlauncher"
+    package="com.vackosar.searchbasedlauncher"
     android:versionCode="5"
     android:versionName="1.13" >
     <uses-sdk
@@ -26,7 +26,7 @@
         android:persistent="true" >
         
         <activity
-            android:name="com.ideasfrombrain.searchbasedlauncher.MainActivity"
+            android:name="com.vackosar.searchbasedlauncher.MainActivity"
             android:label="Search based launcher v3"
             android:alwaysRetainTaskState="true"
              android:launchMode="singleInstance" >

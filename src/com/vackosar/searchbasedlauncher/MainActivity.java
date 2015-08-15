@@ -1,4 +1,4 @@
-package com.ideasfrombrain.searchbasedlauncher;
+package com.vackosar.searchbasedlauncher;
 
 
 import android.app.Activity;
@@ -13,7 +13,7 @@ import android.widget.ViewAnimator;
 
 @SuppressWarnings("Convert2Lambda")
 public class MainActivity extends Activity {
-    public static String APP_PACKAGE_NAME = "com.ideasfrombrain.searchbasedlauncher";
+    public static String APP_PACKAGE_NAME = "com.vackosar.searchbasedlauncher";
 
     boolean newerAndroidVersion = true;
 

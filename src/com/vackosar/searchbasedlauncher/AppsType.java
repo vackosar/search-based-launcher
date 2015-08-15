@@ -1,4 +1,4 @@
-package com.ideasfrombrain.searchbasedlauncher;
+package com.vackosar.searchbasedlauncher;
 
 public enum AppsType {
     normal(R.id.normalAppsRadioButton),
