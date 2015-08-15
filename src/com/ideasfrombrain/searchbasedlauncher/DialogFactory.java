@@ -63,7 +63,7 @@ public class DialogFactory {
         dialogInput.setText(app.getNick());
 
         dialog.setView(dialogInput);
-        dialog.setMessage("Remove this (appsManager.getExtra() added list of all activities) activity from applications list?");
+        dialog.setMessage("Remove this (appsManager.getExtra() added list parseViewId all activities) activity from applications list?");
         dialog.setCancelable(true);
         dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {

@@ -21,7 +21,7 @@ public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
         radioGroup = (RadioGroup) mainActivity.findViewById(R.id.appListRadioGroup);
         radioGroup.setOnCheckedChangeListener(this);
         sharedPreferences = mainActivity.getApplicationContext().getSharedPreferences("preferencename", 0);
-        selected = AppsType.of(sharedPreferences.getInt("selected", 0));
+        selected = AppsType.parseOrdinal(sharedPreferences.getInt("selected", 0));
         flashButton = (TextView) mainActivity.findViewById(R.id.flashButton);
         wifiButton = (TextView) mainActivity.findViewById(R.id.wifiButton);
         button3 = (TextView) mainActivity.findViewById(R.id.bluetoothButton);
@@ -30,7 +30,7 @@ public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        selected = AppsType.of(checkedId);
+        selected = AppsType.parseViewId(checkedId);
         mainActivity.getMenu().toggle(true);
     }
 

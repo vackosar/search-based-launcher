@@ -12,12 +12,21 @@ public enum AppsType {
         this.radioButton = radioButton;
     }
 
-    public static AppsType of(int viewId) {
+    public static AppsType parseViewId(int viewId) {
         for (AppsType appsType: AppsType.values()) {
             if (viewId == appsType.radioButton) {
                 return appsType;
             }
         }
         throw new IllegalArgumentException("View id " + viewId + " could not be parsed.");
+    }
+
+    public static AppsType parseOrdinal(int ordinal) {
+        for (AppsType appsType: AppsType.values()) {
+            if (ordinal == appsType.ordinal()) {
+                return appsType;
+            }
+        }
+        throw new IllegalArgumentException("Ordinal id " + ordinal + " could not be parsed.");
     }
 }
