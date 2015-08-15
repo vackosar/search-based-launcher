@@ -39,24 +39,36 @@ public class AppListView implements AdapterView.OnItemClickListener, AdapterView
     }
 
     public void refeshView() {
-        filtered.clear();
-        recent.retainAll(mainActivity.getAppListManager().getPkg());
         String filterText = mainActivity.getSearchText().getFilterText();
-        for (App app: getReversedRecent()) {
-            if (app.getNick().toLowerCase().matches(filterText)) {
-                filtered.add(app.getAsRecent());
-            }
+        addRecent(filterText);
+        addFiltered(filterText);
+        if (autostartFirstApp()) {
+            runApp(FIRST_INDEX);
+        } else {
+            viewAppList(filtered);
         }
+    }
+
+    private void addFiltered(String filterText) {
+        filtered.clear();
         for (App app: mainActivity.getAppListManager().getPkg()) {
             if (app.getNick().toLowerCase().matches(filterText) && !recent.contains(app)) {
                 filtered.add(app);
             }
         }
-        if (filtered.size() == 1 && mainActivity.getAutostartButton().isOn()) {
-            runApp(FIRST_INDEX);
-        } else {
-            viewAppList(filtered);
+    }
+
+    private void addRecent(String filterText) {
+        recent.retainAll(mainActivity.getAppListManager().getPkg());
+        for (App app: getReversedRecent()) {
+            if (app.getNick().toLowerCase().matches(filterText)) {
+                filtered.add(app.getAsRecent());
+            }
         }
+    }
+
+    private boolean autostartFirstApp() {
+        return filtered.size() == 1 && mainActivity.getAppListManager().getPkg().size() > 1 && mainActivity.getAutostartButton().isOn();
     }
 
     private List<App> getReversedRecent() {
