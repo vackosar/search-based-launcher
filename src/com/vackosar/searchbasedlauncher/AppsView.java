@@ -12,11 +12,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class AppsView implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+    public static final String RECENT = "recent";
     final MainActivity mainActivity;
     final ListView listView;
     private final DialogFactory dialogFactory;
+    private final PreferencesAdapter preferencesAdapter;
     List<App> filtered = new ArrayList<>();
-    List<App> recent = new ArrayList<>();
+    List<App> recent;
     public static final int FIRST_INDEX = 0;
     public static final App MENU_APP = new App(MainActivity.APP_PACKAGE_NAME + ".Menu", "#Menu", MainActivity.APP_PACKAGE_NAME + ".Menu");
 
@@ -26,6 +28,8 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
         dialogFactory = new DialogFactory(mainActivity);
+        preferencesAdapter = new PreferencesAdapter(mainActivity);
+        recent = new ArrayList<>(preferencesAdapter.loadSet(RECENT));
     }
 
     @Override
@@ -129,6 +133,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         if (recent.size() > 10) {
             recent.remove(FIRST_INDEX);
         }
+        preferencesAdapter.saveSet(recent, RECENT);
     }
 
     public boolean showOptionsForApp(final int appIndex) {
