@@ -3,8 +3,6 @@ package com.vackosar.searchbasedlauncher;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import org.json.JSONException;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -53,7 +51,11 @@ public class PreferencesAdapter {
         return set;
     }
 
-    public Set<App> loadSet(String listName) throws JSONException {
-        return App.getApps(getStrings(listName));
+    public Set<App> loadSet(String listName) {
+        try {
+            return App.getApps(getStrings(listName));
+        } catch (Exception e) {
+            return new HashSet<App>();
+        }
     }
 }
