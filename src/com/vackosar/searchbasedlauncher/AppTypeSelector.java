@@ -11,7 +11,6 @@ public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
     private final RadioGroup radioGroup;
     private final SharedPreferences sharedPreferences;
     private final ColorService colorService = new ColorService();
-    private final TextView flashButton;
     private final TextView wifiButton;
     private final TextView button3;
     private final TextView bluetoothButton;
@@ -22,7 +21,6 @@ public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
         radioGroup.setOnCheckedChangeListener(this);
         sharedPreferences = mainActivity.getApplicationContext().getSharedPreferences("preferencename", 0);
         selected = AppsType.parseOrdinal(sharedPreferences.getInt("selected", 0));
-        flashButton = (TextView) mainActivity.findViewById(R.id.flashButton);
         wifiButton = (TextView) mainActivity.findViewById(R.id.wifiButton);
         button3 = (TextView) mainActivity.findViewById(R.id.bluetoothButton);
         bluetoothButton = (TextView) mainActivity.findViewById(R.id.cameraButton);
@@ -35,7 +33,6 @@ public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
     }
 
     public void setInvisible() {
-        colorService.setInvisible(flashButton);
         colorService.setInvisible(wifiButton);
         colorService.setInvisible(button3);
         colorService.setInvisible(bluetoothButton);

@@ -51,27 +51,13 @@
         android:text="Autostart" />
 
     <TextView
-        android:layout_marginRight="7dp" 
-        android:id="@+id/flashButton"
-        android:gravity="center"
-        android:layout_height="35dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/autostartButton"
-        android:layout_marginTop="50dp"
-        android:layout_width="70dp"
-        android:background="@android:color/darker_gray"
-        android:textColor="@android:color/white"
-        android:text="Flash" />
-
-    
-    <TextView
-        android:layout_marginRight="7dp" 
+        android:layout_marginRight="7dp"
         android:gravity="center"
         android:id="@+id/wifiButton"
         android:layout_width="70dp"
         android:layout_height="35dp"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/flashButton"
+        android:layout_alignTop="@+id/autostartButton"
         android:layout_marginTop="40dp"
 		android:background="@android:color/darker_gray"
         android:textColor="@android:color/white"
@@ -103,8 +89,8 @@
         android:background="@android:color/darker_gray"
         android:textColor="@android:color/white"
         android:text="Cam."  />
-	</RelativeLayout>
 
+    </RelativeLayout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
