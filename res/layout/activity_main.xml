@@ -12,10 +12,10 @@
     
     <EditText
         android:id="@+id/searchText"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/autostartButton"
         android:longClickable="true"
         android:ems="10"
@@ -30,8 +30,9 @@
         android:id="@+id/appListView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/searchText"
+        android:layout_above="@+id/searchText"
         android:focusable="false" 
         android:focusableInTouchMode="false"
         android:textFilterEnabled="false">
@@ -43,11 +44,8 @@
         android:gravity="center"
         android:layout_height="35dp"
         android:layout_width="70dp"
-        
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-            
-      
         android:text="Autostart" />
 
     <TextView

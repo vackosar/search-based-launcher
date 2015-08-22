@@ -20,10 +20,12 @@
     	android:anyDensity="true" />
 	
     <application
+        android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="Search based launcher v3"
         android:theme="@android:style/Theme.NoTitleBar" 
-        android:persistent="true" >
+        android:persistent="true"
+        android:windowSoftInputMode="stateVisible|adjustResize" >
         
         <activity
             android:name="com.vackosar.searchbasedlauncher.MainActivity"
