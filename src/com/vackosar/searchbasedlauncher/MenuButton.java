@@ -1,7 +1,5 @@
 package com.vackosar.searchbasedlauncher;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
@@ -15,7 +13,6 @@ public class MenuButton implements View.OnClickListener, Colorful {
         this.mainActivity = mainActivity;
         textView = (TextView) mainActivity.findViewById(R.id.menuButton);
         textView.setOnClickListener(this);
-        createMenuDonateButton();
     }
 
     public void toggle() {
@@ -39,16 +36,6 @@ public class MenuButton implements View.OnClickListener, Colorful {
 
     private ViewAnimator getViewAnimator() {
         return (ViewAnimator) mainActivity.findViewById(R.id.viewAnimator);
-    }
-
-    private void createMenuDonateButton() {
-        mainActivity.findViewById(R.id.donateButton).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + mainActivity.APP_PACKAGE_NAME));
-                marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                mainActivity.startActivity(marketIntent);
-            }
-        });
     }
 
     @Override

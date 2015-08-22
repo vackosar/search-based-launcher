@@ -103,6 +103,19 @@
             android:textColor="@android:color/white"
             android:text="Menu"  />
 
+        <TextView
+            android:layout_marginRight="7dp"
+            android:gravity="center"
+            android:id="@+id/donateButton"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/menuButton"
+            android:layout_marginTop="40dp"
+            android:background="@android:color/darker_gray"
+            android:textColor="@android:color/white"
+            android:text="Donate"  />
+
     </RelativeLayout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -117,21 +130,6 @@
         android:text="Switch between the lists on the bottom of the screen. If you like this app, buy me a coffee: donate PayPal on Google Play. Button below will take to Google Play page."
         android:textAppearance="?android:attr/textAppearanceMedium" 
         android:layout_alignParentTop="true"/>
-
-
-
-        <Button
-            android:id="@+id/donateButton"
-            android:layout_width="140dp"
-            android:layout_height="100dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/textView1"
-            android:layout_marginTop="130dp"
-            android:text="Go to G. Play to rate or donate" />
-
-
-
-
 
         <RadioGroup
             android:id="@+id/appListRadioGroup"
