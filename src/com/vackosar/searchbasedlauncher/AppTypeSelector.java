@@ -2,7 +2,6 @@ package com.vackosar.searchbasedlauncher;
 
 import android.content.SharedPreferences;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
     public static final AppsType DEFAULT_SELECTED = AppsType.normal;
@@ -10,10 +9,6 @@ public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
     private AppsType selected = DEFAULT_SELECTED;
     private final RadioGroup radioGroup;
     private final SharedPreferences sharedPreferences;
-    private final ColorService colorService = new ColorService();
-    private final TextView wifiButton;
-    private final TextView button3;
-    private final TextView bluetoothButton;
 
     public AppTypeSelector(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -21,21 +16,12 @@ public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
         radioGroup.setOnCheckedChangeListener(this);
         sharedPreferences = mainActivity.getApplicationContext().getSharedPreferences("preferencename", 0);
         selected = AppsType.parseOrdinal(sharedPreferences.getInt("selected", 0));
-        wifiButton = (TextView) mainActivity.findViewById(R.id.wifiButton);
-        button3 = (TextView) mainActivity.findViewById(R.id.bluetoothButton);
-        bluetoothButton = (TextView) mainActivity.findViewById(R.id.cameraButton);
     }
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         selected = AppsType.parseViewId(checkedId);
         mainActivity.getMenuButton().toggle();
-    }
-
-    public void setInvisible() {
-        colorService.setInvisible(wifiButton);
-        colorService.setInvisible(button3);
-        colorService.setInvisible(bluetoothButton);
     }
 
     public AppsType getSelected() {
