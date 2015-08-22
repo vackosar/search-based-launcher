@@ -90,6 +90,19 @@
         android:textColor="@android:color/white"
         android:text="Cam."  />
 
+        <TextView
+            android:layout_marginRight="7dp"
+            android:gravity="center"
+            android:id="@+id/menuButton"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/cameraButton"
+            android:layout_marginTop="40dp"
+            android:background="@android:color/darker_gray"
+            android:textColor="@android:color/white"
+            android:text="Menu"  />
+
     </RelativeLayout>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

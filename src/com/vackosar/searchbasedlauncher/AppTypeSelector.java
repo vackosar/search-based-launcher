@@ -29,7 +29,7 @@ public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         selected = AppsType.parseViewId(checkedId);
-        mainActivity.getMenu().toggle();
+        mainActivity.getMenuButton().toggle();
     }
 
     public void setInvisible() {

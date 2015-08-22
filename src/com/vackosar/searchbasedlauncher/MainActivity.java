@@ -26,8 +26,12 @@ public class MainActivity extends Activity {
     private SearchText searchText;
     private AutostartButton autostartButton;
     private AppsManager appsManager;
-    private Menu menu;
+    private MenuButton menuButton;
     private AppsView appsView;
+    private WifiButton wifiButton;
+    private BluetoothButton bluetoothButton;
+    private CameraButton cameraButton;
+    private AppTypeSelector appTypeSelector;
 
     private void registerIntentReceivers() {
         IntentFilter filter = new IntentFilter();
@@ -40,13 +44,13 @@ public class MainActivity extends Activity {
     @Override
     public boolean onKeyUp(int keycode, KeyEvent event) {
         if (keycode == KeyEvent.KEYCODE_MENU) {
-            menu.toggle();
+            menuButton.toggle();
         } else if (keycode == KeyEvent.KEYCODE_SEARCH) {
             startSearch("", false, null, true);
         } else if (keycode == KeyEvent.KEYCODE_BACK) {
             ViewAnimator mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
             if (mViewAnimator.getDisplayedChild() == 1) {
-                menu.toggle();
+                menuButton.toggle();
             }
         } else {
             return super.onKeyUp(keycode, event);
@@ -60,11 +64,15 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         registerIntentReceivers();
         appsView = new AppsView(this);
-        menu = new Menu(this);
+        menuButton = new MenuButton(this);
         autostartButton = new AutostartButton(this);
+        wifiButton = new WifiButton(this);
+        bluetoothButton = new BluetoothButton(this);
+        cameraButton = new CameraButton(this);
         setAndroidVersion();
         appsManager = new AppsManager(this);
         searchText = new SearchText(this);
+        appTypeSelector = new AppTypeSelector(this);
         appsManager.loadFromSavedState(savedInstanceState);
     }
 
@@ -91,13 +99,17 @@ public class MainActivity extends Activity {
         return appsView;
     }
 
-    public Menu getMenu() {
-        return menu;
+    public MenuButton getMenuButton() {
+        return menuButton;
+    }
+
+    public AppTypeSelector getAppTypeSelector() {
+        return appTypeSelector;
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        menu.getAppTypeSelector().save();
+        getAppTypeSelector().save();
         appsManager.saveState(savedInstanceState);
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -106,14 +118,14 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         searchText.setNormalColor();
-        if ((menu.getAppTypeSelector().getSelected() == AppsType.normal) && autostartButton.isOn()) {
+        if ((getAppTypeSelector().getSelected() == AppsType.normal) && autostartButton.isOn()) {
             searchText.clearText();
         }
     }
 
     @Override
     public void onDestroy() {
-        menu.onDestroy();
+        wifiButton.unregisterReceiver();
         unregisterReceiver(mPkgApplicationsReceiver);
         super.onDestroy();
     }

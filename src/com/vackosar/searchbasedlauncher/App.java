@@ -56,7 +56,7 @@ public class App implements Comparable<App> {
     }
 
     public boolean isMenu() {
-        return (MainActivity.APP_PACKAGE_NAME + ".Menu").equals(getActivity());
+        return (MainActivity.APP_PACKAGE_NAME + ".MenuButton").equals(getActivity());
     }
 
     public App getAsRecent() {

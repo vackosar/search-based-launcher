@@ -3,22 +3,18 @@ package com.vackosar.searchbasedlauncher;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.ViewAnimator;
 
-public class Menu {
+public class MenuButton implements View.OnClickListener, Colorful {
     public static final int MENU_CHILD_ID = 1;
     private final MainActivity mainActivity;
-    private final AppTypeSelector appTypeSelector;
-    private final WifiButton wifiButton;
-    private final BluetoothButton bluetoothButton;
-    private final CameraButton cameraButton;
+    private final TextView textView;
 
-    public Menu(MainActivity mainActivity) {
+    public MenuButton(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        appTypeSelector = new AppTypeSelector(mainActivity);
-        wifiButton = new WifiButton(mainActivity);
-        bluetoothButton = new BluetoothButton(mainActivity);
-        cameraButton = new CameraButton(mainActivity);
+        textView = (TextView) mainActivity.findViewById(R.id.menuButton);
+        textView.setOnClickListener(this);
         createMenuDonateButton();
     }
 
@@ -28,7 +24,7 @@ public class Menu {
         if (! isMenuShown()) {
             mainActivity.getAppsManager().reload();
         } else {
-            appTypeSelector.requestFocus();
+            mainActivity.getAppTypeSelector().requestFocus();
         }
     }
 
@@ -55,11 +51,13 @@ public class Menu {
         });
     }
 
-    public AppTypeSelector getAppTypeSelector() {
-        return appTypeSelector;
+    @Override
+    public View getView() {
+        return textView;
     }
 
-    public void onDestroy() {
-        wifiButton.unregisterReceiver();
+    @Override
+    public void onClick(View v) {
+        toggle();
     }
 }

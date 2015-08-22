@@ -20,7 +20,6 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     List<App> filtered = new ArrayList<>();
     List<App> recent;
     public static final int FIRST_INDEX = 0;
-    public static final App MENU_APP = new App(MainActivity.APP_PACKAGE_NAME + ".Menu", "#Menu", MainActivity.APP_PACKAGE_NAME + ".Menu");
 
     public AppsView(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -58,7 +57,6 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         for (App app: mainActivity.getAppsManager().getPkg()) {
             addFiltredIfMatch(filterText, app);
         }
-        addFiltredIfMatch(filterText, MENU_APP);
     }
 
     private void addFiltredIfMatch(String filterText, App app) {
@@ -103,7 +101,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         mainActivity.getSearchText().setActivatedColor();
         addRecent(app);
         if (app.isMenu()) {
-            mainActivity.getMenu().toggle();
+            mainActivity.getMenuButton().toggle();
         } else {
             executeActivity(app);
         }
@@ -138,10 +136,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
 
     public boolean showOptionsForApp(final int appIndex) {
         final App app = filtered.get(appIndex);
-        if (app.equals(MENU_APP)) {
-            return false;
-        }
-        switch (mainActivity.getMenu().getAppTypeSelector().getSelected()) {
+        switch (mainActivity.getAppTypeSelector().getSelected()) {
             case normal:
                 dialogFactory.showNormalOptions(app);
                 break;
