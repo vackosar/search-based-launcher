@@ -125,20 +125,18 @@
         android:id="@+id/textView1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:text="Switch between the lists on the bottom of the screen. If you like this app, buy me a coffee: donate PayPal on Google Play. Button below will take to Google Play page."
-        android:textAppearance="?android:attr/textAppearanceMedium" 
         android:layout_alignParentTop="true"/>
 
         <RadioGroup
             android:id="@+id/appListRadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:clickable="true"
             android:duplicateParentState="false"
             android:checkedButton="@+id/normalAppsRadioButton"
-            android:longClickable="false" 
+            android:longClickable="false"
             android:text="tet" >
 
             <RadioButton
