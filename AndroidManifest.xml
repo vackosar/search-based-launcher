@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vackosar.searchbasedlauncher"
-    android:versionCode="5"
-    android:versionName="3" >
+    android:versionCode="30"
+    android:versionName="3.0" >
     <uses-sdk
         android:minSdkVersion="7"
         android:targetSdkVersion="15" />
