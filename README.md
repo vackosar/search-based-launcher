@@ -8,9 +8,7 @@ Minimalist open-source launcher
 - Match any character sequence with space character (" " is replaced with regex "*." ).
 - Search using REGEX.
 - Toggle camera, wifi and bluetooth with buttons.
-- Read source code: https://github.com/vackosar/search-based-launcher
-- Donate: https://github.com/vackosar/search-based-launcher/wiki/Donate
-- Request features: https://github.com/vackosar/search-based-launcher/issues
+- Read wiki: https://github.com/vackosar/search-based-launcher/wiki
 
 
 Note:

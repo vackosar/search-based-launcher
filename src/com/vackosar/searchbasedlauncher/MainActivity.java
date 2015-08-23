@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
     private BluetoothButton bluetoothButton;
     private CameraButton cameraButton;
     private AppTypeSelector appTypeSelector;
-    private DonateButton donateButton;
+    private WikiButton wikiButton;
 
     private void registerIntentReceivers() {
         IntentFilter filter = new IntentFilter();
@@ -74,7 +74,7 @@ public class MainActivity extends Activity {
         appsManager = new AppsManager(this);
         searchText = new SearchText(this);
         appTypeSelector = new AppTypeSelector(this);
-        donateButton = new DonateButton(this);
+        wikiButton = new WikiButton(this);
         appsManager.loadFromSavedState(savedInstanceState);
     }
 
