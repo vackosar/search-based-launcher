@@ -109,22 +109,6 @@ public class AppsManager {
         refreshView();
     }
 
-    public void loadFromSavedState(Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            load();
-        } else {
-            pkg = new ArrayList<>(App.getApps(new HashSet<>(savedInstanceState.getStringArrayList("pkg"))));
-            extra = App.getApps(new HashSet<>(savedInstanceState.getStringArrayList("extra")));
-            hidden = App.getApps(new HashSet<>(savedInstanceState.getStringArrayList("hidden")));
-        }
-    }
-    
-    public void saveState(Bundle savedInstanceState) {
-        savedInstanceState.putStringArrayList("pkg", new ArrayList<>(App.getJson(new HashSet<>(pkg))));
-        savedInstanceState.putStringArrayList("extra", new ArrayList<>(App.getJson(extra)));
-        savedInstanceState.putStringArrayList("hidden", new ArrayList<>(App.getJson(hidden)));
-    }
-
     public Set<App> getExtra() {
         return extra;
     }

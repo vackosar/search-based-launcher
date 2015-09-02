@@ -64,25 +64,22 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         registerIntentReceivers();
+        initializeViewWrappers();
+        appsManager.load();
+    }
+
+    private void initializeViewWrappers() {
         appsView = new AppsView(this);
         menuButton = new MenuButton(this);
         autostartButton = new AutostartButton(this);
         wifiButton = new WifiButton(this);
         bluetoothButton = new BluetoothButton(this);
         cameraButton = new CameraButton(this);
-        setAndroidVersion();
         appsManager = new AppsManager(this);
+
         searchText = new SearchText(this);
         appTypeSelector = new AppTypeSelector(this);
         wikiButton = new WikiButton(this);
-        appsManager.loadFromSavedState(savedInstanceState);
-    }
-
-    private void setAndroidVersion() {
-        String Aversion = android.os.Build.VERSION.RELEASE;
-        newerAndroidVersion = !(Aversion.startsWith("1.") ||
-                Aversion.startsWith("2.0") ||
-                Aversion.startsWith("2.1"));
     }
 
     public SearchText getSearchText() {
@@ -107,13 +104,6 @@ public class MainActivity extends Activity {
 
     public AppTypeSelector getAppTypeSelector() {
         return appTypeSelector;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        getAppTypeSelector().save();
-        appsManager.saveState(savedInstanceState);
-        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
