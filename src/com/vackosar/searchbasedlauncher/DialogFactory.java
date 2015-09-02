@@ -7,8 +7,15 @@ import android.net.Uri;
 import android.text.InputType;
 import android.widget.EditText;
 
+import java.util.Collection;
+
 @SuppressWarnings("Convert2Lambda")
 public class DialogFactory {
+    public static final String HIDE = "Hide";
+    public static final String UNINSTALL = "Uninstall";
+    public static final String RENAME = "Rename";
+    public static final String REMOVE = "Remove";
+    public static final String ADD = "Add";
     private final MainActivity mainActivity;
 
     public DialogFactory(MainActivity mainActivity) {
@@ -26,7 +33,8 @@ public class DialogFactory {
         } else if (appsManager.getExtra().contains(app)) {
             showExtraAddedApp(app, dialog);
         } else {
-            //FIXME
+            appsManager.getHidden().remove(app);
+            appsManager.save();
         }
         dialog.create().show();
     }
@@ -38,20 +46,22 @@ public class DialogFactory {
         EditText dialogInput = new EditText(mainActivity);
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
-
         dialog.setView(dialogInput);
         dialog.setMessage("Remove this activity (appsManager.getHidden() app) from appsManager.getHidden() applications list?");
         dialog.setCancelable(true);
-        dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                if (appsManager.getHidden().remove(app)) {
-                    appsManager.save();
-                    dialog.dismiss();
-                }
-            }
-        });
-
+        dialog.setPositiveButton(REMOVE, createRemoveListener(app, appsManager, appsManager.getHidden()));
         dialog.create().show();
+    }
+
+    private DialogInterface.OnClickListener createRemoveListener(final App app, final AppsManager appsManager, final Collection<App> collection) {
+        return new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                collection.remove(app);
+                appsManager.save();
+                appsManager.refreshView();
+                dialog.dismiss();
+            }
+        };
     }
 
     public void showRemoveExtraAppOptions(final App app) {
@@ -61,19 +71,10 @@ public class DialogFactory {
         EditText dialogInput = new EditText(mainActivity);
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
-
         dialog.setView(dialogInput);
         dialog.setMessage("Remove this (appsManager.getExtra() added list parseViewId all activities) activity from applications list?");
         dialog.setCancelable(true);
-        dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                if (appsManager.getExtra().remove(app)) {
-                    appsManager.save();
-                    dialog.dismiss();
-                }
-            }
-        });
-
+        dialog.setPositiveButton(REMOVE, createRemoveListener(app, appsManager, appsManager.getExtra()));
         dialog.create().show();
     }
 
@@ -85,33 +86,29 @@ public class DialogFactory {
         EditText dialogInput = new EditText(mainActivity);
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
-
         dialog.setView(dialogInput);
         dialog.setMessage("Add this activity to applications list?");
         dialog.setCancelable(true);
-        dialog.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton(ADD, createAddListener(app, appsManager, dialogInput));
+        dialog.create().show();
+    }
+
+    private DialogInterface.OnClickListener createAddListener(final App app, final AppsManager appsManager, final EditText dialogInput) {
+        return new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 appsManager.getExtra().add(app);
                 app.setNick(dialogInput.getText().toString());
                 appsManager.save();
                 dialog.dismiss();
             }
-        });
-
-        dialog.create().show();
+        };
     }
 
     public void showExtraAddedApp(final App app, AlertDialog.Builder dialog) {
         AppsManager appsManager = mainActivity.getAppsManager();
         dialog.setMessage("Remove activity " + app + " from appsManager.getExtra() added (to applications list) list ?");
         dialog.setCancelable(true);
-        dialog.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                appsManager.getExtra().remove(app);
-                appsManager.save();
-                dialog.dismiss();
-            }
-        });
+        dialog.setPositiveButton(REMOVE, createRemoveListener(app, appsManager, appsManager.getExtra()));
     }
 
     public void showRenamedApp(final App app, AlertDialog.Builder dialog) {
@@ -122,31 +119,20 @@ public class DialogFactory {
         dialog.setView(dialogInput);
         dialog.setMessage("This application is in both add and hide lists, thus is probably renamed.");
         dialog.setCancelable(true);
-        dialog.setPositiveButton("Hide", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                if (appsManager.getHidden().contains(app)) {
-                    appsManager.getExtra().remove(app);
-                    appsManager.save();
-                    dialog.dismiss();
-                }
-            }
-        });
+        dialog.setPositiveButton(HIDE, createHideListener(app, appsManager));
+        dialog.setNeutralButton(UNINSTALL, createUninstallListener(app, appsManager));
+        dialog.setNegativeButton(RENAME, createRenameListener(app, appsManager, dialogInput));
+    }
 
-        dialog.setNeutralButton("Uninstall", new DialogInterface.OnClickListener() {
+    private DialogInterface.OnClickListener createHideListener(final App app, final AppsManager appsManager) {
+        return new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + app.getName()));
-                mainActivity.startActivity(intent);
-                appsManager.reload();
-                dialog.dismiss();
-            }
-        });
-        dialog.setNegativeButton("Rename", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                app.setNick(dialogInput.getText().toString());
+                appsManager.getExtra().remove(app);
+                appsManager.getHidden().add(app);
                 appsManager.save();
                 dialog.dismiss();
             }
-        });
+        };
     }
 
     public void showHideApp(final App app, AlertDialog.Builder dialog) {
@@ -157,33 +143,32 @@ public class DialogFactory {
         dialog.setView(dialogInput);
         dialog.setMessage("Hide this application from applications list, rename application (add to Hide and Extra list with diferent names) or uninstall it?");
         dialog.setCancelable(true);
-        dialog.setPositiveButton("Hide", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                if (appsManager.getHidden().remove(app)) {
-                    appsManager.save();
-                    dialog.dismiss();
-                }
-            }
-        });
+        dialog.setPositiveButton(HIDE, createHideListener(app, appsManager));
+        dialog.setNeutralButton(UNINSTALL, createUninstallListener(app, appsManager));
+        dialog.setNegativeButton(RENAME, createRenameListener(app, appsManager, dialogInput));
+    }
 
-        dialog.setNeutralButton("Uninstall", new DialogInterface.OnClickListener() {
+    private DialogInterface.OnClickListener createRenameListener(final App app, final AppsManager appsManager, final EditText dialogInput) {
+        return new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                appsManager.getHidden().add(app);
+                app.setNick(dialogInput.getText().toString());
+                appsManager.getExtra().remove(app);
+                appsManager.getExtra().add(app);
+                appsManager.save();
+                dialog.dismiss();
+            }
+        };
+    }
+
+    private DialogInterface.OnClickListener createUninstallListener(final App app, final AppsManager appsManager) {
+        return new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + app.getName()));
                 mainActivity.startActivity(intent);
                 appsManager.reload();
                 dialog.dismiss();
             }
-        });
-        dialog.setNegativeButton("Rename", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                if (!appsManager.getHidden().contains(app)) {
-                    appsManager.getHidden().add(app);
-                }
-                app.setNick(dialogInput.getText().toString());
-                appsManager.getExtra().add(app);
-                appsManager.save();
-                dialog.dismiss();
-            }
-        });
+        };
     }
 }

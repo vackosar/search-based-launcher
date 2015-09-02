@@ -106,7 +106,7 @@ public class AppsManager {
     public void save() {
         preferencesAdapter.saveSet(extra, "extra");
         preferencesAdapter.saveSet(hidden, "hidden");
-        refreshView();
+        reload();
     }
 
     public Set<App> getExtra() {
