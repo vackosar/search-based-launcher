@@ -5,7 +5,7 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.TextView;
 
-public class WikiButton implements Colorful, View.OnClickListener{
+public class WikiButton extends Colorful implements View.OnClickListener{
     public static final String WIKI_URI = "https://github.com/vackosar/search-based-launcher/wiki";
     final MainActivity mainActivity;
     private final TextView textView;

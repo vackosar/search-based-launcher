@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
-public class MenuButton implements View.OnClickListener, Colorful {
+public class MenuButton extends Colorful implements View.OnClickListener {
     public static final int MENU_CHILD_ID = 1;
     private final MainActivity mainActivity;
     private final TextView textView;

@@ -5,7 +5,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
-public class SearchText implements TextWatcher, Colorful {
+public class SearchText extends Colorful implements TextWatcher {
     public static final String EMPTY = "";
     public static final String SPACE = " ";
     public static final String REGEX_MATCH_ALL = ".*";

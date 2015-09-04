@@ -10,12 +10,14 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.ViewAnimator;
 
+import java.util.logging.Logger;
+
 
 @SuppressWarnings("Convert2Lambda")
 public class MainActivity extends Activity {
     public static String APP_PACKAGE_NAME = "com.vackosar.searchbasedlauncher";
 
-    boolean newerAndroidVersion = true;
+    private Logger log = Logger.getLogger(getClass().getSimpleName());
 
     private final BroadcastReceiver mPkgApplicationsReceiver = new BroadcastReceiver() {
         @Override

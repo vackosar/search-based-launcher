@@ -9,11 +9,24 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-public class WifiButton extends BroadcastReceiver implements View.OnClickListener, Colorful {
+public class WifiButton extends Colorful implements View.OnClickListener {
     final MainActivity mainActivity;
     final ColorService colorService = new ColorService();
     private final WifiManager wifiManager;
     private final TextView textView;
+    BroadcastReceiver RECEIVER = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent){
+            Log.d("DEBUG", "recieved Broadcast");
+            if (wifiManager != null) {
+                if (wifiManager.isWifiEnabled()) {
+                    setActivatedColor();
+                } else {
+                    setNormalColor();
+                }
+            }
+        }
+    };
 
     public WifiButton(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
@@ -32,7 +45,7 @@ public class WifiButton extends BroadcastReceiver implements View.OnClickListene
         IntentFilter filter = new IntentFilter( );
         filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
         filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        mainActivity.registerReceiver(this, filter);
+        mainActivity.registerReceiver(RECEIVER, filter);
     }
 
     @Override
@@ -59,20 +72,7 @@ public class WifiButton extends BroadcastReceiver implements View.OnClickListene
         return textView;
     }
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        Log.d("DEBUG", "recieved Broadcast");
-        if(wifiManager !=null) {
-            if(wifiManager.isWifiEnabled()) {
-                setActivatedColor();
-            }
-            else {
-                setNormalColor();
-            }
-        }
-    }
-
     public void unregisterReceiver () {
-        mainActivity.unregisterReceiver(this);
+        mainActivity.unregisterReceiver(RECEIVER);
     }
 }
