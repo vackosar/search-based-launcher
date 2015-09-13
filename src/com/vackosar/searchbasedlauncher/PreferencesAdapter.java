@@ -45,7 +45,7 @@ public class PreferencesAdapter {
 
     public boolean saveSet(Collection<App> set, String name) {
         SharedPreferences.Editor editor = getEditor(name);
-        putStrings(editor, name, App.getJson(set));
+        putStrings(editor, App.getJson(set));
         return editor.commit();
     }
 
@@ -58,7 +58,7 @@ public class PreferencesAdapter {
         return context.getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 
-    private void putStrings(SharedPreferences.Editor editor, String name, Collection<String> strings) {
+    private void putStrings(SharedPreferences.Editor editor, Collection<String> strings) {
         final Iterator<String> iterator = strings.iterator();
         int index = -1;
         editor.putString(SIZE, String.valueOf(strings.size()));
@@ -88,7 +88,7 @@ public class PreferencesAdapter {
         try {
             return App.getApps(getStrings(listName));
         } catch (Exception e) {
-            return new HashSet<App>();
+            return new HashSet<>();
         }
     }
 }
