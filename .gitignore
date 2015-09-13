@@ -1,4 +1,10 @@
 /gen
 /.idea
+/.gradle
+/build
+/gradle
 /out
+/local.properties
+/gradlew
+/gradlew.bad
 *.iml
