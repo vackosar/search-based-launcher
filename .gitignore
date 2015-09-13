@@ -6,5 +6,5 @@
 /out
 /local.properties
 /gradlew
-/gradlew.bad
+/gradlew.bat
 *.iml
