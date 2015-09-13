@@ -14,6 +14,13 @@ dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
 }
 
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
