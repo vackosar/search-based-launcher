@@ -28,7 +28,7 @@
         android:windowSoftInputMode="stateVisible|adjustResize" >
         
         <activity
-            android:name=".MainActivity"
+            android:name="com.vackosar.searchbasedlauncher.MainActivity"
             android:label="Search based launcher v3"
             android:alwaysRetainTaskState="true"
              android:launchMode="singleInstance" >
