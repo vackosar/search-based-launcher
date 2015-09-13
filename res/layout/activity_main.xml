@@ -3,90 +3,89 @@
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
     
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="fill_parent"
- 	android:layout_height="fill_parent"
-    android:id="@+id/layoutMain" 
-    android:layout_gravity="bottom" >
-    
-    
-    <EditText
-        android:id="@+id/searchText"
-        android:layout_width="fill_parent"
-        android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/autostartButton"
-        android:longClickable="true"
-        android:ems="10"
-        android:inputType="textNoSuggestions"  
-        android:background="@android:color/darker_gray"
-        android:textColor="@android:color/white" >
+        android:layout_height="fill_parent"
+        android:id="@+id/layoutMain"
+        android:layout_gravity="bottom" >
 
-        <requestFocus />
-    </EditText>
+        <EditText
+            android:id="@+id/searchText"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/autostartButton"
+            android:longClickable="true"
+            android:ems="10"
+            android:inputType="textNoSuggestions"
+            android:background="@android:color/darker_gray"
+            android:textColor="@android:color/white" >
 
-    <ListView
-        android:id="@+id/appListView"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_above="@+id/searchText"
-        android:focusable="false" 
-        android:focusableInTouchMode="false"
-        android:textFilterEnabled="false">
-    </ListView>
+            <requestFocus />
+        </EditText>
 
-    <TextView
-        android:layout_marginRight="7dp" 
-        android:id="@+id/autostartButton"
-        android:gravity="center"
-        android:layout_height="35dp"
-        android:layout_width="70dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:text="Autostart" />
+        <ListView
+            android:id="@+id/appListView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_above="@+id/searchText"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:textFilterEnabled="false">
+        </ListView>
 
-    <TextView
-        android:layout_marginRight="7dp"
-        android:gravity="center"
-        android:id="@+id/wifiButton"
-        android:layout_width="70dp"
-        android:layout_height="35dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/autostartButton"
-        android:layout_marginTop="40dp"
-		android:background="@android:color/darker_gray"
-        android:textColor="@android:color/white"
-        android:text="Wifi" />
+        <TextView
+            android:layout_marginRight="7dp"
+            android:id="@+id/autostartButton"
+            android:gravity="center"
+            android:layout_height="35dp"
+            android:layout_width="70dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="Autostart" />
 
-     <TextView
-        android:layout_marginRight="7dp" 
-        android:gravity="center"
-        android:id="@+id/bluetoothButton"
-        android:layout_width="70dp"
-        android:layout_height="35dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/wifiButton"
-        android:layout_marginTop="40dp"
-		android:background="@android:color/darker_gray"
-        android:textColor="@android:color/white"
-        android:text="Blue."  />
-     
+        <TextView
+            android:layout_marginRight="7dp"
+            android:gravity="center"
+            android:id="@+id/wifiButton"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/autostartButton"
+            android:layout_marginTop="40dp"
+            android:background="@android:color/darker_gray"
+            android:textColor="@android:color/white"
+            android:text="Wifi" />
 
-     <TextView
-        android:layout_marginRight="7dp" 
-        android:gravity="center"
-        android:id="@+id/cameraButton"
-        android:layout_width="70dp"
-        android:layout_height="35dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/bluetoothButton"
-        android:layout_marginTop="40dp"
-        android:background="@android:color/darker_gray"
-        android:textColor="@android:color/white"
-        android:text="Cam."  />
+         <TextView
+            android:layout_marginRight="7dp"
+            android:gravity="center"
+            android:id="@+id/bluetoothButton"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/wifiButton"
+            android:layout_marginTop="40dp"
+            android:background="@android:color/darker_gray"
+            android:textColor="@android:color/white"
+            android:text="Blue."  />
+
+
+         <TextView
+            android:layout_marginRight="7dp"
+            android:gravity="center"
+            android:id="@+id/cameraButton"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/bluetoothButton"
+            android:layout_marginTop="40dp"
+            android:background="@android:color/darker_gray"
+            android:textColor="@android:color/white"
+            android:text="Cam."  />
 
         <TextView
             android:layout_marginRight="7dp"
@@ -116,16 +115,16 @@
 
     </RelativeLayout>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/layoutMenu">
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentTop="true"/>
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"/>
 
         <RadioGroup
             android:id="@+id/appListRadioGroup"
