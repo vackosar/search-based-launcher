@@ -14,17 +14,29 @@ public class AutostartButton implements View.OnClickListener {
         this.mainActivity = mainActivity;
         textView = (TextView) mainActivity.findViewById(R.id.autostartButton);
         textView.setOnClickListener(this);
-        autostart = false;
-        onClick(null);
+        load();
     }
 
     @Override
     public void onClick(View v) {
         autostart=!autostart;
+        setColor();
+    }
+
+    private void setColor() {
         colorService.setActive(autostart, textView);
     }
 
     public boolean isOn() {
         return autostart;
+    }
+
+    public void save() {
+        mainActivity.getPreferencesAdapter().save(getClass().getName(), new Boolean(autostart));
+    }
+
+    public void load() {
+        autostart = mainActivity.getPreferencesAdapter().load(getClass().getName(), Boolean.class);
+        setColor();
     }
 }
