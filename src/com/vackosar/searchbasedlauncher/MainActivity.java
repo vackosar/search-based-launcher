@@ -35,6 +35,7 @@ public class MainActivity extends Activity {
     private CameraButton cameraButton;
     private AppTypeSelector appTypeSelector;
     private WikiButton wikiButton;
+    private PreferencesAdapter preferencesAdapter;
 
     private void registerIntentReceivers() {
         IntentFilter filter = new IntentFilter();
@@ -71,6 +72,7 @@ public class MainActivity extends Activity {
     }
 
     private void initializeViewWrappers() {
+        preferencesAdapter = new PreferencesAdapter(this);
         appsView = new AppsView(this);
         menuButton = new MenuButton(this);
         autostartButton = new AutostartButton(this);
@@ -78,7 +80,6 @@ public class MainActivity extends Activity {
         bluetoothButton = new BluetoothButton(this);
         cameraButton = new CameraButton(this);
         appsManager = new AppsManager(this);
-
         searchText = new SearchText(this);
         appTypeSelector = new AppTypeSelector(this);
         wikiButton = new WikiButton(this);
@@ -106,6 +107,10 @@ public class MainActivity extends Activity {
 
     public AppTypeSelector getAppTypeSelector() {
         return appTypeSelector;
+    }
+
+    public PreferencesAdapter getPreferencesAdapter() {
+        return preferencesAdapter;
     }
 
     @Override

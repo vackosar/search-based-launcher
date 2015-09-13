@@ -1,21 +1,28 @@
 package com.vackosar.searchbasedlauncher;
 
-import android.content.SharedPreferences;
 import android.widget.RadioGroup;
 
 public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
     public static final AppsType DEFAULT_SELECTED = AppsType.normal;
     final private MainActivity mainActivity;
+    private final PreferencesAdapter preferencesAdapter;
     private AppsType selected = DEFAULT_SELECTED;
     private final RadioGroup radioGroup;
-    private final SharedPreferences sharedPreferences;
 
     public AppTypeSelector(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
         radioGroup = (RadioGroup) mainActivity.findViewById(R.id.appListRadioGroup);
         radioGroup.setOnCheckedChangeListener(this);
-        sharedPreferences = mainActivity.getApplicationContext().getSharedPreferences("preferencename", 0);
-        selected = AppsType.parseOrdinal(sharedPreferences.getInt("selected", 0));
+        preferencesAdapter = mainActivity.getPreferencesAdapter();
+        selected = AppsType.parseOrdinal(load());
+    }
+
+    private Integer load() {
+        return preferencesAdapter.load(getClass().getName(), Integer.class);
+    }
+
+    public void save() {
+        preferencesAdapter.save(getClass().getName(), selected.ordinal());
     }
 
     @Override
@@ -26,12 +33,6 @@ public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
 
     public AppsType getSelected() {
         return selected;
-    }
-
-    public void save() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("selected", selected.ordinal());
-        editor.commit();
     }
 
     public void requestFocus() {

@@ -18,11 +18,44 @@ public class PreferencesAdapter {
         this.context = mainActivity.getApplicationContext();
     }
 
-    public boolean saveSet(Collection<App> set, String listName) {
-        SharedPreferences prefs = context.getSharedPreferences(listName, 0);
-        SharedPreferences.Editor editor = prefs.edit();
-        putStrings(editor, listName, App.getJson(set));
+    public <T> boolean save(String name, T o) {
+        final SharedPreferences.Editor editor = getEditor(name);
+        if (o instanceof Boolean) {
+            editor.putBoolean(name, (Boolean) o);
+        } else if (o instanceof String) {
+            editor.putString(name, (String) o);
+        } else {
+            throw new IllegalArgumentException("Unsupported type " + o.getClass() + ".");
+        }
         return editor.commit();
+    }
+
+    public <T> T load(String name, Class<T> clazz) {
+        final SharedPreferences preferences = getSharedPreferences(name);
+        if (clazz.equals(Boolean.class)) {
+            return clazz.cast(preferences.getBoolean(name, true));
+        } else if (clazz.equals(String.class)) {
+            return clazz.cast(preferences.getString(name, null));
+        } else if (clazz.equals(Integer.class)) {
+            return clazz.cast(preferences.getInt(name, 0));
+        } else {
+            throw new IllegalArgumentException("Unsupported type " + clazz + ".");
+        }
+    }
+
+    public boolean saveSet(Collection<App> set, String name) {
+        SharedPreferences.Editor editor = getEditor(name);
+        putStrings(editor, name, App.getJson(set));
+        return editor.commit();
+    }
+
+    private SharedPreferences.Editor getEditor(String name) {
+        SharedPreferences prefs = getSharedPreferences(name);
+        return prefs.edit();
+    }
+
+    private SharedPreferences getSharedPreferences(String name) {
+        return context.getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 
     private void putStrings(SharedPreferences.Editor editor, String name, Collection<String> strings) {
@@ -37,7 +70,7 @@ public class PreferencesAdapter {
     }
 
     private Set<String> getStrings(String name) {
-        SharedPreferences prefs = context.getSharedPreferences(name, 0);
+        SharedPreferences prefs = getSharedPreferences(name);
         final String sizeString = prefs.getString(SIZE, null);
         if (sizeString == null) {
             return null;

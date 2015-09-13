@@ -95,8 +95,8 @@ public class AppsManager {
 
     public void load() {
         try {
-            extra = preferencesAdapter.loadSet("extra");
-            hidden = preferencesAdapter.loadSet("hidden");
+            extra = mainActivity.getPreferencesAdapter().loadSet("extra");
+            hidden = mainActivity.getPreferencesAdapter().loadSet("hidden");
         } catch (Exception e) {
             save();
         }
@@ -104,8 +104,8 @@ public class AppsManager {
     }
 
     public void save() {
-        preferencesAdapter.saveSet(extra, "extra");
-        preferencesAdapter.saveSet(hidden, "hidden");
+        mainActivity.getPreferencesAdapter().saveSet(extra, "extra");
+        mainActivity.getPreferencesAdapter().saveSet(hidden, "hidden");
         reload();
     }
 

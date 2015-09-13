@@ -27,7 +27,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
         dialogFactory = new DialogFactory(mainActivity);
-        preferencesAdapter = new PreferencesAdapter(mainActivity);
+        preferencesAdapter = mainActivity.getPreferencesAdapter();
         recent = new ArrayList<>(preferencesAdapter.loadSet(RECENT));
     }
 
