@@ -25,7 +25,7 @@ public class PreferencesAdapter {
         } else if (o instanceof String) {
             editor.putString(name, (String) o);
         } else {
-            throw new IllegalArgumentException("Unsupported type " + o.getClass() + ".");
+            throw new IllegalArgumentException("Unsupported type " + o.getClass() + "");
         }
         return editor.commit();
     }
@@ -39,7 +39,7 @@ public class PreferencesAdapter {
         } else if (clazz.equals(Integer.class)) {
             return clazz.cast(preferences.getInt(name, 0));
         } else {
-            throw new IllegalArgumentException("Unsupported type " + clazz + ".");
+            throw new IllegalArgumentException("Unsupported type " + clazz + "");
         }
     }
 
