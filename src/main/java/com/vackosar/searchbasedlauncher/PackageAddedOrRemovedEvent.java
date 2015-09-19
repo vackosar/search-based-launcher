@@ -42,12 +42,12 @@ public class PackageAddedOrRemovedEvent {
         };
     }
 
-    public void onCreate(@Observes OnCreateEvent onCreate) {
+    public void onCreateEvent(@Observes OnCreateEvent onCreateEvent) {
         broadcastReceiver = getBroadcastReceiver();
         activity.registerReceiver(broadcastReceiver, createFilter());
     }
 
-    public void onDestroy(@Observes OnDestroyEvent onDestroyEvent) {
+    public void onDestroyEvent(@Observes OnDestroyEvent onDestroyEvent) {
         activity.unregisterReceiver(broadcastReceiver);
     }
 }

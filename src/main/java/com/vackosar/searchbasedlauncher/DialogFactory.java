@@ -166,7 +166,7 @@ public class DialogFactory {
             public void onClick(DialogInterface dialog, int id) {
                 Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + app.getName()));
                 activity.startActivity(intent);
-                appsManager.reload();
+                appsManager.load();
                 dialog.dismiss();
             }
         };

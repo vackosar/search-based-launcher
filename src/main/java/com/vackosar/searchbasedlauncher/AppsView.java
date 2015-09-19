@@ -22,18 +22,20 @@ import roboguice.inject.InjectView;
 
 @ContextSingleton
 public class AppsView implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+    @InjectView(R.id.appListView) private ListView listView;
+    @Inject private AutostartButton autostartButton;
+    @Inject private DialogFactory dialogFactory;
+    @Inject private PreferencesAdapter preferencesAdapter;
+    @Inject private Activity activity;
+    @Inject private SearchText searchText;
+    @Inject private AppsManager appsManager;
+    @Inject private EventManager eventManager;
+    @Inject private AppsFactory appsFactory;
+
     public static final String RECENT = "recent";
-    @InjectView(R.id.appListView) ListView listView;
     private final List<App> filtered = new ArrayList<>();
     private List<App> recent;
     public static final int FIRST_INDEX = 0;
-    @Inject AutostartButton autostartButton;
-    @Inject DialogFactory dialogFactory;
-    @Inject PreferencesAdapter preferencesAdapter;
-    @Inject Activity activity;
-    @Inject SearchText searchText;
-    @Inject AppsManager appsManager;
-    @Inject EventManager eventManager;
 
     public void onCreate(@Observes OnCreateEvent onCreate) {
         listView.setOnItemClickListener(this);
@@ -157,5 +159,9 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
             recent.remove(FIRST_INDEX);
         }
         preferencesAdapter.saveSet(recent, RECENT);
+    }
+
+    public void onPackageAddedOrRemovedEvent(@Observes PackageAddedOrRemovedEvent packageAddedOrRemovedEvent) {
+        recent.retainAll(appsFactory.getAllActivities());
     }
 }
