@@ -18,9 +18,11 @@ public class DialogFactory {
     public static final String ADD = "Add";
 
     private final MainActivity mainActivity;
+    private final AppTypeSelector appTypeSelector;
 
-    public DialogFactory(MainActivity mainActivity) {
+    public DialogFactory(MainActivity mainActivity, AppTypeSelector appTypeSelector) {
         this.mainActivity = mainActivity;
+        this.appTypeSelector = appTypeSelector;
     }
 
     public void showNormalOptions(final App app, final AppsManager appsManager) {
@@ -164,5 +166,22 @@ public class DialogFactory {
                 dialog.dismiss();
             }
         };
+    }
+
+    public void showOptionsForApp(App app, AppsManager appsManager) {
+        switch (appTypeSelector.getSelected()) {
+            case normal:
+                showNormalOptions(app, appsManager);
+                break;
+            case activity:
+                showAddExtraAppOptions(app, appsManager);
+                break;
+            case extra:
+                showRemoveExtraAppOptions(app, appsManager);
+                break;
+            case hidden:
+                showUnhideAppOptions(app, appsManager);
+                break;
+        }
     }
 }

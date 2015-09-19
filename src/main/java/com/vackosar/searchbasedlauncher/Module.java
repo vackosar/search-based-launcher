@@ -51,8 +51,8 @@ public class Module {
 
     @Provides
     @Singleton
-    DialogFactory dialogFactory() {
-        return new DialogFactory(mainActivity);
+    DialogFactory dialogFactory(AppTypeSelector appTypeSelector) {
+        return new DialogFactory(mainActivity, appTypeSelector);
     }
 
     @Provides

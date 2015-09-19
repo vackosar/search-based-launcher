@@ -59,7 +59,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        showOptionsForApp(getApp(position));
+        dialogFactory.showOptionsForApp(getApp(position), appsManager);
         return false;
     }
 
@@ -156,22 +156,5 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
             recent.remove(FIRST_INDEX);
         }
         preferencesAdapter.saveSet(recent, RECENT);
-    }
-
-    private void showOptionsForApp(App app) {
-        switch (appTypeSelector.getSelected()) {
-            case normal:
-                dialogFactory.showNormalOptions(app, appsManager);
-                break;
-            case activity:
-                dialogFactory.showAddExtraAppOptions(app, appsManager);
-                break;
-            case extra:
-                dialogFactory.showRemoveExtraAppOptions(app, appsManager);
-                break;
-            case hidden:
-                dialogFactory.showUnhideAppOptions(app, appsManager);
-                break;
-        }
     }
 }
