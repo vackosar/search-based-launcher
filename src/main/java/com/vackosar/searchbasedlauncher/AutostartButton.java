@@ -3,18 +3,21 @@ package com.vackosar.searchbasedlauncher;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.inject.Inject;
+
+import roboguice.inject.ContextSingleton;
+import roboguice.inject.InjectView;
+
+@ContextSingleton
 public class AutostartButton implements View.OnClickListener {
 
     private boolean autostart;
-    private final TextView textView;
-    private ColorService colorService = new ColorService();
-    private final PreferencesAdapter preferencesAdapter;
-    private final MainActivity mainActivity;
+    @InjectView(R.id.autostartButton) TextView textView;
+    private final ColorService colorService = new ColorService();
+    @Inject PreferencesAdapter preferencesAdapter;
+    @Inject MainActivity mainActivity;
 
-    public AutostartButton (MainActivity mainActivity, PreferencesAdapter preferencesAdapter) {
-        this.mainActivity = mainActivity;
-        this.preferencesAdapter = preferencesAdapter;
-        textView = (TextView) mainActivity.findViewById(R.id.autostartButton);
+    public AutostartButton () {
         textView.setOnClickListener(this);
         load();
     }

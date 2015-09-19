@@ -7,36 +7,32 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.inject.Inject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import roboguice.inject.ContextSingleton;
+import roboguice.inject.InjectView;
+
+@ContextSingleton
 public class AppsView implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     public static final String RECENT = "recent";
-    private final ListView listView;
+    @InjectView(R.id.appListView) ListView listView;
     private final List<App> filtered = new ArrayList<>();
     private final List<App> recent;
     public static final int FIRST_INDEX = 0;
-    private final AutostartButton autostartButton;
-    private final DialogFactory dialogFactory;
-    private final PreferencesAdapter preferencesAdapter;
-    private final MainActivity mainActivity;
-    private final SearchText searchText;
-    private final AppsManager appsManager;
-    private final AppTypeSelector appTypeSelector;
-    private final MenuButton menuButton;
+    @Inject AutostartButton autostartButton;
+    @Inject DialogFactory dialogFactory;
+    @Inject PreferencesAdapter preferencesAdapter;
+    @Inject MainActivity mainActivity;
+    @Inject SearchText searchText;
+    @Inject AppsManager appsManager;
+//    @Inject
+    MenuButton menuButton;
 
-    public AppsView(MainActivity mainActivity, PreferencesAdapter preferencesAdapter, AutostartButton autostartButton, DialogFactory dialogFactory, SearchText searchText, AppsManager appsManager, AppTypeSelector appTypeSelector, MenuButton menuButton) {
-        this.mainActivity = mainActivity;
-        this.preferencesAdapter = preferencesAdapter;
-        this.autostartButton = autostartButton;
-        this.dialogFactory = dialogFactory;
-        this.searchText = searchText;
-        this.appsManager = appsManager;
-        this.appTypeSelector = appTypeSelector;
-        this.menuButton = menuButton;
-
-        listView = (ListView) mainActivity.findViewById(R.id.appListView);
+    public AppsView() {
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
         recent = new ArrayList<>(preferencesAdapter.loadSet(RECENT));

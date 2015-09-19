@@ -7,9 +7,14 @@ import android.net.Uri;
 import android.text.InputType;
 import android.widget.EditText;
 
+import com.google.inject.Inject;
+
 import java.util.Collection;
 
+import roboguice.inject.ContextSingleton;
+
 @SuppressWarnings("Convert2Lambda")
+@ContextSingleton
 public class DialogFactory {
     public static final String HIDE = "Hide";
     public static final String UNINSTALL = "Uninstall";
@@ -17,12 +22,10 @@ public class DialogFactory {
     public static final String REMOVE = "Remove";
     public static final String ADD = "Add";
 
-    private final MainActivity mainActivity;
-    private final AppTypeSelector appTypeSelector;
+    @Inject MainActivity mainActivity;
+    @Inject AppTypeSelector appTypeSelector;
 
-    public DialogFactory(MainActivity mainActivity, AppTypeSelector appTypeSelector) {
-        this.mainActivity = mainActivity;
-        this.appTypeSelector = appTypeSelector;
+    public DialogFactory() {
     }
 
     public void showNormalOptions(final App app, final AppsManager appsManager) {

@@ -1,7 +1,6 @@
 package com.vackosar.searchbasedlauncher;
 
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,11 +11,12 @@ import android.widget.ViewAnimator;
 
 import java.util.logging.Logger;
 
-import dagger.ObjectGraph;
-
+import roboguice.activity.RoboActivity;
+import roboguice.inject.ContentView;
 
 @SuppressWarnings("Convert2Lambda")
-public class MainActivity extends Activity {
+@ContentView(R.layout.activity_main)
+public class MainActivity extends RoboActivity {
     public static String APP_PACKAGE_NAME = "com.vackosar.searchbasedlauncher";
 
     private Logger log = Logger.getLogger(getClass().getSimpleName());
@@ -24,15 +24,15 @@ public class MainActivity extends Activity {
     private final BroadcastReceiver mPkgApplicationsReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            appsManager.load();
+//            appsManager.load();
         }
     };
-    private MenuButton menuButton;
+    MenuButton menuButton;
+
     private WifiButton wifiButton;
     private BluetoothButton bluetoothButton;
     private CameraButton cameraButton;
     private WikiButton wikiButton;
-    private AppsManager appsManager;
 
     private void registerIntentReceivers() {
         IntentFilter filter = new IntentFilter();
@@ -62,17 +62,11 @@ public class MainActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         registerIntentReceivers();
         initializeViewWrappers();
-        appsManager.load();
     }
 
     private void initializeViewWrappers() {
-        ObjectGraph objectGraph = ObjectGraph.create(new Module(this));
-        appsManager = objectGraph.get(AppsManager.class);
-        menuButton = objectGraph.get(MenuButton.class);
-        objectGraph.get(AppsView.class);
         wifiButton = new WifiButton(this);
         bluetoothButton = new BluetoothButton(this);
         cameraButton = new CameraButton(this);

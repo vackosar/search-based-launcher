@@ -4,20 +4,23 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
+import com.google.inject.Inject;
+
+import roboguice.context.event.OnCreateEvent;
+import roboguice.event.Observes;
+import roboguice.inject.ContextSingleton;
+import roboguice.inject.InjectView;
+
+@ContextSingleton
 public class MenuButton extends Colorful implements View.OnClickListener {
     public static final int MENU_CHILD_ID = 1;
-    private final MainActivity mainActivity;
-    private final TextView textView;
-    private final SearchText searchText;
-    private final AppsManager appsManager;
-    private final AppTypeSelector appTypeSelector;
+    @InjectView(R.id.viewAnimator) ViewAnimator viewAnimator;
+    @InjectView(R.id.menuButton) TextView textView;
+    @Inject SearchText searchText;
+    @Inject AppsManager appsManager;
+    @Inject AppTypeSelector appTypeSelector;
 
-    public MenuButton(MainActivity mainActivity, SearchText searchText, AppsManager appsManager, AppTypeSelector appTypeSelector) {
-        this.mainActivity = mainActivity;
-        this.searchText = searchText;
-        this.appsManager = appsManager;
-        this.appTypeSelector = appTypeSelector;
-        textView = (TextView) mainActivity.findViewById(R.id.menuButton);
+    public void onCreate(@Observes OnCreateEvent onCreate) {
         textView.setOnClickListener(this);
     }
 
@@ -32,16 +35,11 @@ public class MenuButton extends Colorful implements View.OnClickListener {
     }
 
     private boolean isMenuShown() {
-        return getViewAnimator().getDisplayedChild() == MENU_CHILD_ID;
+        return viewAnimator.getDisplayedChild() == MENU_CHILD_ID;
     }
 
     private void toggleView() {
-        ViewAnimator mViewAnimator = getViewAnimator();
-        mViewAnimator.showNext();
-    }
-
-    private ViewAnimator getViewAnimator() {
-        return (ViewAnimator) mainActivity.findViewById(R.id.viewAnimator);
+        viewAnimator.showNext();
     }
 
     @Override

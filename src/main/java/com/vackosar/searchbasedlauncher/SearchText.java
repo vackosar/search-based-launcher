@@ -5,6 +5,9 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
+import roboguice.inject.ContextSingleton;
+
+@ContextSingleton
 public class SearchText extends Colorful implements TextWatcher {
     private static final String EMPTY = "";
     private static final String SPACE = " ";

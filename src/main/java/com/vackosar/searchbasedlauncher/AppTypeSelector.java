@@ -2,19 +2,23 @@ package com.vackosar.searchbasedlauncher;
 
 import android.widget.RadioGroup;
 
+import com.google.inject.Inject;
+
+import roboguice.inject.ContextSingleton;
+import roboguice.inject.InjectView;
+
+@ContextSingleton
 public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
     public static final AppsType DEFAULT_SELECTED = AppsType.normal;
-    final private MainActivity mainActivity;
-    private final PreferencesAdapter preferencesAdapter;
     private AppsType selected = DEFAULT_SELECTED;
-    private final RadioGroup radioGroup;
-    private final MenuButton menuButton;
 
-    public AppTypeSelector(MainActivity mainActivity, PreferencesAdapter preferencesAdapter, MenuButton menuButton) {
-        this.mainActivity = mainActivity;
-        this.preferencesAdapter = preferencesAdapter;
-        this.menuButton = menuButton;
-        radioGroup = (RadioGroup) mainActivity.findViewById(R.id.appListRadioGroup);
+    @InjectView(R.id.appListRadioGroup) RadioGroup radioGroup;
+    @Inject MainActivity mainActivity;
+//    @Inject
+    MenuButton menuButton;
+    @Inject PreferencesAdapter preferencesAdapter;
+
+    public AppTypeSelector() {
         radioGroup.setOnCheckedChangeListener(this);
         selected = AppsType.parseOrdinal(load());
     }

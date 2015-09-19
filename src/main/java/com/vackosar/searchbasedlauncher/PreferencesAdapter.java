@@ -3,18 +3,22 @@ package com.vackosar.searchbasedlauncher;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.inject.Inject;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import roboguice.inject.ContextSingleton;
+
+@ContextSingleton
 public class PreferencesAdapter {
     public static final String SIZE = "size";
 
-    private final Context context;
+    @Inject MainActivity mainActivity;
 
-    public PreferencesAdapter(MainActivity mainActivity) {
-        this.context = mainActivity.getApplicationContext();
+    public PreferencesAdapter() {
     }
 
     public <T> boolean save(String name, T o) {
@@ -54,7 +58,7 @@ public class PreferencesAdapter {
     }
 
     private SharedPreferences getSharedPreferences(String name) {
-        return context.getSharedPreferences(name, Context.MODE_PRIVATE);
+        return mainActivity.getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 
     private void putStrings(SharedPreferences.Editor editor, Collection<String> strings) {
