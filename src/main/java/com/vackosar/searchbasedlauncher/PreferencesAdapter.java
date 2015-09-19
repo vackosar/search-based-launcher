@@ -16,7 +16,7 @@ import roboguice.inject.ContextSingleton;
 public class PreferencesAdapter {
     public static final String SIZE = "size";
 
-    @Inject Context context;
+    @Inject private Context context;
 
     public PreferencesAdapter() {
     }

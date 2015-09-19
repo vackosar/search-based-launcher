@@ -16,7 +16,7 @@ public class AutostartButton implements View.OnClickListener {
     private boolean autostart;
     @InjectView(R.id.autostartButton) TextView textView;
     private final ColorService colorService = new ColorService();
-    @Inject PreferencesAdapter preferencesAdapter;
+    @Inject private PreferencesAdapter preferencesAdapter;
 
     public void onCreate(@Observes OnCreateEvent onCreate) {
         textView.setOnClickListener(this);

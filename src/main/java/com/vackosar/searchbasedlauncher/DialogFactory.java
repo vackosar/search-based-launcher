@@ -23,8 +23,8 @@ public class DialogFactory {
     public static final String REMOVE = "Remove";
     public static final String ADD = "Add";
 
-    @Inject Activity activity;
-    @Inject AppTypeSelector appTypeSelector;
+    @Inject private Activity activity;
+    @Inject private AppTypeSelector appTypeSelector;
 
     public DialogFactory() {
     }

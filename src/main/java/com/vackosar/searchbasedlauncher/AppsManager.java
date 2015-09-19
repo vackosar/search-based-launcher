@@ -20,11 +20,11 @@ public class AppsManager {
     private final Set<App> hidden = new HashSet<>();
     private RefreshCallback refreshCallback;
 
-    @Inject AppTypeSelector appTypeSelector;
-    @Inject PreferencesAdapter preferencesAdapter;
-    @Inject PackageAddedOrRemovedEvent packageAddedOrRemovedEvent;
-    @Inject Activity activity;
-    @Inject AppsFactory appsFactory;
+    @Inject private AppTypeSelector appTypeSelector;
+    @Inject private PreferencesAdapter preferencesAdapter;
+    @Inject private PackageAddedOrRemovedEvent packageAddedOrRemovedEvent;
+    @Inject private Activity activity;
+    @Inject private AppsFactory appsFactory;
 
     public void refreshView() {
         refreshCallback.refresh();

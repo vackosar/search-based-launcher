@@ -16,8 +16,8 @@ public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
     private AppsType selected = DEFAULT_SELECTED;
 
     @InjectView(R.id.appListRadioGroup) RadioGroup radioGroup;
-    @Inject PreferencesAdapter preferencesAdapter;
-    @Inject EventManager eventManager;
+    @Inject private PreferencesAdapter preferencesAdapter;
+    @Inject private EventManager eventManager;
 
     public void onCreate(@Observes OnCreateEvent onCreate) {
         radioGroup.setOnCheckedChangeListener(this);
