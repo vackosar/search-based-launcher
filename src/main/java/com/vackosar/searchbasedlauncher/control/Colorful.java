@@ -11,20 +11,20 @@ public abstract class Colorful {
     public void setNormalColor() {
         colorService.setNormal(getView());
     }
-    public  void setActivatedColor (boolean activated) {
+    public void setActivatedColor (boolean activated) {
         if (activated) {
             setActivatedColor();
         } else {
             setNormalColor();
         }
     }
-    public  void setVisible() {
+    public void setVisible() {
         colorService.setVisible(getView());
     }
-    public  void setInvisible() {
+    public void setInvisible() {
         colorService.setInvisible(getView());
     }
-    public  void setVisible(boolean visible) {
+    public void setVisible(boolean visible) {
         if (visible) {
             setVisible();
         } else {
@@ -32,5 +32,5 @@ public abstract class Colorful {
         }
     }
 
-    abstract View getView();
+    protected abstract View getView();
 }
