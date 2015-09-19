@@ -63,24 +63,20 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ObjectGraph objectGraph = ObjectGraph.create(new Module(this));
-        appsManager = objectGraph.get(AppsManager.class);
-        menuButton = objectGraph.get(MenuButton.class);
-        objectGraph.get(AppsView.class);
         registerIntentReceivers();
         initializeViewWrappers();
         appsManager.load();
     }
 
     private void initializeViewWrappers() {
+        ObjectGraph objectGraph = ObjectGraph.create(new Module(this));
+        appsManager = objectGraph.get(AppsManager.class);
+        menuButton = objectGraph.get(MenuButton.class);
+        objectGraph.get(AppsView.class);
         wifiButton = new WifiButton(this);
         bluetoothButton = new BluetoothButton(this);
         cameraButton = new CameraButton(this);
         wikiButton = new WikiButton(this);
-    }
-
-    public MenuButton getMenuButton() {
-        return menuButton;
     }
 
     @Override

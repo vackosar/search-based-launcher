@@ -24,8 +24,9 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     private final SearchText searchText;
     private final AppsManager appsManager;
     private final AppTypeSelector appTypeSelector;
+    private final MenuButton menuButton;
 
-    public AppsView(MainActivity mainActivity, PreferencesAdapter preferencesAdapter, AutostartButton autostartButton, DialogFactory dialogFactory, SearchText searchText, AppsManager appsManager, AppTypeSelector appTypeSelector) {
+    public AppsView(MainActivity mainActivity, PreferencesAdapter preferencesAdapter, AutostartButton autostartButton, DialogFactory dialogFactory, SearchText searchText, AppsManager appsManager, AppTypeSelector appTypeSelector, MenuButton menuButton) {
         this.mainActivity = mainActivity;
         this.preferencesAdapter = preferencesAdapter;
         this.autostartButton = autostartButton;
@@ -33,6 +34,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         this.searchText = searchText;
         this.appsManager = appsManager;
         this.appTypeSelector = appTypeSelector;
+        this.menuButton = menuButton;
 
         listView = (ListView) mainActivity.findViewById(R.id.appListView);
         listView.setOnItemClickListener(this);
@@ -123,7 +125,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         searchText.setActivatedColor();
         addRecent(app);
         if (app.isMenu()) {
-            mainActivity.getMenuButton().toggle();
+            menuButton.toggle();
         } else {
             executeActivity(app);
         }

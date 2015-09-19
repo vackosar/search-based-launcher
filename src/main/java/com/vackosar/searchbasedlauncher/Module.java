@@ -45,8 +45,8 @@ public class Module {
 
     @Provides
     @Singleton
-    AppsView appsView(PreferencesAdapter preferencesAdapter, AutostartButton autostartButton, DialogFactory dialogFactory, SearchText searchText, AppsManager appsManager, AppTypeSelector appTypeSelector) {
-        return new AppsView(mainActivity, preferencesAdapter, autostartButton, dialogFactory, searchText, appsManager, appTypeSelector);
+    AppsView appsView(PreferencesAdapter preferencesAdapter, AutostartButton autostartButton, DialogFactory dialogFactory, SearchText searchText, AppsManager appsManager, AppTypeSelector appTypeSelector, MenuButton menuButton) {
+        return new AppsView(mainActivity, preferencesAdapter, autostartButton, dialogFactory, searchText, appsManager, appTypeSelector, menuButton);
     }
 
     @Provides
@@ -57,8 +57,8 @@ public class Module {
 
     @Provides
     @Singleton
-    AppTypeSelector appTypeSelector(PreferencesAdapter preferencesAdapter) {
-        return new AppTypeSelector(mainActivity, preferencesAdapter);
+    AppTypeSelector appTypeSelector(PreferencesAdapter preferencesAdapter, MenuButton menuButton) {
+        return new AppTypeSelector(mainActivity, preferencesAdapter, menuButton);
     }
 
     @Provides
