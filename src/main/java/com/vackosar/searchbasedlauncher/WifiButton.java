@@ -1,5 +1,6 @@
 package com.vackosar.searchbasedlauncher;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,12 +10,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.inject.Inject;
+
+import roboguice.context.event.OnCreateEvent;
+import roboguice.context.event.OnDestroyEvent;
+import roboguice.event.Observes;
+import roboguice.inject.InjectView;
+
 public class WifiButton extends Colorful implements View.OnClickListener {
-    final MainActivity mainActivity;
     final ColorService colorService = new ColorService();
-    private final WifiManager wifiManager;
-    private final TextView textView;
-    BroadcastReceiver RECEIVER = new BroadcastReceiver() {
+    private WifiManager wifiManager;
+    @InjectView(R.id.wifiButton) private TextView textView;
+    @Inject private Activity activity;
+
+    private BroadcastReceiver RECEIVER = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent){
             Log.d("DEBUG", "recieved Broadcast");
@@ -27,26 +36,6 @@ public class WifiButton extends Colorful implements View.OnClickListener {
             }
         }
     };
-
-    public WifiButton(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
-        textView = (TextView) mainActivity.findViewById(R.id.wifiButton);
-        wifiManager = (WifiManager) mainActivity.getSystemService(Context.WIFI_SERVICE);
-        setVisibleIfAvailable();
-        if (isAvailable()) {
-            if(wifiManager.isWifiEnabled()) {
-                colorService.setActive(textView);
-            }
-            else {
-                colorService.setNormal(textView);
-            }
-        }
-        textView.setOnClickListener(this);
-        IntentFilter filter = new IntentFilter( );
-        filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        mainActivity.registerReceiver(RECEIVER, filter);
-    }
 
     @Override
     public void onClick(View v) {
@@ -72,7 +61,26 @@ public class WifiButton extends Colorful implements View.OnClickListener {
         return textView;
     }
 
-    public void unregisterReceiver () {
-        mainActivity.unregisterReceiver(RECEIVER);
+    public void onCreateEvent(@Observes OnCreateEvent onCreateEvent) {
+        textView = (TextView) activity.findViewById(R.id.wifiButton);
+        wifiManager = (WifiManager) activity.getSystemService(Context.WIFI_SERVICE);
+        setVisibleIfAvailable();
+        if (isAvailable()) {
+            if(wifiManager.isWifiEnabled()) {
+                colorService.setActive(textView);
+            }
+            else {
+                colorService.setNormal(textView);
+            }
+        }
+        textView.setOnClickListener(this);
+        IntentFilter filter = new IntentFilter( );
+        filter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+        filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+        activity.registerReceiver(RECEIVER, filter);
+    }
+
+    public void onDestroy(@Observes OnDestroyEvent onDestroyEvent) {
+        activity.unregisterReceiver(RECEIVER);
     }
 }

@@ -1,11 +1,6 @@
 package com.vackosar.searchbasedlauncher;
 
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.ViewAnimator;
 
@@ -20,31 +15,17 @@ import roboguice.inject.ContentView;
 @SuppressWarnings("Convert2Lambda")
 @ContentView(R.layout.activity_main)
 public class MainActivity extends RoboActivity {
+
+    @Inject private MenuButton menuButton;
+    @Inject private AppsView appsView;
+    @Inject private EventManager eventManager;
+    @Inject private WifiButton wifiButton;
+    @Inject private BluetoothButton bluetoothButton;
+    @Inject private CameraButton cameraButton;
+    @Inject private WikiButton wikiButton;
+
     public static String APP_PACKAGE_NAME = "com.vackosar.searchbasedlauncher";
-
     private Logger log = Logger.getLogger(getClass().getSimpleName());
-
-    private final BroadcastReceiver mPkgApplicationsReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-//            appsManager.load();
-        }
-    };
-    @Inject MenuButton menuButton;
-    @Inject AppsView appsView;
-    @Inject EventManager eventManager;
-    private WifiButton wifiButton;
-    private BluetoothButton bluetoothButton;
-    private CameraButton cameraButton;
-    private WikiButton wikiButton;
-
-    private void registerIntentReceivers() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_PACKAGE_ADDED);
-        filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-        filter.addDataScheme("package");
-        registerReceiver(mPkgApplicationsReceiver, filter);
-    }
 
     @Override
     public boolean onKeyUp(int keycode, KeyEvent event) {
@@ -61,27 +42,5 @@ public class MainActivity extends RoboActivity {
             return super.onKeyUp(keycode, event);
         }
         return true;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        registerIntentReceivers();
-        initializeViewWrappers();
-//        eventManager.fire();
-    }
-
-    private void initializeViewWrappers() {
-        wifiButton = new WifiButton(this);
-        bluetoothButton = new BluetoothButton(this);
-        cameraButton = new CameraButton(this);
-        wikiButton = new WikiButton(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        wifiButton.unregisterReceiver();
-        unregisterReceiver(mPkgApplicationsReceiver);
-        super.onDestroy();
     }
 }

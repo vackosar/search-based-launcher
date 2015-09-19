@@ -19,7 +19,7 @@ public class MenuButton extends Colorful implements View.OnClickListener {
     @Inject SearchText searchText;
     @Inject AppsManager appsManager;
 
-    public void onCreate(@Observes OnCreateEvent onCreate) {
+    public void onCreateEvent(@Observes OnCreateEvent OnCreateEvent) {
         textView.setOnClickListener(this);
     }
 

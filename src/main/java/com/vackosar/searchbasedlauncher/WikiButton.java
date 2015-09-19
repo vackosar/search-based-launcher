@@ -1,18 +1,24 @@
 package com.vackosar.searchbasedlauncher;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
 import android.widget.TextView;
 
-public class WikiButton extends Colorful implements View.OnClickListener{
-    public static final String WIKI_URI = "https://github.com/vackosar/search-based-launcher/wiki";
-    final MainActivity mainActivity;
-    private final TextView textView;
+import com.google.inject.Inject;
 
-    public WikiButton(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
-        textView = (TextView) mainActivity.findViewById(R.id.wikiButton);
+import roboguice.context.event.OnCreateEvent;
+import roboguice.event.Observes;
+import roboguice.inject.InjectView;
+
+public class WikiButton extends Colorful implements View.OnClickListener{
+    @InjectView(R.id.wikiButton) private TextView textView;
+    @Inject private Activity activity;
+
+    public static final String WIKI_URI = "https://github.com/vackosar/search-based-launcher/wiki";
+
+    public void onCreateEvent(@Observes OnCreateEvent onCreateEvent) {
         textView.setOnClickListener(this);
     }
 
@@ -25,6 +31,6 @@ public class WikiButton extends Colorful implements View.OnClickListener{
     public void onClick(View v) {
         Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(WIKI_URI));
         marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        mainActivity.startActivity(marketIntent);
+        activity.startActivity(marketIntent);
     }
 }

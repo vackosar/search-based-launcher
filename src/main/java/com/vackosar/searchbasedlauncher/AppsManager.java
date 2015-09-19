@@ -25,6 +25,7 @@ public class AppsManager {
 
     @Inject AppTypeSelector appTypeSelector;
     @Inject PreferencesAdapter preferencesAdapter;
+    @Inject PackageAddedOrRemovedEvent packageAddedOrRemovedEvent;
     @Inject Activity activity;
 
     public void refreshView() {
