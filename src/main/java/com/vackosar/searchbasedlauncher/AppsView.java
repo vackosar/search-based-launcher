@@ -90,9 +90,8 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     }
 
     private void addRecentToFiltered(String filterText) {
-        recent.retainAll(appsManager.getPkg());
         for (App app: getReversedRecent()) {
-            if (checkMatch(filterText, app)) {
+            if (checkMatch(filterText, app) && appsManager.getPkg().contains(app)) {
                 filtered.add(app.getAsRecent());
             }
         }
