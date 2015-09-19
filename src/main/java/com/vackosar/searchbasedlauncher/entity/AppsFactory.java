@@ -35,9 +35,9 @@ public class AppsFactory {
 
     public List<App> getApplicationActivities() {
         final List<App> pkg = getEmptyAppList();
-        createMainIntent().addCategory(Intent.CATEGORY_LAUNCHER); // will show only Regular AppsManager
-        final List<ResolveInfo> launchables = packageManager.queryIntentActivities(createMainIntent(), 0);
-
+        final Intent mainIntent = createMainIntent();
+        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER); // will show only Regular AppsManager
+        final List<ResolveInfo> launchables = packageManager.queryIntentActivities(mainIntent, 0);
         for (ResolveInfo launchable : launchables) {
             String nick = launchable.activityInfo.loadLabel(packageManager).toString();
             String name = launchable.activityInfo.packageName;
