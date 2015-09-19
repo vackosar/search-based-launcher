@@ -15,16 +15,17 @@ import roboguice.inject.ContextSingleton;
 @SuppressWarnings("Convert2Lambda")
 @ContextSingleton
 public class AppsManager {
-    private final List<App> pkg = AppsFactory.getEmptyAppList();
-    private final Set<App> extra = new HashSet<>();
-    private final Set<App> hidden = new HashSet<>();
-    private RefreshCallback refreshCallback;
 
     @Inject private AppTypeSelector appTypeSelector;
     @Inject private PreferencesAdapter preferencesAdapter;
     @Inject private PackageAddedOrRemovedEvent packageAddedOrRemovedEvent;
     @Inject private Activity activity;
     @Inject private AppsFactory appsFactory;
+
+    private final List<App> pkg = AppsFactory.getEmptyAppList();
+    private final Set<App> extra = new HashSet<>();
+    private final Set<App> hidden = new HashSet<>();
+    private RefreshCallback refreshCallback;
 
     public void refreshView() {
         refreshCallback.refresh();

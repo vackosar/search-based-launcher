@@ -12,12 +12,13 @@ import roboguice.inject.InjectView;
 
 @ContextSingleton
 public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
-    public static final AppsType DEFAULT_SELECTED = AppsType.normal;
-    private AppsType selected = DEFAULT_SELECTED;
 
     @InjectView(R.id.appListRadioGroup) RadioGroup radioGroup;
     @Inject private PreferencesAdapter preferencesAdapter;
     @Inject private EventManager eventManager;
+
+    private AppsType selected = DEFAULT_SELECTED;
+    public static final AppsType DEFAULT_SELECTED = AppsType.normal;
 
     public void onCreate(@Observes OnCreateEvent onCreate) {
         radioGroup.setOnCheckedChangeListener(this);

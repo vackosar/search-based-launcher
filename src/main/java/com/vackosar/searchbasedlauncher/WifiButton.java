@@ -18,7 +18,6 @@ import roboguice.event.Observes;
 import roboguice.inject.InjectView;
 
 public class WifiButton extends Colorful implements View.OnClickListener {
-    final ColorService colorService = new ColorService();
     private WifiManager wifiManager;
     @InjectView(R.id.wifiButton) private TextView textView;
     @Inject private Activity activity;
@@ -50,9 +49,9 @@ public class WifiButton extends Colorful implements View.OnClickListener {
 
     public void setVisibleIfAvailable () {
         if (wifiManager == null) {
-            colorService.setInvisible(textView);
+            setInvisible();
         } else {
-            colorService.setVisible(textView);
+            setVisible();
         }
     }
 
@@ -67,10 +66,10 @@ public class WifiButton extends Colorful implements View.OnClickListener {
         setVisibleIfAvailable();
         if (isAvailable()) {
             if(wifiManager.isWifiEnabled()) {
-                colorService.setActive(textView);
+                setActivatedColor();
             }
             else {
-                colorService.setNormal(textView);
+                setNormalColor();
             }
         }
         textView.setOnClickListener(this);

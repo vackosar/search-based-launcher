@@ -17,17 +17,15 @@ import roboguice.inject.ContextSingleton;
 @SuppressWarnings("Convert2Lambda")
 @ContextSingleton
 public class DialogFactory {
+
+    @Inject private Activity activity;
+    @Inject private AppTypeSelector appTypeSelector;
+
     public static final String HIDE = "Hide";
     public static final String UNINSTALL = "Uninstall";
     public static final String RENAME = "Rename";
     public static final String REMOVE = "Remove";
     public static final String ADD = "Add";
-
-    @Inject private Activity activity;
-    @Inject private AppTypeSelector appTypeSelector;
-
-    public DialogFactory() {
-    }
 
     public void showNormalOptions(final App app, final AppsManager appsManager) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(activity);

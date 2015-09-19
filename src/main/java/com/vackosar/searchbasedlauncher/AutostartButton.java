@@ -11,12 +11,12 @@ import roboguice.inject.ContextSingleton;
 import roboguice.inject.InjectView;
 
 @ContextSingleton
-public class AutostartButton implements View.OnClickListener {
+public class AutostartButton extends Colorful implements View.OnClickListener {
+
+    @InjectView(R.id.autostartButton) TextView textView;
+    @Inject private PreferencesAdapter preferencesAdapter;
 
     private boolean autostart;
-    @InjectView(R.id.autostartButton) TextView textView;
-    private final ColorService colorService = new ColorService();
-    @Inject private PreferencesAdapter preferencesAdapter;
 
     public void onCreate(@Observes OnCreateEvent onCreate) {
         textView.setOnClickListener(this);
@@ -30,7 +30,7 @@ public class AutostartButton implements View.OnClickListener {
     }
 
     private void setColor() {
-        colorService.setActive(autostart, textView);
+        setActivatedColor(autostart);
     }
 
     public boolean isOn() {
@@ -44,5 +44,10 @@ public class AutostartButton implements View.OnClickListener {
     public void load() {
         autostart = preferencesAdapter.load(getClass().getName(), Boolean.class);
         setColor();
+    }
+
+    @Override
+    View getView() {
+        return textView;
     }
 }

@@ -8,10 +8,10 @@ import roboguice.context.event.OnCreateEvent;
 import roboguice.event.Observes;
 import roboguice.inject.InjectView;
 
-public class BluetoothButton implements View.OnClickListener {
-    final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-    final ColorService colorService = new ColorService();
+public class BluetoothButton extends Colorful implements View.OnClickListener {
     @InjectView(R.id.bluetoothButton) private TextView textView;
+
+    final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
     public void onCreate(@Observes OnCreateEvent onCreate) {
         textView.setOnClickListener(this);
@@ -19,7 +19,7 @@ public class BluetoothButton implements View.OnClickListener {
 
     public void setVisibleIfAvailable () {
         if (bluetoothAdapter == null) {
-            colorService.setInvisible(textView);
+            setInvisible();
         }
     }
 
@@ -30,6 +30,11 @@ public class BluetoothButton implements View.OnClickListener {
         } else if (bluetoothAdapter != null) {
             bluetoothAdapter.disable();
         }
+    }
+
+    @Override
+    View getView() {
+        return textView;
     }
 }
 

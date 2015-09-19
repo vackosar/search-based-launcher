@@ -17,20 +17,19 @@ public class CameraButton extends Colorful implements View.OnClickListener {
     @Inject private Activity activity;
     @InjectView(R.id.cameraButton) private TextView textView;
     private boolean hasCam;
-    private final ColorService colorService = new ColorService();
 
     public void onCreateEvent(@Observes OnCreateEvent onCreateEvent) {
         PackageManager pm = activity.getPackageManager();
         hasCam = pm.hasSystemFeature(PackageManager.FEATURE_CAMERA);
         if (!(hasCam)) {
-            colorService.setInvisible(textView);
+            setInvisible();
         }
         textView.setOnClickListener(this);
     }
 
     public void setVisibleIfAvailable () {
         if (hasCam) {
-            colorService.setInvisible(textView);
+            setInvisible();
         }
     }
 

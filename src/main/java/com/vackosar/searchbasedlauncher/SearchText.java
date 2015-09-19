@@ -15,8 +15,9 @@ public class SearchText extends Colorful implements TextWatcher {
     private static final String EMPTY = "";
     private static final String SPACE = " ";
     private static final String REGEX_MATCH_ALL = ".*";
-    @InjectView(R.id.searchText) EditText editText;
     private TextChangedCallback textChangedCallback;
+
+    @InjectView(R.id.searchText) EditText editText;
 
     public void onCreate(@Observes OnCreateEvent onCreate) {
         editText.addTextChangedListener(this);

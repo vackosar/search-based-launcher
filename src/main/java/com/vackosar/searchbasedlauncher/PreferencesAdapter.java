@@ -18,9 +18,6 @@ public class PreferencesAdapter {
 
     @Inject private Context context;
 
-    public PreferencesAdapter() {
-    }
-
     public <T> boolean save(String name, T o) {
         final SharedPreferences.Editor editor = getEditor(name);
         if (o instanceof Boolean) {
