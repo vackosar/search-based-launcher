@@ -1,5 +1,6 @@
 package com.vackosar.searchbasedlauncher;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,14 +23,14 @@ public class DialogFactory {
     public static final String REMOVE = "Remove";
     public static final String ADD = "Add";
 
-    @Inject MainActivity mainActivity;
+    @Inject Activity activity;
     @Inject AppTypeSelector appTypeSelector;
 
     public DialogFactory() {
     }
 
     public void showNormalOptions(final App app, final AppsManager appsManager) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(mainActivity);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
         dialog.setTitle(app.getNick());
         if (!appsManager.getExtra().contains(app) && !appsManager.getHidden().contains(app)) {
             showHideApp(app, dialog, appsManager);
@@ -45,9 +46,9 @@ public class DialogFactory {
     }
 
     public void showUnhideAppOptions(final App app, final AppsManager appsManager) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(mainActivity);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
         dialog.setTitle(app.getNick());
-        EditText dialogInput = new EditText(mainActivity);
+        EditText dialogInput = new EditText(activity);
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
         dialog.setView(dialogInput);
@@ -69,9 +70,9 @@ public class DialogFactory {
     }
 
     public void showRemoveExtraAppOptions(final App app, final AppsManager appsManager) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(mainActivity);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
         dialog.setTitle(app.getNick());
-        EditText dialogInput = new EditText(mainActivity);
+        EditText dialogInput = new EditText(activity);
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
         dialog.setView(dialogInput);
@@ -83,9 +84,9 @@ public class DialogFactory {
 
 
     public void showAddExtraAppOptions(App app, final AppsManager appsManager) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(mainActivity);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
         dialog.setTitle(app.getNick());
-        EditText dialogInput = new EditText(mainActivity);
+        EditText dialogInput = new EditText(activity);
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
         dialog.setView(dialogInput);
@@ -113,7 +114,7 @@ public class DialogFactory {
     }
 
     public void showRenamedApp(final App app, AlertDialog.Builder dialog, final AppsManager appsManager) {
-        EditText dialogInput = new EditText(mainActivity);
+        EditText dialogInput = new EditText(activity);
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
         dialog.setView(dialogInput);
@@ -136,7 +137,7 @@ public class DialogFactory {
     }
 
     public void showHideApp(final App app, AlertDialog.Builder dialog, final AppsManager appsManager) {
-        EditText dialogInput = new EditText(mainActivity);
+        EditText dialogInput = new EditText(activity);
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
         dialog.setView(dialogInput);
@@ -164,7 +165,7 @@ public class DialogFactory {
         return new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 Intent intent = new Intent(Intent.ACTION_DELETE, Uri.parse("package:" + app.getName()));
-                mainActivity.startActivity(intent);
+                activity.startActivity(intent);
                 appsManager.reload();
                 dialog.dismiss();
             }

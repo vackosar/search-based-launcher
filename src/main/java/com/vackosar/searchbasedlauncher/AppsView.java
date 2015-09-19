@@ -1,5 +1,6 @@
 package com.vackosar.searchbasedlauncher;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.view.View;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import roboguice.context.event.OnCreateEvent;
+import roboguice.event.Observes;
 import roboguice.inject.ContextSingleton;
 import roboguice.inject.InjectView;
 
@@ -21,18 +24,18 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     public static final String RECENT = "recent";
     @InjectView(R.id.appListView) ListView listView;
     private final List<App> filtered = new ArrayList<>();
-    private final List<App> recent;
+    private List<App> recent;
     public static final int FIRST_INDEX = 0;
     @Inject AutostartButton autostartButton;
     @Inject DialogFactory dialogFactory;
     @Inject PreferencesAdapter preferencesAdapter;
-    @Inject MainActivity mainActivity;
+    @Inject Activity activity;
     @Inject SearchText searchText;
     @Inject AppsManager appsManager;
 //    @Inject
     MenuButton menuButton;
 
-    public AppsView() {
+    public void onCreate(@Observes OnCreateEvent onCreate) {
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
         recent = new ArrayList<>(preferencesAdapter.loadSet(RECENT));
@@ -48,6 +51,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
                 refreshView();
             }
         });
+        appsManager.load();
     }
 
     @Override
@@ -113,7 +117,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         for (App app: appList) {
             list.add(app.getNick());
         }
-        listView.setAdapter(new ArrayAdapter<String>(mainActivity, android.R.layout.simple_list_item_1, android.R.id.text1, list));
+        listView.setAdapter(new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, android.R.id.text1, list));
     }
 
     public void executeActivity(int index) {
@@ -133,7 +137,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
             intent.addCategory(Intent.CATEGORY_LAUNCHER);
             intent.setComponent(new ComponentName(app.getName(), app.getActivity()));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-            mainActivity.startActivity(intent);
+            activity.startActivity(intent);
             searchText.clearText();
             searchText.setNormalColor();
         } catch (Exception e) {

@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.ViewAnimator;
 
+import com.google.inject.Inject;
+
 import java.util.logging.Logger;
 
 import roboguice.activity.RoboActivity;
@@ -29,6 +31,7 @@ public class MainActivity extends RoboActivity {
     };
     MenuButton menuButton;
 
+    @Inject AppsView appsView;
     private WifiButton wifiButton;
     private BluetoothButton bluetoothButton;
     private CameraButton cameraButton;
@@ -64,6 +67,7 @@ public class MainActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         registerIntentReceivers();
         initializeViewWrappers();
+//        eventManager.fire();
     }
 
     private void initializeViewWrappers() {

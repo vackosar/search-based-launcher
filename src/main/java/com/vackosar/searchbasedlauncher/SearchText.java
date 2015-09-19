@@ -5,18 +5,20 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
+import roboguice.context.event.OnCreateEvent;
+import roboguice.event.Observes;
 import roboguice.inject.ContextSingleton;
+import roboguice.inject.InjectView;
 
 @ContextSingleton
 public class SearchText extends Colorful implements TextWatcher {
     private static final String EMPTY = "";
     private static final String SPACE = " ";
     private static final String REGEX_MATCH_ALL = ".*";
-    private final EditText editText;
+    @InjectView(R.id.searchText) EditText editText;
     private TextChangedCallback textChangedCallback;
 
-    public SearchText (MainActivity mainActivity) {
-        editText = (EditText) mainActivity.findViewById(R.id.searchText);
+    public void onCreate(@Observes OnCreateEvent onCreate) {
         editText.addTextChangedListener(this);
     }
 

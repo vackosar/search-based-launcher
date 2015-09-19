@@ -5,6 +5,8 @@ import android.widget.TextView;
 
 import com.google.inject.Inject;
 
+import roboguice.context.event.OnCreateEvent;
+import roboguice.event.Observes;
 import roboguice.inject.ContextSingleton;
 import roboguice.inject.InjectView;
 
@@ -15,9 +17,8 @@ public class AutostartButton implements View.OnClickListener {
     @InjectView(R.id.autostartButton) TextView textView;
     private final ColorService colorService = new ColorService();
     @Inject PreferencesAdapter preferencesAdapter;
-    @Inject MainActivity mainActivity;
 
-    public AutostartButton () {
+    public void onCreate(@Observes OnCreateEvent onCreate) {
         textView.setOnClickListener(this);
         load();
     }

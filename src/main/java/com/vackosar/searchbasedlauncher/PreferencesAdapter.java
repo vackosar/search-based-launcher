@@ -16,7 +16,7 @@ import roboguice.inject.ContextSingleton;
 public class PreferencesAdapter {
     public static final String SIZE = "size";
 
-    @Inject MainActivity mainActivity;
+    @Inject Context context;
 
     public PreferencesAdapter() {
     }
@@ -58,7 +58,7 @@ public class PreferencesAdapter {
     }
 
     private SharedPreferences getSharedPreferences(String name) {
-        return mainActivity.getSharedPreferences(name, Context.MODE_PRIVATE);
+        return context.getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 
     private void putStrings(SharedPreferences.Editor editor, Collection<String> strings) {

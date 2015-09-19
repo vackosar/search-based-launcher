@@ -1,5 +1,6 @@
 package com.vackosar.searchbasedlauncher;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -12,8 +13,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import roboguice.context.event.OnCreateEvent;
-import roboguice.event.Observes;
 import roboguice.inject.ContextSingleton;
 
 @SuppressWarnings("Convert2Lambda")
@@ -26,11 +25,7 @@ public class AppsManager {
 
     @Inject AppTypeSelector appTypeSelector;
     @Inject PreferencesAdapter preferencesAdapter;
-    @Inject PackageManager packageManager;
-
-    public void onCreate(@Observes OnCreateEvent onCreate) {
-        load();
-    }
+    @Inject Activity activity;
 
     public void refreshView() {
         refreshCallback.refresh();
@@ -41,6 +36,7 @@ public class AppsManager {
     }
 
     public void reload() {
+        final PackageManager packageManager = activity.getPackageManager();
         final Intent main = new Intent(Intent.ACTION_MAIN, null);
         pkg.clear();
         switch (appTypeSelector.getSelected()) {
