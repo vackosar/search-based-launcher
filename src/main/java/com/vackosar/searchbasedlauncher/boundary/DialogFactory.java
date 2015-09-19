@@ -1,4 +1,4 @@
-package com.vackosar.searchbasedlauncher;
+package com.vackosar.searchbasedlauncher.boundary;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,6 +9,8 @@ import android.text.InputType;
 import android.widget.EditText;
 
 import com.google.inject.Inject;
+import com.vackosar.searchbasedlauncher.control.AppsManager;
+import com.vackosar.searchbasedlauncher.entity.App;
 
 import java.util.Collection;
 

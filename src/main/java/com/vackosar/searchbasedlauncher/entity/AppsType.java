@@ -1,4 +1,6 @@
-package com.vackosar.searchbasedlauncher;
+package com.vackosar.searchbasedlauncher.entity;
+
+import com.vackosar.searchbasedlauncher.R;
 
 public enum AppsType {
     normal(R.id.normalAppsRadioButton),

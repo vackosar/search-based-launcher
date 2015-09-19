@@ -1,4 +1,4 @@
-package com.vackosar.searchbasedlauncher;
+package com.vackosar.searchbasedlauncher.boundary;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -9,6 +9,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.inject.Inject;
+import com.vackosar.searchbasedlauncher.R;
+import com.vackosar.searchbasedlauncher.control.AppsManager;
+import com.vackosar.searchbasedlauncher.control.PackageAddedOrRemovedEvent;
+import com.vackosar.searchbasedlauncher.control.PreferencesAdapter;
+import com.vackosar.searchbasedlauncher.entity.App;
+import com.vackosar.searchbasedlauncher.entity.AppsFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;

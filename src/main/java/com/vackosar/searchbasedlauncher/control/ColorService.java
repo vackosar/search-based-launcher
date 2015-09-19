@@ -1,4 +1,4 @@
-package com.vackosar.searchbasedlauncher;
+package com.vackosar.searchbasedlauncher.control;
 
 import android.view.View;
 

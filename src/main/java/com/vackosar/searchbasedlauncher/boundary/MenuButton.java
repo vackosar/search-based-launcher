@@ -1,10 +1,13 @@
-package com.vackosar.searchbasedlauncher;
+package com.vackosar.searchbasedlauncher.boundary;
 
 import android.view.View;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
 import com.google.inject.Inject;
+import com.vackosar.searchbasedlauncher.R;
+import com.vackosar.searchbasedlauncher.control.AppsManager;
+import com.vackosar.searchbasedlauncher.control.Colorful;
 
 import roboguice.context.event.OnCreateEvent;
 import roboguice.event.Observes;

@@ -1,8 +1,11 @@
-package com.vackosar.searchbasedlauncher;
+package com.vackosar.searchbasedlauncher.control;
 
 import android.app.Activity;
 
 import com.google.inject.Inject;
+import com.vackosar.searchbasedlauncher.boundary.AppTypeSelector;
+import com.vackosar.searchbasedlauncher.entity.App;
+import com.vackosar.searchbasedlauncher.entity.AppsFactory;
 
 import java.util.Collections;
 import java.util.HashSet;

@@ -1,9 +1,12 @@
-package com.vackosar.searchbasedlauncher;
+package com.vackosar.searchbasedlauncher.boundary;
 
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+
+import com.vackosar.searchbasedlauncher.R;
+import com.vackosar.searchbasedlauncher.control.Colorful;
 
 import roboguice.context.event.OnCreateEvent;
 import roboguice.event.Observes;

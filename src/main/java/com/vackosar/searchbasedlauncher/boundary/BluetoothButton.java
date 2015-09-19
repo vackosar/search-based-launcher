@@ -1,8 +1,11 @@
-package com.vackosar.searchbasedlauncher;
+package com.vackosar.searchbasedlauncher.boundary;
 
 import android.bluetooth.BluetoothAdapter;
 import android.view.View;
 import android.widget.TextView;
+
+import com.vackosar.searchbasedlauncher.R;
+import com.vackosar.searchbasedlauncher.control.Colorful;
 
 import roboguice.context.event.OnCreateEvent;
 import roboguice.event.Observes;

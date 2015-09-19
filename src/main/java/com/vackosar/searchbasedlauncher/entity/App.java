@@ -1,4 +1,6 @@
-package com.vackosar.searchbasedlauncher;
+package com.vackosar.searchbasedlauncher.entity;
+
+import com.vackosar.searchbasedlauncher.boundary.MainActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

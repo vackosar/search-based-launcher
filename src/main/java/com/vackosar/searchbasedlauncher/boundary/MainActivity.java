@@ -1,10 +1,11 @@
-package com.vackosar.searchbasedlauncher;
+package com.vackosar.searchbasedlauncher.boundary;
 
 
 import android.view.KeyEvent;
 import android.widget.ViewAnimator;
 
 import com.google.inject.Inject;
+import com.vackosar.searchbasedlauncher.R;
 
 import java.util.logging.Logger;
 

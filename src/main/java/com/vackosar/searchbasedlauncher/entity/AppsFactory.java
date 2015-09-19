@@ -1,4 +1,4 @@
-package com.vackosar.searchbasedlauncher;
+package com.vackosar.searchbasedlauncher.entity;
 
 import android.app.Activity;
 import android.content.Intent;
