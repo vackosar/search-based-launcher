@@ -6,14 +6,13 @@ import android.view.View;
 import android.widget.EditText;
 
 public class SearchText extends Colorful implements TextWatcher {
-    public static final String EMPTY = "";
-    public static final String SPACE = " ";
-    public static final String REGEX_MATCH_ALL = ".*";
-    final MainActivity mainActivity;
-    final EditText editText;
+    private static final String EMPTY = "";
+    private static final String SPACE = " ";
+    private static final String REGEX_MATCH_ALL = ".*";
+    private final EditText editText;
+    private TextChangedCallback textChangedCallback;
 
     public SearchText (MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
         editText = (EditText) mainActivity.findViewById(R.id.searchText);
         editText.addTextChangedListener(this);
     }
@@ -30,7 +29,11 @@ public class SearchText extends Colorful implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        mainActivity.getAppsManager().refreshView();
+        textChangedCallback.call();
+    }
+
+    public void setSearchTextCallback(TextChangedCallback textChangedCallback) {
+        this.textChangedCallback = textChangedCallback;
     }
 
     @Override
@@ -48,5 +51,9 @@ public class SearchText extends Colorful implements TextWatcher {
 
     public String getFilterText () {
         return editText.getText().toString().toLowerCase().replace(SPACE, REGEX_MATCH_ALL) + REGEX_MATCH_ALL;
+    }
+
+    public interface TextChangedCallback {
+        void call ();
     }
 }

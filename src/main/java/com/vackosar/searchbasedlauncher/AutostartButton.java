@@ -5,13 +5,15 @@ import android.widget.TextView;
 
 public class AutostartButton implements View.OnClickListener {
 
-    private final MainActivity mainActivity;
     private boolean autostart;
     private final TextView textView;
     private ColorService colorService = new ColorService();
+    private final PreferencesAdapter preferencesAdapter;
+    private final MainActivity mainActivity;
 
-    public AutostartButton (MainActivity mainActivity) {
+    public AutostartButton (MainActivity mainActivity, PreferencesAdapter preferencesAdapter) {
         this.mainActivity = mainActivity;
+        this.preferencesAdapter = preferencesAdapter;
         textView = (TextView) mainActivity.findViewById(R.id.autostartButton);
         textView.setOnClickListener(this);
         load();
@@ -32,11 +34,11 @@ public class AutostartButton implements View.OnClickListener {
     }
 
     public void save() {
-        mainActivity.getPreferencesAdapter().save(getClass().getName(), new Boolean(autostart));
+        preferencesAdapter.save(getClass().getName(), new Boolean(autostart));
     }
 
     public void load() {
-        autostart = mainActivity.getPreferencesAdapter().load(getClass().getName(), Boolean.class);
+        autostart = preferencesAdapter.load(getClass().getName(), Boolean.class);
         setColor();
     }
 }

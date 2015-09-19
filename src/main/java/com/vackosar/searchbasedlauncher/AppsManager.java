@@ -12,46 +12,55 @@ import java.util.Set;
 
 @SuppressWarnings("Convert2Lambda")
 public class AppsManager {
-    final MainActivity mainActivity;
-    List<App> pkg = getEmptyAppList();
-    Set<App> extra = new HashSet<>();
-    Set<App> hidden = new HashSet<>();
-    final private PreferencesAdapter preferencesAdapter;
+    private final List<App> pkg = getEmptyAppList();
+    private final Set<App> extra = new HashSet<>();
+    private final Set<App> hidden = new HashSet<>();
+    private RefreshCallback refreshCallback;
 
-    public AppsManager(MainActivity mainActivity) {
+    private final MainActivity mainActivity;
+    private final AppTypeSelector appTypeSelector;
+    private final PreferencesAdapter preferencesAdapter;
+
+    public AppsManager(MainActivity mainActivity, AppTypeSelector appTypeSelector, PreferencesAdapter preferencesAdapter) {
         this.mainActivity = mainActivity;
-        preferencesAdapter = new PreferencesAdapter(mainActivity);
+        this.appTypeSelector = appTypeSelector;
+        this.preferencesAdapter = preferencesAdapter;
     }
 
     public void refreshView() {
-        mainActivity.getAppsView().refeshView();
+        refreshCallback.refresh();
+    }
+
+    public void setRefreshCallback(RefreshCallback refreshCallback) {
+        this.refreshCallback = refreshCallback;
     }
 
     public void reload() {
         final Intent main = new Intent(Intent.ACTION_MAIN, null);
         final PackageManager pm = mainActivity.getPackageManager();
-        switch (mainActivity.getAppTypeSelector().getSelected()) {
+        pkg.clear();
+        switch (appTypeSelector.getSelected()) {
             case normal:
-                pkg = getApplicationActivities(main, pm);
+                pkg.addAll(getApplicationActivities(main, pm));
                 pkg.removeAll(hidden);
                 pkg.addAll(extra);
                 break;
             case activity:
-                pkg = getAllActivities(main, pm);
+                pkg.addAll(getAllActivities(main, pm));
                 pkg.removeAll(hidden);
                 pkg.addAll(extra);
                 break;
             case extra:
-                pkg = getEmptyAppList();
+                pkg.addAll(getEmptyAppList());
                 pkg.addAll(extra);
                 break;
             case hidden:
-                pkg = getEmptyAppList();
+                pkg.addAll(getEmptyAppList());
                 pkg.addAll(hidden);
                 break;
         }
         Collections.sort(pkg);
-        mainActivity.getAppsView().refeshView();
+        refreshView();
     }
 
     private List<App> getAllActivities(Intent main, PackageManager pm) {
@@ -94,8 +103,10 @@ public class AppsManager {
 
     public void load() {
         try {
-            extra = mainActivity.getPreferencesAdapter().loadSet("extra");
-            hidden = mainActivity.getPreferencesAdapter().loadSet("hidden");
+            extra.clear();
+            extra.addAll(preferencesAdapter.loadSet("extra"));
+            hidden.clear();
+            hidden.addAll(preferencesAdapter.loadSet("hidden"));
         } catch (Exception e) {
             save();
         }
@@ -103,8 +114,8 @@ public class AppsManager {
     }
 
     public void save() {
-        mainActivity.getPreferencesAdapter().saveSet(extra, "extra");
-        mainActivity.getPreferencesAdapter().saveSet(hidden, "hidden");
+        preferencesAdapter.saveSet(extra, "extra");
+        preferencesAdapter.saveSet(hidden, "hidden");
         reload();
     }
 
@@ -118,5 +129,9 @@ public class AppsManager {
 
     public List<App> getPkg() {
         return pkg;
+    }
+
+    public interface RefreshCallback {
+        void refresh();
     }
 }

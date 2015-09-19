@@ -12,6 +12,8 @@ import android.widget.ViewAnimator;
 
 import java.util.logging.Logger;
 
+import dagger.ObjectGraph;
+
 
 @SuppressWarnings("Convert2Lambda")
 public class MainActivity extends Activity {
@@ -25,17 +27,12 @@ public class MainActivity extends Activity {
             appsManager.load();
         }
     };
-    private SearchText searchText;
-    private AutostartButton autostartButton;
-    private AppsManager appsManager;
     private MenuButton menuButton;
-    private AppsView appsView;
     private WifiButton wifiButton;
     private BluetoothButton bluetoothButton;
     private CameraButton cameraButton;
-    private AppTypeSelector appTypeSelector;
     private WikiButton wikiButton;
-    private PreferencesAdapter preferencesAdapter;
+    private AppsManager appsManager;
 
     private void registerIntentReceivers() {
         IntentFilter filter = new IntentFilter();
@@ -66,60 +63,24 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ObjectGraph objectGraph = ObjectGraph.create(new Module(this));
+        appsManager = objectGraph.get(AppsManager.class);
+        menuButton = objectGraph.get(MenuButton.class);
+        objectGraph.get(AppsView.class);
         registerIntentReceivers();
         initializeViewWrappers();
         appsManager.load();
     }
 
     private void initializeViewWrappers() {
-        preferencesAdapter = new PreferencesAdapter(this);
-        appsView = new AppsView(this);
-        menuButton = new MenuButton(this);
-        autostartButton = new AutostartButton(this);
         wifiButton = new WifiButton(this);
         bluetoothButton = new BluetoothButton(this);
         cameraButton = new CameraButton(this);
-        appsManager = new AppsManager(this);
-        searchText = new SearchText(this);
-        appTypeSelector = new AppTypeSelector(this);
         wikiButton = new WikiButton(this);
-    }
-
-    public SearchText getSearchText() {
-        return searchText;
-    }
-
-    public AppsManager getAppsManager() {
-        return appsManager;
-    }
-
-    public AutostartButton getAutostartButton() {
-        return autostartButton;
-    }
-
-    public AppsView getAppsView() {
-        return appsView;
     }
 
     public MenuButton getMenuButton() {
         return menuButton;
-    }
-
-    public AppTypeSelector getAppTypeSelector() {
-        return appTypeSelector;
-    }
-
-    public PreferencesAdapter getPreferencesAdapter() {
-        return preferencesAdapter;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        searchText.setNormalColor();
-        if ((getAppTypeSelector().getSelected() == AppsType.normal) && autostartButton.isOn()) {
-            searchText.clearText();
-        }
     }
 
     @Override

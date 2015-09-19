@@ -10,11 +10,10 @@ import java.util.Set;
 
 public class PreferencesAdapter {
     public static final String SIZE = "size";
-    final MainActivity mainActivity;
-    final Context context;
+
+    private final Context context;
 
     public PreferencesAdapter(MainActivity mainActivity) {
-        this.mainActivity = mainActivity;
         this.context = mainActivity.getApplicationContext();
     }
 

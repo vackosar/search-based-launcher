@@ -8,20 +8,26 @@ public class MenuButton extends Colorful implements View.OnClickListener {
     public static final int MENU_CHILD_ID = 1;
     private final MainActivity mainActivity;
     private final TextView textView;
+    private final SearchText searchText;
+    private final AppsManager appsManager;
+    private final AppTypeSelector appTypeSelector;
 
-    public MenuButton(MainActivity mainActivity) {
+    public MenuButton(MainActivity mainActivity, SearchText searchText, AppsManager appsManager, AppTypeSelector appTypeSelector) {
         this.mainActivity = mainActivity;
+        this.searchText = searchText;
+        this.appsManager = appsManager;
+        this.appTypeSelector = appTypeSelector;
         textView = (TextView) mainActivity.findViewById(R.id.menuButton);
         textView.setOnClickListener(this);
     }
 
     public void toggle() {
-        mainActivity.getSearchText().setNormalColor();
+        searchText.setNormalColor();
         toggleView();
         if (! isMenuShown()) {
-            mainActivity.getAppsManager().reload();
+            appsManager.reload();
         } else {
-            mainActivity.getAppTypeSelector().requestFocus();
+            appTypeSelector.requestFocus();
         }
     }
 

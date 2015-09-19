@@ -9,11 +9,11 @@ public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
     private AppsType selected = DEFAULT_SELECTED;
     private final RadioGroup radioGroup;
 
-    public AppTypeSelector(MainActivity mainActivity) {
+    public AppTypeSelector(MainActivity mainActivity, PreferencesAdapter preferencesAdapter) {
         this.mainActivity = mainActivity;
+        this.preferencesAdapter = preferencesAdapter;
         radioGroup = (RadioGroup) mainActivity.findViewById(R.id.appListRadioGroup);
         radioGroup.setOnCheckedChangeListener(this);
-        preferencesAdapter = mainActivity.getPreferencesAdapter();
         selected = AppsType.parseOrdinal(load());
     }
 

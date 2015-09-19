@@ -13,22 +13,43 @@ import java.util.List;
 
 public class AppsView implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     public static final String RECENT = "recent";
-    final MainActivity mainActivity;
-    final ListView listView;
+    private final ListView listView;
+    private final List<App> filtered = new ArrayList<>();
+    private final List<App> recent;
+    public static final int FIRST_INDEX = 0;
+    private final AutostartButton autostartButton;
     private final DialogFactory dialogFactory;
     private final PreferencesAdapter preferencesAdapter;
-    List<App> filtered = new ArrayList<>();
-    List<App> recent;
-    public static final int FIRST_INDEX = 0;
+    private final MainActivity mainActivity;
+    private final SearchText searchText;
+    private final AppsManager appsManager;
+    private final AppTypeSelector appTypeSelector;
 
-    public AppsView(MainActivity mainActivity) {
+    public AppsView(MainActivity mainActivity, PreferencesAdapter preferencesAdapter, AutostartButton autostartButton, DialogFactory dialogFactory, SearchText searchText, AppsManager appsManager, AppTypeSelector appTypeSelector) {
         this.mainActivity = mainActivity;
+        this.preferencesAdapter = preferencesAdapter;
+        this.autostartButton = autostartButton;
+        this.dialogFactory = dialogFactory;
+        this.searchText = searchText;
+        this.appsManager = appsManager;
+        this.appTypeSelector = appTypeSelector;
+
         listView = (ListView) mainActivity.findViewById(R.id.appListView);
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
-        dialogFactory = new DialogFactory(mainActivity);
-        preferencesAdapter = mainActivity.getPreferencesAdapter();
         recent = new ArrayList<>(preferencesAdapter.loadSet(RECENT));
+        searchText.setSearchTextCallback(new SearchText.TextChangedCallback() {
+            @Override
+            public void call() {
+                refreshView();
+            }
+        });
+        appsManager.setRefreshCallback(new AppsManager.RefreshCallback() {
+            @Override
+            public void refresh() {
+                refreshView();
+            }
+        });
     }
 
     @Override
@@ -41,8 +62,8 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         return showOptionsForApp(position);
     }
 
-    public void refeshView() {
-        String filterText = mainActivity.getSearchText().getFilterText();
+    public void refreshView() {
+        String filterText = searchText.getFilterText();
         addFiltered(filterText);
         if (autostartFirstApp()) {
             executeActivity(FIRST_INDEX);
@@ -54,7 +75,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     private void addFiltered(String filterText) {
         filtered.clear();
         addRecent(filterText);
-        for (App app: mainActivity.getAppsManager().getPkg()) {
+        for (App app: appsManager.getPkg()) {
             addFiltredIfMatch(filterText, app);
         }
     }
@@ -66,7 +87,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     }
 
     private void addRecent(String filterText) {
-        recent.retainAll(mainActivity.getAppsManager().getPkg());
+        recent.retainAll(appsManager.getPkg());
         for (App app: getReversedRecent()) {
             if (checkMatch(filterText, app)) {
                 filtered.add(app.getAsRecent());
@@ -79,7 +100,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     }
 
     private boolean autostartFirstApp() {
-        return filtered.size() == 1 && mainActivity.getAppsManager().getPkg().size() > 1 && mainActivity.getAutostartButton().isOn();
+        return filtered.size() == 1 && appsManager.getPkg().size() > 1 && autostartButton.isOn();
     }
 
     private List<App> getReversedRecent() {
@@ -98,7 +119,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
 
     public void executeActivity(int index) {
         final App app = getApp(index);
-        mainActivity.getSearchText().setActivatedColor();
+        searchText.setActivatedColor();
         addRecent(app);
         if (app.isMenu()) {
             mainActivity.getMenuButton().toggle();
@@ -114,14 +135,16 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
             intent.setComponent(new ComponentName(app.getName(), app.getActivity()));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
             mainActivity.startActivity(intent);
+            searchText.clearText();
+            searchText.setNormalColor();
         } catch (Exception e) {
             e.printStackTrace();
-            mainActivity.getSearchText().setNormalColor();
+            searchText.setNormalColor();
         }
     }
 
     private App getApp(int index) {
-        final List<App> pkg = mainActivity.getAppsManager().getPkg();
+        final List<App> pkg = appsManager.getPkg();
         return pkg.get(pkg.indexOf(filtered.get(index)));
     }
 
@@ -136,18 +159,18 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
 
     public boolean showOptionsForApp(final int appIndex) {
         final App app = filtered.get(appIndex);
-        switch (mainActivity.getAppTypeSelector().getSelected()) {
+        switch (appTypeSelector.getSelected()) {
             case normal:
-                dialogFactory.showNormalOptions(app);
+                dialogFactory.showNormalOptions(app, appsManager);
                 break;
             case activity:
-                dialogFactory.showAddExtraAppOptions(app);
+                dialogFactory.showAddExtraAppOptions(app, appsManager);
                 break;
             case extra:
-                dialogFactory.showRemoveExtraAppOptions(app);
+                dialogFactory.showRemoveExtraAppOptions(app, appsManager);
                 break;
             case hidden:
-                dialogFactory.showUnhideAppOptions(app);
+                dialogFactory.showUnhideAppOptions(app, appsManager);
                 break;
         }
         return false;
