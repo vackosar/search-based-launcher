@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 import roboguice.context.event.OnCreateEvent;
+import roboguice.event.EventManager;
 import roboguice.event.Observes;
 import roboguice.inject.ContextSingleton;
 import roboguice.inject.InjectView;
@@ -32,8 +33,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     @Inject Activity activity;
     @Inject SearchText searchText;
     @Inject AppsManager appsManager;
-//    @Inject
-    MenuButton menuButton;
+    @Inject EventManager eventManager;
 
     public void onCreate(@Observes OnCreateEvent onCreate) {
         listView.setOnItemClickListener(this);
@@ -77,7 +77,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
 
     private void addFiltered(String filterText) {
         filtered.clear();
-        addRecent(filterText);
+        addRecentToFiltered(filterText);
         for (App app: appsManager.getPkg()) {
             addFiltredIfMatch(filterText, app);
         }
@@ -89,7 +89,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         }
     }
 
-    private void addRecent(String filterText) {
+    private void addRecentToFiltered(String filterText) {
         recent.retainAll(appsManager.getPkg());
         for (App app: getReversedRecent()) {
             if (checkMatch(filterText, app)) {
@@ -123,9 +123,9 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     public void executeActivity(int index) {
         final App app = getApp(index);
         searchText.setActivatedColor();
-        addRecent(app);
+        addNewRecent(app);
         if (app.isMenu()) {
-            menuButton.toggle();
+            eventManager.fire(new MenuButton.ToggleEvent());
         } else {
             executeActivity(app);
         }
@@ -151,7 +151,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         return pkg.get(pkg.indexOf(filtered.get(index)));
     }
 
-    public void addRecent(App app) {
+    public void addNewRecent(App app) {
         recent.remove(app);
         recent.add(app);
         if (recent.size() > 10) {

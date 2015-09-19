@@ -14,6 +14,7 @@ import com.google.inject.Inject;
 import java.util.logging.Logger;
 
 import roboguice.activity.RoboActivity;
+import roboguice.event.EventManager;
 import roboguice.inject.ContentView;
 
 @SuppressWarnings("Convert2Lambda")
@@ -29,9 +30,9 @@ public class MainActivity extends RoboActivity {
 //            appsManager.load();
         }
     };
-    MenuButton menuButton;
-
+    @Inject MenuButton menuButton;
     @Inject AppsView appsView;
+    @Inject EventManager eventManager;
     private WifiButton wifiButton;
     private BluetoothButton bluetoothButton;
     private CameraButton cameraButton;
@@ -48,13 +49,13 @@ public class MainActivity extends RoboActivity {
     @Override
     public boolean onKeyUp(int keycode, KeyEvent event) {
         if (keycode == KeyEvent.KEYCODE_MENU) {
-            menuButton.toggle();
+            eventManager.fire(new MenuButton.ToggleEvent());
         } else if (keycode == KeyEvent.KEYCODE_SEARCH) {
             startSearch("", false, null, true);
         } else if (keycode == KeyEvent.KEYCODE_BACK) {
             ViewAnimator mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
             if (mViewAnimator.getDisplayedChild() == 1) {
-                menuButton.toggle();
+                eventManager.fire(new MenuButton.ToggleEvent());
             }
         } else {
             return super.onKeyUp(keycode, event);

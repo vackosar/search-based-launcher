@@ -18,19 +18,16 @@ public class MenuButton extends Colorful implements View.OnClickListener {
     @InjectView(R.id.menuButton) TextView textView;
     @Inject SearchText searchText;
     @Inject AppsManager appsManager;
-    @Inject AppTypeSelector appTypeSelector;
 
     public void onCreate(@Observes OnCreateEvent onCreate) {
         textView.setOnClickListener(this);
     }
 
-    public void toggle() {
+    public void toggle(@Observes ToggleEvent toggleEvent) {
         searchText.setNormalColor();
         toggleView();
         if (! isMenuShown()) {
-            appsManager.reload();
-        } else {
-            appTypeSelector.requestFocus();
+            appsManager.load();
         }
     }
 
@@ -49,6 +46,10 @@ public class MenuButton extends Colorful implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        toggle();
+        toggle(null);
     }
+
+    public static class ToggleEvent {
+    }
+
 }

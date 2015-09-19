@@ -5,6 +5,7 @@ import android.widget.RadioGroup;
 import com.google.inject.Inject;
 
 import roboguice.context.event.OnCreateEvent;
+import roboguice.event.EventManager;
 import roboguice.event.Observes;
 import roboguice.inject.ContextSingleton;
 import roboguice.inject.InjectView;
@@ -15,9 +16,8 @@ public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
     private AppsType selected = DEFAULT_SELECTED;
 
     @InjectView(R.id.appListRadioGroup) RadioGroup radioGroup;
-//    @Inject
-    MenuButton menuButton;
     @Inject PreferencesAdapter preferencesAdapter;
+    @Inject EventManager eventManager;
 
     public void onCreate(@Observes OnCreateEvent onCreate) {
         radioGroup.setOnCheckedChangeListener(this);
@@ -35,7 +35,7 @@ public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         selected = AppsType.parseViewId(checkedId);
-        menuButton.toggle();
+        eventManager.fire(new MenuButton.ToggleEvent());
     }
 
     public AppsType getSelected() {
