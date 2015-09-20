@@ -1,8 +1,6 @@
 package com.vackosar.searchbasedlauncher.boundary;
 
 import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +12,7 @@ import com.vackosar.searchbasedlauncher.control.AppsManager;
 import com.vackosar.searchbasedlauncher.control.PackageAddedOrRemovedEvent;
 import com.vackosar.searchbasedlauncher.control.PreferencesAdapter;
 import com.vackosar.searchbasedlauncher.entity.App;
+import com.vackosar.searchbasedlauncher.entity.AppExecutor;
 import com.vackosar.searchbasedlauncher.entity.AppsFactory;
 
 import java.util.ArrayList;
@@ -35,6 +34,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     @Inject private PreferencesAdapter preferencesAdapter;
     @Inject private Activity activity;
     @Inject private SearchText searchText;
+    @Inject private AppExecutor appExecutor;
     @Inject private AppsManager appsManager;
     @Inject private EventManager eventManager;
     @Inject private AppsFactory appsFactory;
@@ -44,6 +44,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     private List<App> recent;
     public static final int FIRST_INDEX = 0;
 
+    @SuppressWarnings("unused")
     public void onCreate(@Observes OnCreateEvent onCreate) {
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
@@ -86,6 +87,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
 
     private void addFiltered(String filterText) {
         filtered.clear();
+
         addRecentToFiltered(filterText);
         for (App app: appsManager.getPkg()) {
             addFiltredIfMatch(filterText, app);
@@ -115,43 +117,23 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     }
 
     private List<App> getReversedRecent() {
-        final ArrayList<App> reverseRecent = new ArrayList<App>(recent);
+        final List<App> reverseRecent = new ArrayList<>(recent);
         Collections.reverse(reverseRecent);
         return reverseRecent;
     }
 
     private void viewAppList(List<App> appList) {
-        final List<String> list = new ArrayList<String>();
+        final List<String> list = new ArrayList<>();
         for (App app: appList) {
             list.add(app.getNick());
         }
-        listView.setAdapter(new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, android.R.id.text1, list));
+        listView.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, android.R.id.text1, list));
     }
 
     public void executeActivity(int index) {
         final App app = getApp(index);
-        searchText.setActivatedColor();
         addNewRecent(app);
-        if (app.isMenu()) {
-            eventManager.fire(new MenuButton.ToggleEvent());
-        } else {
-            executeActivity(app);
-        }
-    }
-
-    private void executeActivity(App app) {
-        try {
-            final Intent intent = new Intent(Intent.ACTION_MAIN, null);
-            intent.addCategory(Intent.CATEGORY_LAUNCHER);
-            intent.setComponent(new ComponentName(app.getName(), app.getActivity()));
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-            activity.startActivity(intent);
-            searchText.clearText();
-            searchText.setNormalColor();
-        } catch (Exception e) {
-            e.printStackTrace();
-            searchText.setNormalColor();
-        }
+        appExecutor.act(app);
     }
 
     private App getApp(int index) {
@@ -168,6 +150,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         preferencesAdapter.saveSet(recent, RECENT);
     }
 
+    @SuppressWarnings("unused")
     public void onPackageAddedOrRemovedEvent(@Observes PackageAddedOrRemovedEvent packageAddedOrRemovedEvent) {
         recent.retainAll(appsFactory.getAllActivities());
     }

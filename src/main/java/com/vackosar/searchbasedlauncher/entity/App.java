@@ -1,7 +1,5 @@
 package com.vackosar.searchbasedlauncher.entity;
 
-import com.vackosar.searchbasedlauncher.boundary.MainActivity;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,10 +54,6 @@ public class App implements Comparable<App> {
 
     private String getRecentNick() {
         return "R: " + nick;
-    }
-
-    public boolean isMenu() {
-        return (MainActivity.APP_PACKAGE_NAME + ".MenuButton").equals(getActivity());
     }
 
     public App getAsRecent() {
