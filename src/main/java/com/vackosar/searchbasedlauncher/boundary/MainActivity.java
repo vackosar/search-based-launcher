@@ -2,7 +2,6 @@ package com.vackosar.searchbasedlauncher.boundary;
 
 
 import android.view.KeyEvent;
-import android.widget.ViewAnimator;
 
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
@@ -15,6 +14,7 @@ import roboguice.inject.ContentView;
 @ContentView(R.layout.activity_main)
 public class MainActivity extends RoboActivity {
 
+    public static final String INITIAL_SEARCH_QUERY = "";
     @Inject private MenuButton menuButton;
     @Inject private AppsView appsView;
     @Inject private EventManager eventManager;
@@ -25,17 +25,16 @@ public class MainActivity extends RoboActivity {
 
     @Override
     public boolean onKeyUp(int keycode, KeyEvent event) {
-        if (keycode == KeyEvent.KEYCODE_MENU) {
-            eventManager.fire(new MenuButton.ToggleEvent());
-        } else if (keycode == KeyEvent.KEYCODE_SEARCH) {
-            startSearch("", false, null, true);
-        } else if (keycode == KeyEvent.KEYCODE_BACK) {
-            ViewAnimator mViewAnimator = (ViewAnimator) findViewById(R.id.viewAnimator);
-            if (mViewAnimator.getDisplayedChild() == 1) {
+        switch (keycode) {
+            case KeyEvent.KEYCODE_MENU:
+            case KeyEvent.KEYCODE_BACK:
                 eventManager.fire(new MenuButton.ToggleEvent());
-            }
-        } else {
-            return super.onKeyUp(keycode, event);
+                break;
+            case KeyEvent.KEYCODE_SEARCH:
+                startSearch(INITIAL_SEARCH_QUERY, false, null, true);
+                break;
+            default:
+                return super.onKeyUp(keycode, event);
         }
         return true;
     }
