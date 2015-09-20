@@ -6,7 +6,7 @@ import android.widget.TextView;
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
 import com.vackosar.searchbasedlauncher.control.Colorful;
-import com.vackosar.searchbasedlauncher.control.PreferencesAdapter;
+import com.vackosar.searchbasedlauncher.entity.PreferencesAdapter;
 
 import roboguice.context.event.OnCreateEvent;
 import roboguice.event.Observes;

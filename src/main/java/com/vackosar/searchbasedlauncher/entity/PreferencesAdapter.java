@@ -1,10 +1,9 @@
-package com.vackosar.searchbasedlauncher.control;
+package com.vackosar.searchbasedlauncher.entity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.inject.Inject;
-import com.vackosar.searchbasedlauncher.entity.App;
 
 import java.util.Collection;
 import java.util.HashSet;

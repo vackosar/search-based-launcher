@@ -9,11 +9,12 @@ import android.widget.ListView;
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
 import com.vackosar.searchbasedlauncher.control.AppsManager;
+import com.vackosar.searchbasedlauncher.control.DialogFactory;
 import com.vackosar.searchbasedlauncher.control.PackageAddedOrRemovedEvent;
-import com.vackosar.searchbasedlauncher.control.PreferencesAdapter;
 import com.vackosar.searchbasedlauncher.entity.App;
 import com.vackosar.searchbasedlauncher.entity.AppExecutor;
 import com.vackosar.searchbasedlauncher.entity.AppsFactory;
+import com.vackosar.searchbasedlauncher.entity.PreferencesAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;

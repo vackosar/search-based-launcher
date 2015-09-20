@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.boundary.AppTypeSelector;
 import com.vackosar.searchbasedlauncher.entity.App;
 import com.vackosar.searchbasedlauncher.entity.AppsFactory;
+import com.vackosar.searchbasedlauncher.entity.PreferencesAdapter;
 
 import java.util.Collections;
 import java.util.HashSet;

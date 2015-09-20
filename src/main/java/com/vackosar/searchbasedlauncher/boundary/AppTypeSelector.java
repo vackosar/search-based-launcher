@@ -4,8 +4,8 @@ import android.widget.RadioGroup;
 
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
-import com.vackosar.searchbasedlauncher.control.PreferencesAdapter;
 import com.vackosar.searchbasedlauncher.entity.AppsType;
+import com.vackosar.searchbasedlauncher.entity.PreferencesAdapter;
 
 import roboguice.context.event.OnCreateEvent;
 import roboguice.event.EventManager;
