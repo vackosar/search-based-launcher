@@ -3,6 +3,7 @@ package com.vackosar.searchbasedlauncher.control;
 import android.view.View;
 
 public abstract class Colorful {
+
     ColorService colorService = new ColorService();
 
     public void setActivatedColor () {

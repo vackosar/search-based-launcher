@@ -28,6 +28,7 @@ import roboguice.inject.InjectView;
 
 @ContextSingleton
 public class AppsView implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+
     @InjectView(R.id.appListView) private ListView listView;
     @Inject private AutostartButton autostartButton;
     @Inject private DialogFactory dialogFactory;

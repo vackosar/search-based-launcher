@@ -16,8 +16,10 @@ import roboguice.event.Observes;
 import roboguice.inject.InjectView;
 
 public class CameraButton extends Colorful implements View.OnClickListener {
+
     @Inject private Activity activity;
     @InjectView(R.id.cameraButton) private TextView textView;
+
     private boolean hasCam;
 
     public void onCreateEvent(@Observes OnCreateEvent onCreateEvent) {

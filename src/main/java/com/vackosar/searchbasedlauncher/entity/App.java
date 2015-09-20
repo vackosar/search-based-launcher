@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class App implements Comparable<App> {
+
     private final String name;
     private String nick;
     private final String activity;

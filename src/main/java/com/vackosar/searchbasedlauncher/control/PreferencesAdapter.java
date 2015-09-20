@@ -15,9 +15,10 @@ import roboguice.inject.ContextSingleton;
 
 @ContextSingleton
 public class PreferencesAdapter {
-    public static final String SIZE = "size";
 
     @Inject private Context context;
+
+    public static final String SIZE = "size";
 
     public <T> boolean save(String name, T o) {
         final SharedPreferences.Editor editor = getEditor(name);

@@ -16,7 +16,9 @@ import roboguice.inject.ContextSingleton;
 
 @ContextSingleton
 public class AppsFactory {
+
     @Inject private Activity activity;
+
     private PackageManager packageManager;
 
     public List<App> getAllActivities() {

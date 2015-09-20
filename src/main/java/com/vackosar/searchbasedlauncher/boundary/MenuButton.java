@@ -16,11 +16,12 @@ import roboguice.inject.InjectView;
 
 @ContextSingleton
 public class MenuButton extends Colorful implements View.OnClickListener {
-    public static final int MENU_CHILD_ID = 1;
     @InjectView(R.id.viewAnimator) ViewAnimator viewAnimator;
     @InjectView(R.id.menuButton) TextView textView;
     @Inject private SearchText searchText;
     @Inject private AppsManager appsManager;
+
+    public static final int MENU_CHILD_ID = 1;
 
     public void onCreateEvent(@Observes OnCreateEvent OnCreateEvent) {
         textView.setOnClickListener(this);

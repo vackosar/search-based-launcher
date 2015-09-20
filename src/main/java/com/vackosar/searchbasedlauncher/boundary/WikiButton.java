@@ -15,6 +15,7 @@ import roboguice.event.Observes;
 import roboguice.inject.InjectView;
 
 public class WikiButton extends Colorful implements View.OnClickListener{
+
     @InjectView(R.id.wikiButton) private TextView textView;
     @Inject private Activity activity;
 

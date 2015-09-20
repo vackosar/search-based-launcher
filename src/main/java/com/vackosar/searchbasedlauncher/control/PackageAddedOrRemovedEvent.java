@@ -17,11 +17,9 @@ import roboguice.inject.ContextSingleton;
 @ContextSingleton
 public class PackageAddedOrRemovedEvent {
 
-    @Inject
-    private EventManager eventManager;
+    @Inject private EventManager eventManager;
 
-    @Inject
-    private Activity activity;
+    @Inject private Activity activity;
 
     private BroadcastReceiver broadcastReceiver;
 

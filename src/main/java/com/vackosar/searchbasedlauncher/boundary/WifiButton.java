@@ -20,9 +20,11 @@ import roboguice.event.Observes;
 import roboguice.inject.InjectView;
 
 public class WifiButton extends Colorful implements View.OnClickListener {
-    private WifiManager wifiManager;
+
     @InjectView(R.id.wifiButton) private TextView textView;
     @Inject private Activity activity;
+
+    private WifiManager wifiManager;
 
     private BroadcastReceiver RECEIVER = new BroadcastReceiver() {
         @Override

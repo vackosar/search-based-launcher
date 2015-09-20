@@ -12,11 +12,13 @@ import roboguice.event.Observes;
 import roboguice.inject.InjectView;
 
 public class BluetoothButton extends Colorful implements View.OnClickListener {
+
     @InjectView(R.id.bluetoothButton) private TextView textView;
 
     final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
     public void onCreate(@Observes OnCreateEvent onCreate) {
+        setVisibleIfAvailable();
         textView.setOnClickListener(this);
     }
 
