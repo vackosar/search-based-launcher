@@ -7,8 +7,6 @@ import android.widget.ViewAnimator;
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
 
-import java.util.logging.Logger;
-
 import roboguice.activity.RoboActivity;
 import roboguice.event.EventManager;
 import roboguice.inject.ContentView;
@@ -24,9 +22,6 @@ public class MainActivity extends RoboActivity {
     @Inject private BluetoothButton bluetoothButton;
     @Inject private CameraButton cameraButton;
     @Inject private WikiButton wikiButton;
-
-    public static String APP_PACKAGE_NAME = "com.vackosar.searchbasedlauncher";
-    private Logger log = Logger.getLogger(getClass().getSimpleName());
 
     @Override
     public boolean onKeyUp(int keycode, KeyEvent event) {
