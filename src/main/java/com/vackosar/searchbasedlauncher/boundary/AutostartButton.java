@@ -29,6 +29,7 @@ public class AutostartButton extends Colorful implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         autostart=!autostart;
+        save();
         setColor();
     }
 
