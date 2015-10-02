@@ -5,8 +5,10 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
 import com.vackosar.searchbasedlauncher.control.Colorful;
+import com.vackosar.searchbasedlauncher.control.RegexEscaper;
 
 import roboguice.context.event.OnCreateEvent;
 import roboguice.event.Observes;
@@ -17,6 +19,7 @@ import roboguice.inject.InjectView;
 public class SearchText extends Colorful implements TextWatcher {
 
     @InjectView(R.id.searchText) EditText editText;
+    @Inject RegexEscaper regexEscaper;
 
     private static final String EMPTY = "";
     private static final String SPACE = " ";
@@ -55,15 +58,14 @@ public class SearchText extends Colorful implements TextWatcher {
         editText.setText(EMPTY);
     }
 
-    public void setSpaceCharacterToText() {
-        editText.setText(SPACE);
-    }
-
     public String getFilterText () {
-        return editText.getText().toString().toLowerCase().replace(SPACE, REGEX_MATCH_ALL) + REGEX_MATCH_ALL;
+        return regexEscaper.act(editText.getText().toString())
+                .toLowerCase()
+                .replace(SPACE, REGEX_MATCH_ALL)
+                + REGEX_MATCH_ALL;
     }
 
     public interface TextChangedCallback {
-        void call ();
+        void call();
     }
 }

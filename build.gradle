@@ -12,6 +12,7 @@ apply plugin: 'com.android.application'
         compile 'org.roboguice:roboguice:3.+'
         provided 'org.roboguice:roboblender:3.+'
         compile fileTree(dir: 'libs', include: '*.jar')
+        testCompile 'junit:junit:4.11'
     }
 
 allprojects {
@@ -28,8 +29,6 @@ android {
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src/main/java', 'gen']
-            resources.srcDirs = ['src']
             aidl.srcDirs = ['src']
             renderscript.srcDirs = ['src']
             res.srcDirs = ['res']

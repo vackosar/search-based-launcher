@@ -5,8 +5,7 @@ Minimalist open-source launcher
 - Hide any unwanted app.
 - Rename any app.
 - Avoid distracting app icons.
-- Match any character sequence with space character (" " is replaced with regex "*." ).
-- Search using REGEX.
+- Match any character sequence with space character.
 - Toggle camera, wifi and bluetooth with buttons.
 - Read wiki: https://github.com/vackosar/search-based-launcher/wiki
 
