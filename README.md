@@ -1,4 +1,4 @@
-Minimalist open-source launcher
+Minimalist Open-Source Launcher
 
 - Autostart single search matching app.
 - Add any favourite activities e.g. Wifi settings.
