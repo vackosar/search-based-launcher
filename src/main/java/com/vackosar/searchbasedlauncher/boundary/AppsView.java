@@ -49,7 +49,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     public void onCreate(@Observes OnCreateEvent onCreate) {
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
-        recent = new ArrayList<>(preferencesAdapter.loadSet(RECENT));
+        load();
         searchText.setSearchTextCallback(new SearchText.TextChangedCallback() {
             @Override
             public void call() {
@@ -63,6 +63,10 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
             }
         });
         appsManager.load();
+    }
+
+    private void load() {
+        recent = new ArrayList<>(preferencesAdapter.loadSet(RECENT));
     }
 
     @Override
@@ -149,6 +153,10 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         if (recent.size() > 10) {
             recent.remove(FIRST_INDEX);
         }
+        save();
+    }
+
+    private void save() {
         preferencesAdapter.saveSet(recent, RECENT);
     }
 
