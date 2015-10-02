@@ -1,26 +1,27 @@
 <ViewAnimator xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/viewAnimator"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent">
-    
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
     <RelativeLayout
+        android:id="@+id/layoutMain"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/layoutMain"
-        android:layout_gravity="bottom" >
+        android:layout_gravity="bottom">
 
         <EditText
             android:id="@+id/searchText"
+            style="@style/AppTheme"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/autostartButton"
-            android:longClickable="true"
+            android:background="@android:color/darker_gray"
             android:ems="10"
             android:inputType="textNoSuggestions"
-            android:background="@android:color/darker_gray"
-            android:textColor="@android:color/white" >
+            android:longClickable="true"
+            android:textColor="@android:color/white">
 
             <requestFocus />
         </EditText>
@@ -29,145 +30,145 @@
             android:id="@+id/appListView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
             android:layout_above="@+id/searchText"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:drawSelectorOnTop="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:textFilterEnabled="false">
-        </ListView>
+            android:textFilterEnabled="false"></ListView>
 
         <TextView
-            android:layout_marginRight="7dp"
             android:id="@+id/autostartButton"
-            android:gravity="center"
-            android:layout_height="35dp"
+            style="@style/AppTheme"
             android:layout_width="70dp"
+            android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:text="Autostart" />
-
-        <TextView
             android:layout_marginRight="7dp"
             android:gravity="center"
+            android:text="Auto" />
+
+        <TextView
             android:id="@+id/wifiButton"
+            style="@style/AppTheme"
             android:layout_width="70dp"
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/autostartButton"
+            android:layout_marginRight="7dp"
             android:layout_marginTop="40dp"
             android:background="@android:color/darker_gray"
-            android:textColor="@android:color/white"
-            android:text="Wifi" />
-
-         <TextView
-            android:layout_marginRight="7dp"
             android:gravity="center"
+            android:text="Wifi"
+            android:textColor="@android:color/white" />
+
+        <TextView
             android:id="@+id/bluetoothButton"
+            style="@style/AppTheme"
             android:layout_width="70dp"
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/wifiButton"
+            android:layout_marginRight="7dp"
             android:layout_marginTop="40dp"
             android:background="@android:color/darker_gray"
-            android:textColor="@android:color/white"
-            android:text="Blue."  />
-
-
-         <TextView
-            android:layout_marginRight="7dp"
             android:gravity="center"
+            android:text="Blue"
+            android:textColor="@android:color/white" />
+
+
+        <TextView
             android:id="@+id/cameraButton"
+            style="@style/AppTheme"
             android:layout_width="70dp"
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/bluetoothButton"
+            android:layout_marginRight="7dp"
             android:layout_marginTop="40dp"
             android:background="@android:color/darker_gray"
-            android:textColor="@android:color/white"
-            android:text="Cam."  />
+            android:gravity="center"
+            android:text="Cam"
+            android:textColor="@android:color/white" />
 
         <TextView
-            android:layout_marginRight="7dp"
-            android:gravity="center"
             android:id="@+id/menuButton"
             android:layout_width="70dp"
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/cameraButton"
+            android:layout_marginRight="7dp"
             android:layout_marginTop="40dp"
             android:background="@android:color/darker_gray"
-            android:textColor="@android:color/white"
-            android:text="Menu"  />
+            android:gravity="center"
+            android:text="Menu"
+            android:textColor="@android:color/white" />
 
         <TextView
-            android:layout_marginRight="7dp"
-            android:gravity="center"
+            style="@style/AppTheme"
             android:id="@+id/wikiButton"
             android:layout_width="70dp"
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/menuButton"
+            android:layout_marginRight="7dp"
             android:layout_marginTop="40dp"
             android:background="@android:color/darker_gray"
-            android:textColor="@android:color/white"
-            android:text="Wiki"  />
+            android:gravity="center"
+            android:text="Wiki"
+            android:textColor="@android:color/white" />
 
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/layoutMenu"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/layoutMenu">
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_alignParentTop="true"/>
+        android:layout_height="fill_parent">
 
         <RadioGroup
             android:id="@+id/appListRadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:checkedButton="@+id/normalAppsRadioButton"
             android:clickable="true"
             android:duplicateParentState="false"
-            android:checkedButton="@+id/normalAppsRadioButton"
             android:longClickable="false"
-            android:text="tet" >
+            android:text="tet">
 
             <RadioButton
+                style="@style/AppTheme"
                 android:id="@+id/normalAppsRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="List of applications" />
 
             <RadioButton
+                style="@style/AppTheme"
                 android:id="@+id/activityAppsRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="List of all activities of all packages" />
 
             <RadioButton
+                style="@style/AppTheme"
                 android:id="@+id/extraAppsRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Extra added activities to the list of applications" />
-            
+
             <RadioButton
+                style="@style/AppTheme"
                 android:id="@+id/hiddenAppsRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hidden applications from list of applications" />
         </RadioGroup>
 
-</RelativeLayout>
-    
-    
-    
-    
-    
+    </RelativeLayout>
+
+
 </ViewAnimator>
 

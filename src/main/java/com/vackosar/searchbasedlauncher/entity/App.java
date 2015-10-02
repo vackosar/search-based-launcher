@@ -56,12 +56,6 @@ public class App implements Comparable<App> {
         return "R: " + nick;
     }
 
-    public App getAsRecent() {
-        final App recent = new App(this);
-        recent.setNick(getRecentNick());
-        return recent;
-    }
-
     public String getJsonString(){
         try {
             return new JSONObject()

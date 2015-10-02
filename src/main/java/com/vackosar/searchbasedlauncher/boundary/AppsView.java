@@ -104,7 +104,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     private void addRecentToFiltered(String filterText) {
         for (App app: getReversedRecent()) {
             if (checkMatch(filterText, app) && appsManager.getPkg().contains(app)) {
-                filtered.add(app.getAsRecent());
+                filtered.add(app);
             }
         }
     }
@@ -128,7 +128,8 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         for (App app: appList) {
             list.add(app.getNick());
         }
-        listView.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, android.R.id.text1, list));
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, R.layout.list_item, android.R.id.text1, list);
+        listView.setAdapter(adapter);
     }
 
     public void executeActivity(int index) {
