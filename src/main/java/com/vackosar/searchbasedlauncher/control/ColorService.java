@@ -1,11 +1,12 @@
 package com.vackosar.searchbasedlauncher.control;
 
+import android.graphics.Color;
 import android.widget.TextView;
 
 public class ColorService {
 
     private static int ACTIVE_COLOR = -16711936;
-    private static int NORMAL_COLOR = -12303292;
+    private static int NORMAL_COLOR = Color.WHITE;
 
     public int getActiveColor() {
         return ACTIVE_COLOR;
