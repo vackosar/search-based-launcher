@@ -43,7 +43,7 @@ public class CameraButton extends Colorful implements View.OnClickListener {
     }
 
     @Override
-    protected View getView() {
+    protected TextView getView() {
         return textView;
     }
 }

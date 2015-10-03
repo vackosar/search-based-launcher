@@ -95,6 +95,7 @@
             android:textColor="@android:color/white" />
 
         <TextView
+            style="@style/AppTheme"
             android:id="@+id/menuButton"
             android:layout_width="70dp"
             android:layout_height="35dp"
@@ -130,6 +131,7 @@
 
         <RadioGroup
             android:id="@+id/appListRadioGroup"
+            style="@style/AppTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -138,7 +140,7 @@
             android:clickable="true"
             android:duplicateParentState="false"
             android:longClickable="false"
-            android:text="tet">
+            android:text="">
 
             <RadioButton
                 style="@style/AppTheme"

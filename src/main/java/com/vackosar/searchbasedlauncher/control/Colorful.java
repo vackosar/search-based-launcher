@@ -1,6 +1,6 @@
 package com.vackosar.searchbasedlauncher.control;
 
-import android.view.View;
+import android.widget.TextView;
 
 public abstract class Colorful {
 
@@ -33,5 +33,5 @@ public abstract class Colorful {
         }
     }
 
-    protected abstract View getView();
+    protected abstract TextView getView();
 }

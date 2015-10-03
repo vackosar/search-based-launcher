@@ -2,8 +2,8 @@ package com.vackosar.searchbasedlauncher.boundary;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
@@ -50,7 +50,7 @@ public class SearchText extends Colorful implements TextWatcher {
     }
 
     @Override
-    public View getView() {
+    public TextView getView() {
         return editText;
     }
 

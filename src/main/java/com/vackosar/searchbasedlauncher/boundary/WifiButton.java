@@ -60,7 +60,7 @@ public class WifiButton extends Colorful implements View.OnClickListener {
     }
 
     @Override
-    public View getView() {
+    public TextView getView() {
         return textView;
     }
 

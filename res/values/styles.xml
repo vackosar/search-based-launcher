@@ -2,6 +2,10 @@
 
     <style name="AppTheme" parent="android:Theme.Black" >
         <item name="android:typeface" >monospace</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">0</item>
+        <item name="android:shadowDy">0</item>
+        <item name="android:shadowRadius">3</item>
     </style>
 
 </resources>

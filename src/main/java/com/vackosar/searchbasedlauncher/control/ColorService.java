@@ -1,10 +1,7 @@
 package com.vackosar.searchbasedlauncher.control;
 
-import android.view.View;
+import android.widget.TextView;
 
-/**
- * Created by vk on 05/07/2015.
- */
 public class ColorService {
 
     private static int ACTIVE_COLOR = -16711936;
@@ -18,23 +15,23 @@ public class ColorService {
         return NORMAL_COLOR;
     }
 
-    public void setActive(View view) {
-        view.setBackgroundColor(getActiveColor());
+    public void setActive(TextView view) {
+        view.setTextColor(getActiveColor());
     }
 
-    public void setNormal(View view) {
-        view.setBackgroundColor(getNormalColor());
+    public void setNormal(TextView view) {
+        view.setTextColor(getNormalColor());
     }
 
-    public void setVisible(View view) {
-        view.setVisibility(View.VISIBLE);
+    public void setVisible(TextView view) {
+        view.setVisibility(TextView.VISIBLE);
     }
 
-    public void setInvisible(View view) {
-        view.setVisibility(View.INVISIBLE);
+    public void setInvisible(TextView view) {
+        view.setVisibility(TextView.INVISIBLE);
     }
 
-    public void setActive(boolean active, View view) {
+    public void setActive(boolean active, TextView view) {
         if (active) {
             setActive(view);
         } else {
