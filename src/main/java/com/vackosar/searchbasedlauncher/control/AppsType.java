@@ -1,4 +1,4 @@
-package com.vackosar.searchbasedlauncher.entity;
+package com.vackosar.searchbasedlauncher.control;
 
 import com.vackosar.searchbasedlauncher.R;
 

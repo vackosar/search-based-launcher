@@ -7,7 +7,7 @@ import android.widget.RadioGroup;
 import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
-import com.vackosar.searchbasedlauncher.entity.AppsType;
+import com.vackosar.searchbasedlauncher.control.AppsType;
 import com.vackosar.searchbasedlauncher.entity.PreferencesAdapter;
 import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
 import com.vackosar.searchbasedlauncher.entity.SingletonPersisterFactory;
