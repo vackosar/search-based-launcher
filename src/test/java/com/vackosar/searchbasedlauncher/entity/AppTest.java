@@ -1,7 +1,6 @@
-package com.vackosar.searchbasedlauncher.control;
+package com.vackosar.searchbasedlauncher.entity;
 
 import com.google.gson.Gson;
-import com.vackosar.searchbasedlauncher.entity.App;
 
 import org.junit.Assert;
 import org.junit.Test;
