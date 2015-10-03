@@ -1,45 +1,58 @@
 package com.vackosar.searchbasedlauncher.boundary;
 
+import android.app.Activity;
+import android.view.View;
 import android.widget.RadioGroup;
 
+import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
 import com.vackosar.searchbasedlauncher.entity.AppsType;
 import com.vackosar.searchbasedlauncher.entity.PreferencesAdapter;
+import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
+import com.vackosar.searchbasedlauncher.entity.SingletonPersisterFactory;
 
 import roboguice.context.event.OnCreateEvent;
+import roboguice.context.event.OnStartEvent;
 import roboguice.event.EventManager;
 import roboguice.event.Observes;
 import roboguice.inject.ContextSingleton;
 import roboguice.inject.InjectView;
 
 @ContextSingleton
-public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
+public class AppTypeSelector implements RadioGroup.OnClickListener {
 
     @InjectView(R.id.appListRadioGroup) RadioGroup radioGroup;
     @Inject private PreferencesAdapter preferencesAdapter;
     @Inject private EventManager eventManager;
+    @Inject private SingletonPersisterFactory singletonPersisterFactory;
+    @Inject private Activity activity;
+    private SingletonPersister<AppTypeSelector> persister;
 
-    private AppsType selected = DEFAULT_SELECTED;
+    @Expose private AppsType selected = DEFAULT_SELECTED;
     public static final AppsType DEFAULT_SELECTED = AppsType.normal;
 
-    public void onCreate(@Observes OnCreateEvent onCreate) {
-        radioGroup.setOnCheckedChangeListener(this);
-        selected = AppsType.parseOrdinal(load());
+    @SuppressWarnings("unused")
+    public void onCreateEvent(@Observes OnCreateEvent onCreateEvent) {
+        for (AppsType appsType: AppsType.values()) {
+            final View view = activity.findViewById(appsType.getViewId());
+            view.setOnClickListener(this);
+        }
+        persister = singletonPersisterFactory.create(this);
     }
 
-    private Integer load() {
-        return preferencesAdapter.load(getClass().getName(), Integer.class);
+    @SuppressWarnings("unused")
+    public void onStartEvent(@Observes OnStartEvent onStartEvent) {
+        load();
+    }
+
+    private void load() {
+        persister.load();
+        radioGroup.check(selected.getViewId());
     }
 
     public void save() {
-        preferencesAdapter.save(getClass().getName(), selected.ordinal());
-    }
-
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-        selected = AppsType.parseViewId(checkedId);
-        eventManager.fire(new MenuButton.ToggleEvent());
+        persister.save();
     }
 
     public AppsType getSelected() {
@@ -48,5 +61,12 @@ public class AppTypeSelector implements RadioGroup.OnCheckedChangeListener {
 
     public void requestFocus() {
         radioGroup.requestFocus();
+    }
+
+    @Override
+    public void onClick(View v) {
+        selected = AppsType.parseViewId(radioGroup.getCheckedRadioButtonId());
+        persister.save();
+        eventManager.fire(new MenuButton.ToggleEvent());
     }
 }

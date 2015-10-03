@@ -23,6 +23,10 @@ public enum AppsType {
         throw new IllegalArgumentException("View id " + viewId + " could not be parsed.");
     }
 
+    public int getViewId() {
+        return radioButton;
+    }
+
     public static AppsType parseOrdinal(int ordinal) {
         for (AppsType appsType: AppsType.values()) {
             if (ordinal == appsType.ordinal()) {
