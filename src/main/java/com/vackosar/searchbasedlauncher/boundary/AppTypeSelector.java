@@ -66,7 +66,7 @@ public class AppTypeSelector implements RadioGroup.OnClickListener {
     @Override
     public void onClick(View v) {
         selected = AppsType.parseViewId(radioGroup.getCheckedRadioButtonId());
-        persister.save();
+        save();
         eventManager.fire(new MenuButton.ToggleEvent());
     }
 }
