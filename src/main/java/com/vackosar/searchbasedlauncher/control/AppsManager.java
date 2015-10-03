@@ -2,11 +2,12 @@ package com.vackosar.searchbasedlauncher.control;
 
 import android.app.Activity;
 
+import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.boundary.AppTypeSelector;
 import com.vackosar.searchbasedlauncher.entity.App;
 import com.vackosar.searchbasedlauncher.entity.AppsFactory;
-import com.vackosar.searchbasedlauncher.entity.PreferencesAdapter;
+import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -21,14 +22,15 @@ import roboguice.inject.ContextSingleton;
 public class AppsManager {
 
     @Inject private AppTypeSelector appTypeSelector;
-    @Inject private PreferencesAdapter preferencesAdapter;
     @Inject private PackageAddedOrRemovedEvent packageAddedOrRemovedEvent;
     @Inject private Activity activity;
     @Inject private AppsFactory appsFactory;
+    @Inject private SingletonPersister<AppsManager> persister;
+
+    @Expose private final Set<App> extra = new HashSet<>();
+    @Expose private final Set<App> hidden = new HashSet<>();
 
     private final List<App> pkg = AppsFactory.getEmptyAppList();
-    private final Set<App> extra = new HashSet<>();
-    private final Set<App> hidden = new HashSet<>();
     private RefreshCallback refreshCallback;
 
     public void refreshView() {
@@ -66,20 +68,12 @@ public class AppsManager {
     }
 
     public void load() {
-        try {
-            extra.clear();
-            extra.addAll(preferencesAdapter.loadSet("extra"));
-            hidden.clear();
-            hidden.addAll(preferencesAdapter.loadSet("hidden"));
-        } catch (Exception e) {
-            save();
-        }
+        persister.load(this);
         reload();
     }
 
     public void save() {
-        preferencesAdapter.saveSet(extra, "extra");
-        preferencesAdapter.saveSet(hidden, "hidden");
+        persister.save(this);
         reload();
     }
 

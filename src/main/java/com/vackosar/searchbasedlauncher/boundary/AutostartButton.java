@@ -7,7 +7,6 @@ import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
 import com.vackosar.searchbasedlauncher.control.Colorful;
-import com.vackosar.searchbasedlauncher.entity.PreferencesAdapter;
 import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
 
 import roboguice.context.event.OnCreateEvent;
@@ -19,7 +18,6 @@ import roboguice.inject.InjectView;
 public class AutostartButton extends Colorful implements View.OnClickListener {
 
     @InjectView(R.id.autostartButton) TextView textView;
-    @Inject private PreferencesAdapter preferencesAdapter;
     @Inject private SingletonPersister<AutostartButton> persister;
     @Expose private boolean autostart = true;
 

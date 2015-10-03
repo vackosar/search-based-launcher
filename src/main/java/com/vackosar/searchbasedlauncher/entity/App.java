@@ -1,5 +1,7 @@
 package com.vackosar.searchbasedlauncher.entity;
 
+import com.google.gson.annotations.Expose;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,9 +11,9 @@ import java.util.Set;
 
 public class App implements Comparable<App> {
 
-    private final String name;
-    private String nick;
-    private final String activity;
+    @Expose private final String name;
+    @Expose private String nick;
+    @Expose private final String activity;
 
     public App(String name, String nick, String activity) {
         this.name = name;

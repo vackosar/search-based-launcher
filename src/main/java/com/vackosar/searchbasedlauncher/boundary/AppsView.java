@@ -6,6 +6,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
 import com.vackosar.searchbasedlauncher.control.AppsManager;
@@ -14,7 +15,7 @@ import com.vackosar.searchbasedlauncher.control.PackageAddedOrRemovedEvent;
 import com.vackosar.searchbasedlauncher.entity.App;
 import com.vackosar.searchbasedlauncher.entity.AppExecutor;
 import com.vackosar.searchbasedlauncher.entity.AppsFactory;
-import com.vackosar.searchbasedlauncher.entity.PreferencesAdapter;
+import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,18 +33,20 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     @InjectView(R.id.appListView) private ListView listView;
     @Inject private AutostartButton autostartButton;
     @Inject private DialogFactory dialogFactory;
-    @Inject private PreferencesAdapter preferencesAdapter;
     @Inject private Activity activity;
     @Inject private SearchText searchText;
     @Inject private AppExecutor appExecutor;
     @Inject private AppsManager appsManager;
     @Inject private EventManager eventManager;
     @Inject private AppsFactory appsFactory;
+    @Inject private SingletonPersister<AppsView> persister;
 
-    public static final String RECENT = "recent";
-    private final List<App> filtered = new ArrayList<>();
-    private List<App> recent;
+    @Expose private List<App> recent = new ArrayList<>();
+
+    public static final int MAX_RECENT_COUNT = 15;
     public static final int FIRST_INDEX = 0;
+
+    private final List<App> filtered = new ArrayList<>();
 
     @SuppressWarnings("unused")
     public void onCreate(@Observes OnCreateEvent onCreate) {
@@ -66,7 +69,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     }
 
     private void load() {
-        recent = new ArrayList<>(preferencesAdapter.loadSet(RECENT));
+        persister.load(this);
     }
 
     @Override
@@ -143,21 +146,20 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     }
 
     private App getApp(int index) {
-        final List<App> pkg = appsManager.getPkg();
-        return pkg.get(pkg.indexOf(filtered.get(index)));
+        return filtered.get(index);
     }
 
     public void addNewRecent(App app) {
         recent.remove(app);
         recent.add(app);
-        if (recent.size() > 10) {
+        if (recent.size() > MAX_RECENT_COUNT) {
             recent.remove(FIRST_INDEX);
         }
         save();
     }
 
     private void save() {
-        preferencesAdapter.saveSet(recent, RECENT);
+        persister.save(this);
     }
 
     @SuppressWarnings("unused")

@@ -8,7 +8,6 @@ import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
 import com.vackosar.searchbasedlauncher.control.AppsType;
-import com.vackosar.searchbasedlauncher.entity.PreferencesAdapter;
 import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
 
 import roboguice.context.event.OnCreateEvent;
@@ -22,7 +21,6 @@ import roboguice.inject.InjectView;
 public class AppTypeSelector implements RadioGroup.OnClickListener {
 
     @InjectView(R.id.appListRadioGroup) RadioGroup radioGroup;
-    @Inject private PreferencesAdapter preferencesAdapter;
     @Inject private EventManager eventManager;
     @Inject private Activity activity;
     @Inject private SingletonPersister<AppTypeSelector> persister;
