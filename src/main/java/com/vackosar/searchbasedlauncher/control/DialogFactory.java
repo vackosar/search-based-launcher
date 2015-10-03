@@ -52,7 +52,7 @@ public class DialogFactory {
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
         dialog.setView(dialogInput);
-        dialog.setMessage("Remove this activity (appsManager.getHidden() app) from appsManager.getHidden() applications list?");
+        dialog.setMessage("Remove this activity from hidden list?");
         dialog.setCancelable(true);
         dialog.setPositiveButton(REMOVE, createRemoveListener(app, appsManager, appsManager.getHidden()));
         dialog.create().show();
@@ -76,7 +76,7 @@ public class DialogFactory {
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
         dialog.setView(dialogInput);
-        dialog.setMessage("Remove this (appsManager.getExtra() added list parseViewId all activities) activity from applications list?");
+        dialog.setMessage("Remove this activity from extra added list?");
         dialog.setCancelable(true);
         dialog.setPositiveButton(REMOVE, createRemoveListener(app, appsManager, appsManager.getExtra()));
         dialog.create().show();
@@ -90,7 +90,7 @@ public class DialogFactory {
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
         dialog.setView(dialogInput);
-        dialog.setMessage("Add this activity to applications list?");
+        dialog.setMessage("Add this activity to extra list?");
         dialog.setCancelable(true);
         dialog.setPositiveButton(ADD, createAddListener(app, appsManager, dialogInput));
         dialog.create().show();
@@ -108,7 +108,7 @@ public class DialogFactory {
     }
 
     public void showExtraAddedApp(final App app, AlertDialog.Builder dialog, final AppsManager appsManager) {
-        dialog.setMessage("Remove activity " + app + " from appsManager.getExtra() added (to applications list) list ?");
+        dialog.setMessage("Remove activity " + app + " from extra list?");
         dialog.setCancelable(true);
         dialog.setPositiveButton(REMOVE, createRemoveListener(app, appsManager, appsManager.getExtra()));
     }
@@ -141,7 +141,7 @@ public class DialogFactory {
         dialogInput.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         dialogInput.setText(app.getNick());
         dialog.setView(dialogInput);
-        dialog.setMessage("Hide this application from applications list, rename application (add to Hide and Extra list with diferent names) or uninstall it?");
+        dialog.setMessage("Hide this activity? Rename application (Add to Hide and Extra list with diferent names.)? Uninstall?");
         dialog.setCancelable(true);
         dialog.setPositiveButton(HIDE, createHideListener(app, appsManager));
         dialog.setNeutralButton(UNINSTALL, createUninstallListener(app, appsManager));
