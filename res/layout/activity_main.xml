@@ -36,7 +36,9 @@
             android:drawSelectorOnTop="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:textFilterEnabled="false"/>
+            android:textFilterEnabled="false"
+            android:divider="@null"
+            />
 
         <TextView
             android:id="@+id/autostartButton"
