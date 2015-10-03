@@ -10,7 +10,6 @@ import com.vackosar.searchbasedlauncher.R;
 import com.vackosar.searchbasedlauncher.control.AppsType;
 import com.vackosar.searchbasedlauncher.entity.PreferencesAdapter;
 import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
-import com.vackosar.searchbasedlauncher.entity.SingletonPersisterFactory;
 
 import roboguice.context.event.OnCreateEvent;
 import roboguice.context.event.OnStartEvent;
@@ -25,9 +24,8 @@ public class AppTypeSelector implements RadioGroup.OnClickListener {
     @InjectView(R.id.appListRadioGroup) RadioGroup radioGroup;
     @Inject private PreferencesAdapter preferencesAdapter;
     @Inject private EventManager eventManager;
-    @Inject private SingletonPersisterFactory singletonPersisterFactory;
     @Inject private Activity activity;
-    private SingletonPersister<AppTypeSelector> persister;
+    @Inject private SingletonPersister<AppTypeSelector> persister;
 
     @Expose private AppsType selected = DEFAULT_SELECTED;
     public static final AppsType DEFAULT_SELECTED = AppsType.normal;
@@ -38,7 +36,6 @@ public class AppTypeSelector implements RadioGroup.OnClickListener {
             final View view = activity.findViewById(appsType.getViewId());
             view.setOnClickListener(this);
         }
-        persister = singletonPersisterFactory.create(this);
     }
 
     @SuppressWarnings("unused")
@@ -47,20 +44,16 @@ public class AppTypeSelector implements RadioGroup.OnClickListener {
     }
 
     private void load() {
-        persister.load();
+        persister.load(this);
         radioGroup.check(selected.getViewId());
     }
 
     public void save() {
-        persister.save();
+        persister.save(this);
     }
 
     public AppsType getSelected() {
         return selected;
-    }
-
-    public void requestFocus() {
-        radioGroup.requestFocus();
     }
 
     @Override

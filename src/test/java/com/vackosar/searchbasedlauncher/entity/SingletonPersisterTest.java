@@ -72,9 +72,7 @@ public class SingletonPersisterTest {
                 });
         preferences = new HashMap<>();
         initAutostartButton();
-        autostartButtonSingletonPersister = new SingletonPersister(autostartButton, context);
-        final Field[] fields = autostartButtonSingletonPersister.getClass().getDeclaredFields();
-        final Field contextField = getField(SingletonPersister.class, CONTEXT_FIELDNAME);
+        autostartButtonSingletonPersister = new SingletonPersister();
         setField(autostartButtonSingletonPersister, CONTEXT_FIELDNAME, context);
     }
 
@@ -86,7 +84,7 @@ public class SingletonPersisterTest {
     @Test
     public void save() {
         setField(autostartButton, AUTOSTART_FIELDNAME, true);
-        autostartButtonSingletonPersister.save();
+        autostartButtonSingletonPersister.save(autostartButton);
         Assert.assertEquals(1, preferences.entrySet().size());
         Assert.assertEquals("{\"autostart\":true}", preferences.get("json"));
         Assert.assertEquals(AutostartButton.class.getCanonicalName(), preferenceName);
@@ -94,7 +92,7 @@ public class SingletonPersisterTest {
 
     @Test
     public void load() {
-        autostartButtonSingletonPersister.load();
+        autostartButtonSingletonPersister.load(autostartButton);
         Assert.assertEquals(true, getField(autostartButton, AUTOSTART_FIELDNAME));
     }
 

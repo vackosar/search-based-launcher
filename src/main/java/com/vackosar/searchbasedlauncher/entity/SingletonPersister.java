@@ -6,64 +6,70 @@ import android.content.SharedPreferences;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
+import com.google.inject.Inject;
 
 import java.lang.reflect.Type;
 
+import roboguice.inject.ContextSingleton;
+
+@ContextSingleton
 public class SingletonPersister<T> {
 
+    @Inject private Context context;
     private static final String KEY = "json";
-    private final Context context;
-    private final Class<? extends T> clazz;
-    private final T singletonInstance;
-    private final Gson gson;
-    private InstanceCreator<T> instanceCreator;
 
-    public SingletonPersister(final T singletonInstance, final Context context) {
-        this.singletonInstance = singletonInstance;
-        this.context = context;
-        this.clazz = (Class<? extends T>) singletonInstance.getClass();
-        instanceCreator = createInstanceCreator(singletonInstance);
-        gson = createGson();
-
-    }
-
-    private Gson createGson() {
+    private Gson createGson(T singleton) {
+        requireNonNull(singleton);
         return new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
                 .serializeNulls()
-                .registerTypeAdapter(clazz, instanceCreator)
+                .registerTypeAdapter(singleton.getClass(), createInstanceCreator(singleton))
                 .create();
+    }
+
+    private void requireNonNull(T singleton) {
+        if (singleton == null) {
+            throw new IllegalArgumentException("Cannot save null objects.");
+        }
     }
 
     private InstanceCreator<T> createInstanceCreator(final T singletonInstance) {
         return new InstanceCreator<T>() {
-
             @Override
             public T createInstance(Type type) {
                 return singletonInstance;
             }
         };
     }
-
-    public void save() {
-        final String json = gson.toJson(singletonInstance);
-        getEditor().putString(KEY, json).commit();
+    
+    public void save(T singleton) {
+        final String json = jsonfy(singleton);
+        getEditor(singleton).putString(KEY, json).commit();
     }
 
-    public void load() {
-        final String json = getSharedPreferences().getString(KEY, null);
+    private String jsonfy(T singleton) {
+        return createGson(singleton).toJson(singleton);
+    }
+
+    public void load(T singleton) {
+        requireNonNull(singleton);
+        final String json = getSharedPreferences(singleton).getString(KEY, null);
         if (json != null) {
-            gson.fromJson(json, clazz);
+            dejsonfy(singleton, json);
         }
     }
 
-    private SharedPreferences.Editor getEditor() {
-        SharedPreferences prefs = getSharedPreferences();
+    private void dejsonfy(T singleton, String json) {
+        createGson(singleton).fromJson(json, singleton.getClass());
+    }
+
+    private SharedPreferences.Editor getEditor(T singleton) {
+        SharedPreferences prefs = getSharedPreferences(singleton);
         return prefs.edit();
     }
 
-    private SharedPreferences getSharedPreferences() {
-        final String preferencesName = clazz.getCanonicalName();
+    private SharedPreferences getSharedPreferences(T singleton) {
+        final String preferencesName = singleton.getClass().getCanonicalName();
         return context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
     }
 
