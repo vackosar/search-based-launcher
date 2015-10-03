@@ -26,13 +26,4 @@ public enum AppsType {
     public int getViewId() {
         return radioButton;
     }
-
-    public static AppsType parseOrdinal(int ordinal) {
-        for (AppsType appsType: AppsType.values()) {
-            if (ordinal == appsType.ordinal()) {
-                return appsType;
-            }
-        }
-        throw new IllegalArgumentException("Ordinal id " + ordinal + " could not be parsed.");
-    }
 }

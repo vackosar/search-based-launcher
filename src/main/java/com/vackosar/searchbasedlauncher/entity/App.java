@@ -2,13 +2,6 @@ package com.vackosar.searchbasedlauncher.entity;
 
 import com.google.gson.annotations.Expose;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 public class App implements Comparable<App> {
 
     @Expose private final String name;
@@ -19,23 +12,6 @@ public class App implements Comparable<App> {
         this.name = name;
         this.nick = nick;
         this.activity = activity;
-    }
-
-    public App(String json) {
-        try {
-            JSONObject jsonObject = new JSONObject(json);
-            this.name = jsonObject.getString("name");
-            this.nick = jsonObject.getString("nick");
-            this.activity = jsonObject.getString("activity");
-        } catch (JSONException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
-    public App(App app) {
-        this.name = app.getName();
-        this.activity = app.getActivity();
-        this.nick = app.getNick();
     }
 
     public String getName() {
@@ -52,38 +28,6 @@ public class App implements Comparable<App> {
 
     public void setNick(String nick) {
         this.nick = nick;
-    }
-
-    private String getRecentNick() {
-        return "R: " + nick;
-    }
-
-    public String getJsonString(){
-        try {
-            return new JSONObject()
-                    .put("name", name)
-                    .put("nick", nick)
-                    .put("activity", activity)
-                    .toString();
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static Set<App> getApps(Set<String> jsonSet) {
-        final Set<App> set = new HashSet<>();
-        for (String json: jsonSet) {
-            set.add(new App(json));
-        }
-        return set;
-    }
-
-    public static Collection<String> getJson(Collection<App> set) {
-        final Set<String> jsonSet = new HashSet<>();
-        for (App app: set) {
-            jsonSet.add(app.getJsonString());
-        }
-        return jsonSet;
     }
 
     @Override
