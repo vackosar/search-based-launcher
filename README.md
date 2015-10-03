@@ -5,12 +5,12 @@ Minimalist Open-Source Launcher
 - Hide any unwanted app.
 - Rename any app.
 - Avoid distracting app icons.
-- Match any character sequence with space character.
 - Toggle camera, wifi and bluetooth with buttons.
+- Match any character sequence with space character.
 - Read wiki: https://github.com/vackosar/search-based-launcher/wiki
-
+- Available at Google Play and F-Droid.
 
 Note:
 
-This repository was moved from my previous github account ideasfrombrain.
-Code quality is not very good as it was my first Java project. I am putting in some refactoring effort on separate branch.
+- This repository was moved from my previous github account ideasfrombrain.
+- I am continuously improving currently low code quality. This was my first Java project.
