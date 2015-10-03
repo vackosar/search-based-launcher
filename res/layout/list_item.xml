@@ -7,5 +7,6 @@
     android:gravity="center_vertical"
     android:textSize="10pt"
     android:padding="3pt"
+    android:background="@null"
     >
 </TextView>

@@ -16,8 +16,8 @@
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/autostartButton"
-            android:background="@android:color/darker_gray"
+            android:gravity="center"
+            android:background="@null"
             android:ems="10"
             android:inputType="textNoSuggestions"
             android:longClickable="true"
@@ -60,7 +60,6 @@
             android:layout_alignTop="@+id/autostartButton"
             android:layout_marginRight="7dp"
             android:layout_marginTop="40dp"
-            android:background="@android:color/darker_gray"
             android:gravity="center"
             android:text="Wifi"
             android:textColor="@android:color/white" />
@@ -74,7 +73,6 @@
             android:layout_alignTop="@+id/wifiButton"
             android:layout_marginRight="7dp"
             android:layout_marginTop="40dp"
-            android:background="@android:color/darker_gray"
             android:gravity="center"
             android:text="Blue"
             android:textColor="@android:color/white" />
@@ -89,7 +87,6 @@
             android:layout_alignTop="@+id/bluetoothButton"
             android:layout_marginRight="7dp"
             android:layout_marginTop="40dp"
-            android:background="@android:color/darker_gray"
             android:gravity="center"
             android:text="Cam"
             android:textColor="@android:color/white" />
@@ -103,7 +100,6 @@
             android:layout_alignTop="@+id/cameraButton"
             android:layout_marginRight="7dp"
             android:layout_marginTop="40dp"
-            android:background="@android:color/darker_gray"
             android:gravity="center"
             android:text="Menu"
             android:textColor="@android:color/white" />
@@ -117,7 +113,6 @@
             android:layout_alignTop="@+id/menuButton"
             android:layout_marginRight="7dp"
             android:layout_marginTop="40dp"
-            android:background="@android:color/darker_gray"
             android:gravity="center"
             android:text="Wiki"
             android:textColor="@android:color/white" />
