@@ -86,11 +86,9 @@
 
         <RadioGroup
             android:id="@+id/appListRadioGroup"
-            style="@style/AppTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            style="@style/AppThemeRadio"
             android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
             android:checkedButton="@+id/normalAppsRadioButton"
             android:clickable="true"
             android:duplicateParentState="false"
@@ -98,31 +96,23 @@
             android:text="">
 
             <RadioButton
-                style="@style/AppTheme"
+                style="@style/AppThemeRadio"
                 android:id="@+id/normalAppsRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="List of applications" />
 
             <RadioButton
-                style="@style/AppTheme"
+                style="@style/AppThemeRadio"
                 android:id="@+id/activityAppsRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="List of all activities of all packages" />
 
             <RadioButton
-                style="@style/AppTheme"
+                style="@style/AppThemeRadio"
                 android:id="@+id/extraAppsRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Extra added activities to the list of applications" />
 
             <RadioButton
-                style="@style/AppTheme"
+                style="@style/AppThemeRadio"
                 android:id="@+id/hiddenAppsRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Hidden applications from list of applications" />
         </RadioGroup>
 

@@ -24,5 +24,10 @@
         <item name="android:layout_alignParentRight">true</item>
     </style>
 
+    <style name="AppThemeRadio" parent="AppTheme" >
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentLeft">true</item>
+    </style>
 
 </resources>
