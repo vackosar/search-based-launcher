@@ -85,8 +85,8 @@
         android:layout_height="fill_parent">
 
         <RadioGroup
-            android:id="@+id/appListRadioGroup"
             style="@style/AppThemeRadio"
+            android:id="@+id/appListRadioGroup"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:checkedButton="@+id/normalAppsRadioButton"
@@ -97,22 +97,22 @@
             <RadioButton
                 style="@style/AppThemeRadio"
                 android:id="@+id/normalAppsRadioButton"
-                android:text="Applications" android:gravity="top"/>
+                android:text="Applications" />
 
             <RadioButton
                 style="@style/AppThemeRadio"
                 android:id="@+id/activityAppsRadioButton"
-                android:text="Activities" android:gravity="top"/>
+                android:text="Activities" />
 
             <RadioButton
                 style="@style/AppThemeRadio"
                 android:id="@+id/extraAppsRadioButton"
-                android:text="Added Activities" android:gravity="top"/>
+                android:text="Added Activities" />
 
             <RadioButton
                 style="@style/AppThemeRadio"
                 android:id="@+id/hiddenAppsRadioButton"
-                android:text="Hidden Applications" android:gravity="top" />
+                android:text="Hidden Applications" />
         </RadioGroup>
 
     </RelativeLayout>
