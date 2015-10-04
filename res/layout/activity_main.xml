@@ -61,8 +61,7 @@
             android:layout_marginRight="7dp"
             android:layout_marginTop="40dp"
             android:gravity="center"
-            android:text="Wifi"
-            android:textColor="@android:color/white" />
+            android:text="Wifi" />
 
         <TextView
             android:id="@+id/bluetoothButton"
@@ -74,8 +73,7 @@
             android:layout_marginRight="7dp"
             android:layout_marginTop="40dp"
             android:gravity="center"
-            android:text="Blue"
-            android:textColor="@android:color/white" />
+            android:text="Blue" />
 
 
         <TextView
@@ -89,7 +87,7 @@
             android:layout_marginTop="40dp"
             android:gravity="center"
             android:text="Cam"
-            android:textColor="@android:color/white" />
+            />
 
         <TextView
             style="@style/AppTheme"
@@ -102,7 +100,7 @@
             android:layout_marginTop="40dp"
             android:gravity="center"
             android:text="Menu"
-            android:textColor="@android:color/white" />
+            />
 
         <TextView
             style="@style/AppTheme"
@@ -115,7 +113,7 @@
             android:layout_marginTop="40dp"
             android:gravity="center"
             android:text="Wiki"
-            android:textColor="@android:color/white" />
+            />
 
     </RelativeLayout>
 
