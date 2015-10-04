@@ -92,8 +92,7 @@
             android:checkedButton="@+id/normalAppsRadioButton"
             android:clickable="true"
             android:duplicateParentState="false"
-            android:longClickable="false"
-            android:text="">
+            android:longClickable="false">
 
             <RadioButton
                 style="@style/AppThemeRadio"
