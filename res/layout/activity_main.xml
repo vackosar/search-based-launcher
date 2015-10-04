@@ -6,14 +6,13 @@
     <RelativeLayout
         android:id="@+id/layoutMain"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="bottom">
+        android:layout_height="fill_parent">
 
         <EditText
             android:id="@+id/searchText"
             style="@style/AppThemeLarge"
             android:layout_width="fill_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:ems="10"
@@ -39,70 +38,42 @@
 
         <TextView
             android:id="@+id/autostartButton"
-            style="@style/AppTheme"
-            android:layout_width="70dp"
-            android:layout_height="35dp"
-            android:layout_alignParentRight="true"
+            style="@style/AppThemeButtons"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="7dp"
+            android:layout_marginTop="0dp"
             android:text="Auto" />
 
         <TextView
             android:id="@+id/wifiButton"
-            style="@style/AppTheme"
-            android:layout_width="70dp"
-            android:layout_height="35dp"
-            android:layout_alignParentRight="true"
+            style="@style/AppThemeButtons"
             android:layout_alignTop="@+id/autostartButton"
-            android:layout_marginRight="7dp"
-            android:layout_marginTop="40dp"
             android:text="Wifi" />
 
         <TextView
             android:id="@+id/bluetoothButton"
-            style="@style/AppTheme"
-            android:layout_width="70dp"
-            android:layout_height="35dp"
-            android:layout_alignParentRight="true"
+            style="@style/AppThemeButtons"
             android:layout_alignTop="@+id/wifiButton"
-            android:layout_marginRight="7dp"
-            android:layout_marginTop="40dp"
             android:text="Blue" />
 
 
         <TextView
             android:id="@+id/cameraButton"
-            style="@style/AppTheme"
-            android:layout_width="70dp"
-            android:layout_height="35dp"
-            android:layout_alignParentRight="true"
+            style="@style/AppThemeButtons"
             android:layout_alignTop="@+id/bluetoothButton"
-            android:layout_marginRight="7dp"
-            android:layout_marginTop="40dp"
             android:text="Cam"
             />
 
         <TextView
-            style="@style/AppTheme"
+            style="@style/AppThemeButtons"
             android:id="@+id/menuButton"
-            android:layout_width="70dp"
-            android:layout_height="35dp"
-            android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/cameraButton"
-            android:layout_marginRight="7dp"
-            android:layout_marginTop="40dp"
             android:text="Menu"
             />
 
         <TextView
-            style="@style/AppTheme"
+            style="@style/AppThemeButtons"
             android:id="@+id/wikiButton"
-            android:layout_width="70dp"
-            android:layout_height="35dp"
-            android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/menuButton"
-            android:layout_marginRight="7dp"
-            android:layout_marginTop="40dp"
             android:text="Wiki"
             />
 

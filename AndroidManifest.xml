@@ -23,7 +23,7 @@
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="Search based launcher v3"
-        android:theme="@android:style/Theme.Wallpaper.NoTitleBar"
+        android:theme="@style/AppTheme"
         android:persistent="true"
         android:windowSoftInputMode="stateVisible|adjustResize" >
         
