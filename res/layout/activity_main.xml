@@ -20,9 +20,7 @@
             android:background="@null"
             android:ems="10"
             android:inputType="textNoSuggestions"
-            android:longClickable="true"
-            android:textColor="@android:color/white">
-
+            android:longClickable="true">
             <requestFocus />
         </EditText>
 
