@@ -16,8 +16,6 @@
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:gravity="center"
-            android:background="@null"
             android:ems="10"
             android:inputType="textNoSuggestions"
             android:longClickable="true">
@@ -26,6 +24,7 @@
 
         <ListView
             android:id="@+id/appListView"
+            style="@style/AppThemeLarge"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/searchText"
@@ -46,7 +45,6 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="7dp"
-            android:gravity="center"
             android:text="Auto" />
 
         <TextView
@@ -58,7 +56,6 @@
             android:layout_alignTop="@+id/autostartButton"
             android:layout_marginRight="7dp"
             android:layout_marginTop="40dp"
-            android:gravity="center"
             android:text="Wifi" />
 
         <TextView
@@ -70,7 +67,6 @@
             android:layout_alignTop="@+id/wifiButton"
             android:layout_marginRight="7dp"
             android:layout_marginTop="40dp"
-            android:gravity="center"
             android:text="Blue" />
 
 
@@ -83,7 +79,6 @@
             android:layout_alignTop="@+id/bluetoothButton"
             android:layout_marginRight="7dp"
             android:layout_marginTop="40dp"
-            android:gravity="center"
             android:text="Cam"
             />
 
@@ -96,7 +91,6 @@
             android:layout_alignTop="@+id/cameraButton"
             android:layout_marginRight="7dp"
             android:layout_marginTop="40dp"
-            android:gravity="center"
             android:text="Menu"
             />
 
@@ -109,7 +103,6 @@
             android:layout_alignTop="@+id/menuButton"
             android:layout_marginRight="7dp"
             android:layout_marginTop="40dp"
-            android:gravity="center"
             android:text="Wiki"
             />
 
