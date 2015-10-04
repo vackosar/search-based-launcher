@@ -24,8 +24,9 @@
         <item name="android:layout_alignParentRight">true</item>
     </style>
 
-    <style name="AppThemeRadio" parent="@android:style/Theme.Wallpaper.NoTitleBar" >
-        <item name="android:layout_gravity">top</item>
+    <style name="AppThemeRadio" parent="AppTheme" >
+        <item name="android:gravity">left</item>
+        <item name="android:layout_gravity">top|left</item>
         <item name="android:layout_alignParentTop">true</item>
         <item name="android:layout_alignParentLeft">true</item>
     </style>
