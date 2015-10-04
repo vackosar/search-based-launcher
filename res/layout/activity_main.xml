@@ -98,22 +98,22 @@
             <RadioButton
                 style="@style/AppThemeRadio"
                 android:id="@+id/normalAppsRadioButton"
-                android:text="List of applications" />
+                android:text="Applications" android:gravity="top"/>
 
             <RadioButton
                 style="@style/AppThemeRadio"
                 android:id="@+id/activityAppsRadioButton"
-                android:text="List of all activities of all packages" />
+                android:text="Activities" android:gravity="top"/>
 
             <RadioButton
                 style="@style/AppThemeRadio"
                 android:id="@+id/extraAppsRadioButton"
-                android:text="Extra added activities to the list of applications" />
+                android:text="Added Activities" android:gravity="top"/>
 
             <RadioButton
                 style="@style/AppThemeRadio"
                 android:id="@+id/hiddenAppsRadioButton"
-                android:text="Hidden applications from list of applications" />
+                android:text="Hidden Applications" android:gravity="top" />
         </RadioGroup>
 
     </RelativeLayout>
