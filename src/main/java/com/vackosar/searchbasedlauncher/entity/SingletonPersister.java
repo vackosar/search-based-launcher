@@ -18,6 +18,12 @@ public class SingletonPersister<T> {
     @Inject private Context context;
     private static final String KEY = "json";
 
+    public SingletonPersister() {}
+
+    public SingletonPersister(Context context) {
+        this.context = context;
+    }
+
     private Gson createGson(T singleton) {
         requireNonNull(singleton);
         return new GsonBuilder()

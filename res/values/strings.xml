@@ -1,2 +1,7 @@
 <resources>
+    <string-array name="background">
+        <item>Wallpaper</item>
+        <item>Black</item>
+        <item>White</item>
+    </string-array>
 </resources>

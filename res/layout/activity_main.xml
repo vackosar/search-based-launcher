@@ -2,12 +2,10 @@
     android:id="@+id/viewAnimator"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-
     <RelativeLayout
         android:id="@+id/layoutMain"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-
         <EditText
             android:id="@+id/searchText"
             style="@style/AppThemeLarge"
@@ -20,7 +18,6 @@
             android:longClickable="true">
             <requestFocus />
         </EditText>
-
         <ListView
             android:id="@+id/appListView"
             style="@style/AppThemeLarge"
@@ -33,90 +30,87 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:textFilterEnabled="false"
-            android:divider="@null"
-            />
-
+            android:divider="@null" />
         <TextView
             android:id="@+id/autostartButton"
             style="@style/AppThemeButtons"
             android:layout_alignParentTop="true"
             android:layout_marginTop="0dp"
             android:text="Auto" />
-
         <TextView
             android:id="@+id/wifiButton"
             style="@style/AppThemeButtons"
             android:layout_alignTop="@+id/autostartButton"
             android:text="Wifi" />
-
         <TextView
             android:id="@+id/bluetoothButton"
             style="@style/AppThemeButtons"
             android:layout_alignTop="@+id/wifiButton"
             android:text="Blue" />
-
-
         <TextView
             android:id="@+id/cameraButton"
             style="@style/AppThemeButtons"
             android:layout_alignTop="@+id/bluetoothButton"
-            android:text="Cam"
-            />
-
+            android:text="Cam" />
         <TextView
             style="@style/AppThemeButtons"
             android:id="@+id/menuButton"
             android:layout_alignTop="@+id/cameraButton"
-            android:text="Menu"
-            />
-
+            android:text="Menu" />
         <TextView
             style="@style/AppThemeButtons"
             android:id="@+id/wikiButton"
             android:layout_alignTop="@+id/menuButton"
-            android:text="Wiki"
-            />
-
+            android:text="Wiki" />
     </RelativeLayout>
-
     <LinearLayout
         android:id="@+id/layoutMenu"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
+        android:layout_height="fill_parent"
+        android:layout_gravity="left|top"
+        android:gravity="left|top"
+        android:orientation="vertical" >
+        <TextView
+            style="@style/AppThemeLarge"
+            android:id="@+id/radioButtonsDescription"
+            android:layout_alignParentTop="true"
+            android:text="Change Activity List" />
         <RadioGroup
             style="@style/AppThemeRadio"
             android:id="@+id/appListRadioGroup"
-            android:layout_alignParentTop="true"
+            android:layout_alignTop="@+id/radioButtonsDescription"
             android:layout_alignParentLeft="true"
             android:checkedButton="@+id/normalAppsRadioButton"
             android:clickable="true"
             android:duplicateParentState="false"
-            android:longClickable="false">
-
+            android:longClickable="false" >
             <RadioButton
                 style="@style/AppThemeRadio"
                 android:id="@+id/normalAppsRadioButton"
                 android:text="Applications" />
-
             <RadioButton
                 style="@style/AppThemeRadio"
                 android:id="@+id/activityAppsRadioButton"
                 android:text="Activities" />
-
             <RadioButton
                 style="@style/AppThemeRadio"
                 android:id="@+id/extraAppsRadioButton"
                 android:text="Added Activities" />
-
             <RadioButton
                 style="@style/AppThemeRadio"
                 android:id="@+id/hiddenAppsRadioButton"
-                android:text="Hidden Applications" />
+                android:text="Hidden Activities" />
         </RadioGroup>
-
+        <TextView
+            style="@style/AppThemeLarge"
+            android:layout_alignParentTop="true"
+            android:text="Background" />
+        <Spinner
+            style="@style/AppThemeLarge"
+            android:id="@+id/backgroundSelector"
+            android:layout_alignTop="@+id/appListRadioGroup"
+            android:layout_alignParentLeft="true"
+            android:entries="@array/background" />
     </LinearLayout>
-
-
 </ViewAnimator>
 

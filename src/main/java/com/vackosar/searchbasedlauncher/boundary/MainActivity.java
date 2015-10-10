@@ -1,6 +1,7 @@
 package com.vackosar.searchbasedlauncher.boundary;
 
 
+import android.os.Bundle;
 import android.view.KeyEvent;
 
 import com.google.inject.Inject;
@@ -22,6 +23,7 @@ public class MainActivity extends RoboActivity {
     @Inject private BluetoothButton bluetoothButton;
     @Inject private CameraButton cameraButton;
     @Inject private WikiButton wikiButton;
+    @Inject private BackgroundChooser backgroundChooser;
 
     @Override
     public boolean onKeyUp(int keycode, KeyEvent event) {
@@ -37,5 +39,12 @@ public class MainActivity extends RoboActivity {
                 return super.onKeyUp(keycode, event);
         }
         return true;
+    }
+
+    /** Set theme before view rendering. */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        new BackgroundChooser(this);
+        super.onCreate(savedInstanceState);
     }
 }
