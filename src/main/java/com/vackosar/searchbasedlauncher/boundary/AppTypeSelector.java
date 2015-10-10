@@ -11,7 +11,6 @@ import com.vackosar.searchbasedlauncher.control.AppsType;
 import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
 
 import roboguice.context.event.OnCreateEvent;
-import roboguice.context.event.OnStartEvent;
 import roboguice.event.EventManager;
 import roboguice.event.Observes;
 import roboguice.inject.ContextSingleton;
@@ -25,8 +24,9 @@ public class AppTypeSelector implements RadioGroup.OnClickListener {
     @Inject private Activity activity;
     @Inject private SingletonPersister<AppTypeSelector> persister;
 
-    @Expose private AppsType selected = DEFAULT_SELECTED;
     public static final AppsType DEFAULT_SELECTED = AppsType.normal;
+
+    @Expose private AppsType selected = DEFAULT_SELECTED;
 
     @SuppressWarnings("unused")
     public void onCreateEvent(@Observes OnCreateEvent onCreateEvent) {
@@ -34,10 +34,6 @@ public class AppTypeSelector implements RadioGroup.OnClickListener {
             final View view = activity.findViewById(appsType.getViewId());
             view.setOnClickListener(this);
         }
-    }
-
-    @SuppressWarnings("unused")
-    public void onStartEvent(@Observes OnStartEvent onStartEvent) {
         load();
     }
 

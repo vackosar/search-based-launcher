@@ -6,18 +6,6 @@
         android:id="@+id/layoutMain"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-        <EditText
-            android:id="@+id/searchText"
-            style="@style/AppThemeLarge"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:ems="10"
-            android:inputType="textNoSuggestions"
-            android:longClickable="true">
-            <requestFocus />
-        </EditText>
         <ListView
             android:id="@+id/appListView"
             style="@style/AppThemeLarge"
@@ -62,6 +50,19 @@
             android:id="@+id/wikiButton"
             android:layout_alignTop="@+id/menuButton"
             android:text="Wiki" />
+        <EditText
+            android:id="@+id/searchText"
+            style="@style/AppThemeLarge"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:ems="10"
+            android:inputType="textNoSuggestions"
+            android:longClickable="true"
+            android:background="@null">
+            <requestFocus />
+        </EditText>
     </RelativeLayout>
     <LinearLayout
         android:id="@+id/layoutMenu"

@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import roboguice.context.event.OnCreateEvent;
+import roboguice.context.event.OnStartEvent;
 import roboguice.event.EventManager;
 import roboguice.event.Observes;
 import roboguice.inject.ContextSingleton;
@@ -65,6 +66,9 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
                 refreshView();
             }
         });
+    }
+
+    public void onStart(@Observes OnStartEvent onStartEvent) {
         appsManager.load();
     }
 
