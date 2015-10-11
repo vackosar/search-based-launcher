@@ -26,7 +26,7 @@
         <item name="android:layout_alignParentLeft">true</item>
     </style>
 
-    <style name="Wallpaper" parent="android:Theme.Wallpaper.NoTitleBar.Fullscreen" />
+    <style name="Wallpaper" parent="android:Theme.Wallpaper.NoTitleBar" />
     <style name="Black" parent="android:Theme.Black.NoTitleBar" />
     <style name="White" parent="android:Theme.Light.NoTitleBar" />
 </resources>
