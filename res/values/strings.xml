@@ -4,4 +4,8 @@
         <item>Black</item>
         <item>White</item>
     </string-array>
+    <string-array name="yesNo">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
 </resources>

@@ -1,12 +1,12 @@
 package com.vackosar.searchbasedlauncher.boundary;
 
 import android.view.View;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
-import com.vackosar.searchbasedlauncher.control.Colorful;
 import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
 
 import roboguice.context.event.OnCreateEvent;
@@ -15,40 +15,24 @@ import roboguice.inject.ContextSingleton;
 import roboguice.inject.InjectView;
 
 @ContextSingleton
-public class AutostartButton extends Colorful implements View.OnClickListener {
+public class AutostartSpinner implements AdapterView.OnItemSelectedListener {
 
-    @InjectView(R.id.autostartButton) TextView textView;
-    @Inject private SingletonPersister<AutostartButton> persister;
+    @InjectView(R.id.autostart) Spinner spinner;
+    @Inject private SingletonPersister<AutostartSpinner> persister;
     @Expose private boolean autostart = true;
 
     @SuppressWarnings("unused")
     public void onCreate(@Observes OnCreateEvent onCreate) {
-        textView.setOnClickListener(this);
+        spinner.setOnItemSelectedListener(this);
         load();
     }
 
     private void save() {
         persister.save(this);
-        setColor();
     }
 
     private void load() {
         persister.load(this);
-        setColor();
-    }
-
-    @Override
-    public void onClick(View v) {
-        toggle();
-    }
-
-    private void toggle() {
-        autostart=!autostart;
-        save();
-    }
-
-    private void setColor() {
-        setActivatedColor(autostart);
     }
 
     public boolean isOn() {
@@ -56,7 +40,17 @@ public class AutostartButton extends Colorful implements View.OnClickListener {
     }
 
     @Override
-    protected TextView getView() {
-        return textView;
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (id == 0) {
+            autostart = true;
+        } else {
+            autostart = false;
+        }
+        save();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

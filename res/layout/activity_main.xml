@@ -20,15 +20,9 @@
             android:textFilterEnabled="false"
             android:divider="@null" />
         <TextView
-            android:id="@+id/autostartButton"
-            style="@style/AppThemeButtons"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="0dp"
-            android:text="Auto" />
-        <TextView
             android:id="@+id/wifiButton"
             style="@style/AppThemeButtons"
-            android:layout_alignTop="@+id/autostartButton"
+            android:layout_alignParentTop="true"
             android:text="Wifi" />
         <TextView
             android:id="@+id/bluetoothButton"
@@ -75,7 +69,7 @@
             style="@style/AppThemeLarge"
             android:id="@+id/radioButtonsDescription"
             android:layout_alignParentTop="true"
-            android:text="Change Activity List" />
+            android:text="Change Activity List:" />
         <RadioGroup
             style="@style/AppThemeRadio"
             android:id="@+id/appListRadioGroup"
@@ -104,10 +98,21 @@
         </RadioGroup>
         <TextView
             style="@style/AppThemeLarge"
+            android:id="@+id/autostartDesc"
+            android:layout_alignParentTop="true"
+            android:text="Autostart single result:" />
+        <Spinner
+            style="@style/AppTheme"
+            android:id="@+id/autostart"
+            android:layout_alignTop="@+id/autostartDesc"
+            android:layout_alignParentLeft="true"
+            android:entries="@array/yesNo" />
+        <TextView
+            style="@style/AppThemeLarge"
             android:layout_alignParentTop="true"
             android:text="Background" />
         <Spinner
-            style="@style/AppThemeLarge"
+            style="@style/AppTheme"
             android:id="@+id/backgroundSelector"
             android:layout_alignTop="@+id/appListRadioGroup"
             android:layout_alignParentLeft="true"

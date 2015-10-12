@@ -32,7 +32,7 @@ import roboguice.inject.InjectView;
 public class AppsView implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     @InjectView(R.id.appListView) private ListView listView;
-    @Inject private AutostartButton autostartButton;
+    @Inject private AutostartSpinner autostartSpinner;
     @Inject private DialogFactory dialogFactory;
     @Inject private Activity activity;
     @Inject private SearchText searchText;
@@ -125,7 +125,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     }
 
     private boolean autostartFirstApp() {
-        return filtered.size() == 1 && appsManager.getPkg().size() > 1 && autostartButton.isOn();
+        return filtered.size() == 1 && appsManager.getPkg().size() > 1 && autostartSpinner.isOn();
     }
 
     private List<App> getReversedRecent() {
