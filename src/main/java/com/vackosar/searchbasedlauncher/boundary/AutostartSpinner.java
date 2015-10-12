@@ -41,7 +41,7 @@ public class AutostartSpinner implements AdapterView.OnItemSelectedListener {
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (id == 0) {
+        if (position == 0) {
             autostart = true;
         } else {
             autostart = false;
