@@ -11,15 +11,13 @@ Features
 ---------
 
 - Autostart single search matching app.
-- Add any favourite activities e.g. Wifi settings.
-- Hide any unwanted app.
-- Rename any app.
+- Add activities e.g. Wifi settings.
+- Hide or rename any app.
 - Avoid distracting app icons.
-- Toggle camera, wifi and bluetooth with buttons.
+- Toggle wifi and bluetooth with buttons.
 - Match any character sequence with space character.
-- Read wiki: https://github.com/vackosar/search-based-launcher/wiki
+- Read request features: https://github.com/vackosar/search-based-launcher/wiki
 - Available at Google Play and F-Droid.
-
 
 Previews
 ---------
