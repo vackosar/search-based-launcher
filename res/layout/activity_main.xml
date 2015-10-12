@@ -113,7 +113,7 @@
             android:text="Background" />
         <Spinner
             style="@style/AppTheme"
-            android:id="@+id/backgroundSelector"
+            android:id="@+id/background"
             android:layout_alignTop="@+id/appListRadioGroup"
             android:layout_alignParentLeft="true"
             android:entries="@array/background" />

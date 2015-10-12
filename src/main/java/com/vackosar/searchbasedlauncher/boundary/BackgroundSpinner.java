@@ -17,20 +17,20 @@ import roboguice.inject.ContextSingleton;
 import roboguice.inject.InjectView;
 
 @ContextSingleton
-public class BackgroundChooser implements AdapterView.OnItemSelectedListener {
+public class BackgroundSpinner implements AdapterView.OnItemSelectedListener {
 
-    @InjectView(R.id.backgroundSelector) private Spinner spinner;
+    @InjectView(R.id.background) private Spinner spinner;
     @Inject private Activity activity;
-    @Inject private SingletonPersister<BackgroundChooser> persister;
+    @Inject private SingletonPersister<BackgroundSpinner> persister;
 
     private Theme DEFAULT_THEME = Theme.wallpaper;
 
     @Expose private Theme theme;
     private boolean firstSkipped;
 
-    public BackgroundChooser() {}
+    public BackgroundSpinner() {}
 
-    public BackgroundChooser(Activity activity) {
+    public BackgroundSpinner(Activity activity) {
         this.activity = activity;
         this.persister = new SingletonPersister<>(activity.getApplicationContext());
         load();

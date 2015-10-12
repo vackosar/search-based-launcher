@@ -23,7 +23,7 @@ public class MainActivity extends RoboActivity {
     @Inject private BluetoothButton bluetoothButton;
     @Inject private CameraButton cameraButton;
     @Inject private WikiButton wikiButton;
-    @Inject private BackgroundChooser backgroundChooser;
+    @Inject private BackgroundSpinner backgroundSpinner;
 
     @Override
     public boolean onKeyUp(int keycode, KeyEvent event) {
@@ -44,7 +44,7 @@ public class MainActivity extends RoboActivity {
     /** Set theme before view rendering. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        new BackgroundChooser(this);
+        new BackgroundSpinner(this);
         super.onCreate(savedInstanceState);
     }
 }
