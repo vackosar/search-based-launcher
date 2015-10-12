@@ -20,25 +20,20 @@
             android:textFilterEnabled="false"
             android:divider="@null" />
         <TextView
-            android:id="@+id/wifiButton"
             style="@style/AppThemeButtons"
+            android:id="@+id/menu"
             android:layout_alignParentTop="true"
+            android:text="Menu" />
+        <TextView
+            android:id="@+id/wifi"
+            style="@style/AppThemeButtons"
+            android:layout_alignTop="@+id/menu"
             android:text="Wifi" />
         <TextView
-            android:id="@+id/bluetoothButton"
+            android:id="@+id/bluetooth"
             style="@style/AppThemeButtons"
-            android:layout_alignTop="@+id/wifiButton"
+            android:layout_alignTop="@+id/wifi"
             android:text="Blue" />
-        <TextView
-            android:id="@+id/cameraButton"
-            style="@style/AppThemeButtons"
-            android:layout_alignTop="@+id/bluetoothButton"
-            android:text="Cam" />
-        <TextView
-            style="@style/AppThemeButtons"
-            android:id="@+id/menuButton"
-            android:layout_alignTop="@+id/cameraButton"
-            android:text="Menu" />
         <EditText
             android:id="@+id/searchText"
             style="@style/AppThemeLarge"

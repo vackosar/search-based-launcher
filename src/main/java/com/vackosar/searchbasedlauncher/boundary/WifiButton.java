@@ -21,7 +21,7 @@ import roboguice.inject.InjectView;
 
 public class WifiButton extends Colorful implements View.OnClickListener {
 
-    @InjectView(R.id.wifiButton) private TextView textView;
+    @InjectView(R.id.wifi) private TextView textView;
     @Inject private Activity activity;
 
     private WifiManager wifiManager;
@@ -65,7 +65,7 @@ public class WifiButton extends Colorful implements View.OnClickListener {
     }
 
     public void onCreateEvent(@Observes OnCreateEvent onCreateEvent) {
-        textView = (TextView) activity.findViewById(R.id.wifiButton);
+        textView = (TextView) activity.findViewById(R.id.wifi);
         wifiManager = (WifiManager) activity.getSystemService(Context.WIFI_SERVICE);
         setVisibleIfAvailable();
         if (isAvailable()) {

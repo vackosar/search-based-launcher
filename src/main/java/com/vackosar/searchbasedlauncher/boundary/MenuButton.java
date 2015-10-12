@@ -17,7 +17,7 @@ import roboguice.inject.InjectView;
 @ContextSingleton
 public class MenuButton extends Colorful implements View.OnClickListener {
     @InjectView(R.id.viewAnimator) ViewAnimator viewAnimator;
-    @InjectView(R.id.menuButton) TextView textView;
+    @InjectView(R.id.menu) TextView textView;
     @Inject private SearchText searchText;
     @Inject private AppsManager appsManager;
 

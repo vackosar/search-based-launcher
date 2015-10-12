@@ -21,7 +21,6 @@ public class MainActivity extends RoboActivity {
     @Inject private EventManager eventManager;
     @Inject private WifiButton wifiButton;
     @Inject private BluetoothButton bluetoothButton;
-    @Inject private CameraButton cameraButton;
     @Inject private WikiButton wikiButton;
     @Inject private BackgroundSpinner backgroundSpinner;
 
