@@ -39,11 +39,6 @@
             android:id="@+id/menuButton"
             android:layout_alignTop="@+id/cameraButton"
             android:text="Menu" />
-        <TextView
-            style="@style/AppThemeButtons"
-            android:id="@+id/wikiButton"
-            android:layout_alignTop="@+id/menuButton"
-            android:text="Wiki" />
         <EditText
             android:id="@+id/searchText"
             style="@style/AppThemeLarge"
@@ -69,7 +64,7 @@
             style="@style/AppThemeLarge"
             android:id="@+id/appListDesc"
             android:layout_alignParentTop="true"
-            android:text="Change Activity List:" />
+            android:text="Selected activity List:" />
         <Spinner
             style="@style/AppTheme"
             android:id="@+id/appList"
@@ -89,14 +84,20 @@
             android:entries="@array/yesNo" />
         <TextView
             style="@style/AppThemeLarge"
+            android:id="@+id/backgroundDesc"
             android:layout_alignParentTop="true"
-            android:text="Background" />
+            android:text="Background:" />
         <Spinner
             style="@style/AppTheme"
             android:id="@+id/background"
-            android:layout_alignTop="@+id/appListRadioGroup"
+            android:layout_alignTop="@+id/backgroundDesc"
             android:layout_alignParentLeft="true"
             android:entries="@array/background" />
+        <Button
+            style="@style/AppThemeLarge"
+            android:id="@+id/wikiButton"
+            android:layout_alignTop="@+id/background"
+            android:text="Wiki" />
     </LinearLayout>
 </ViewAnimator>
 
