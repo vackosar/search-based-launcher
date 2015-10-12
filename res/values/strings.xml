@@ -8,4 +8,10 @@
         <item>Yes</item>
         <item>No</item>
     </string-array>
+    <string-array name="appList">
+        <item>Applications</item>
+        <item>Activities</item>
+        <item>Added Activities</item>
+        <item>Hidden Activities</item>
+    </string-array>
 </resources>

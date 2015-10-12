@@ -2,7 +2,8 @@ package com.vackosar.searchbasedlauncher.boundary;
 
 import android.app.Activity;
 import android.view.View;
-import android.widget.RadioGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
@@ -17,12 +18,12 @@ import roboguice.inject.ContextSingleton;
 import roboguice.inject.InjectView;
 
 @ContextSingleton
-public class AppTypeSelector implements RadioGroup.OnClickListener {
+public class AppListSpinner implements AdapterView.OnItemSelectedListener {
 
-    @InjectView(R.id.appListRadioGroup) RadioGroup radioGroup;
+    @InjectView(R.id.appList) Spinner spinner;
     @Inject private EventManager eventManager;
     @Inject private Activity activity;
-    @Inject private SingletonPersister<AppTypeSelector> persister;
+    @Inject private SingletonPersister<AppListSpinner> persister;
 
     public static final AppsType DEFAULT_SELECTED = AppsType.normal;
 
@@ -30,16 +31,13 @@ public class AppTypeSelector implements RadioGroup.OnClickListener {
 
     @SuppressWarnings("unused")
     public void onCreateEvent(@Observes OnCreateEvent onCreateEvent) {
-        for (AppsType appsType: AppsType.values()) {
-            final View view = activity.findViewById(appsType.getViewId());
-            view.setOnClickListener(this);
-        }
+        spinner.setOnItemSelectedListener(this);
         load();
     }
 
     private void load() {
         persister.load(this);
-        radioGroup.check(selected.getViewId());
+        spinner.setSelection(selected.ordinal());
     }
 
     public void save() {
@@ -51,9 +49,14 @@ public class AppTypeSelector implements RadioGroup.OnClickListener {
     }
 
     @Override
-    public void onClick(View v) {
-        selected = AppsType.parseViewId(radioGroup.getCheckedRadioButtonId());
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        selected = AppsType.values()[position];
         save();
         eventManager.fire(new MenuButton.ToggleEvent());
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

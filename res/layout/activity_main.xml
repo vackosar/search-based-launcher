@@ -67,35 +67,15 @@
         android:orientation="vertical" >
         <TextView
             style="@style/AppThemeLarge"
-            android:id="@+id/radioButtonsDescription"
+            android:id="@+id/appListDesc"
             android:layout_alignParentTop="true"
             android:text="Change Activity List:" />
-        <RadioGroup
-            style="@style/AppThemeRadio"
-            android:id="@+id/appListRadioGroup"
-            android:layout_alignTop="@+id/radioButtonsDescription"
+        <Spinner
+            style="@style/AppTheme"
+            android:id="@+id/appList"
+            android:layout_alignTop="@+id/appListRadioGroup"
             android:layout_alignParentLeft="true"
-            android:checkedButton="@+id/normalAppsRadioButton"
-            android:clickable="true"
-            android:duplicateParentState="false"
-            android:longClickable="false" >
-            <RadioButton
-                style="@style/AppThemeRadio"
-                android:id="@+id/normalAppsRadioButton"
-                android:text="Applications" />
-            <RadioButton
-                style="@style/AppThemeRadio"
-                android:id="@+id/activityAppsRadioButton"
-                android:text="Activities" />
-            <RadioButton
-                style="@style/AppThemeRadio"
-                android:id="@+id/extraAppsRadioButton"
-                android:text="Added Activities" />
-            <RadioButton
-                style="@style/AppThemeRadio"
-                android:id="@+id/hiddenAppsRadioButton"
-                android:text="Hidden Activities" />
-        </RadioGroup>
+            android:entries="@array/appList" />
         <TextView
             style="@style/AppThemeLarge"
             android:id="@+id/autostartDesc"

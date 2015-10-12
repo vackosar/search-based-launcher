@@ -9,7 +9,7 @@ import android.text.InputType;
 import android.widget.EditText;
 
 import com.google.inject.Inject;
-import com.vackosar.searchbasedlauncher.boundary.AppTypeSelector;
+import com.vackosar.searchbasedlauncher.boundary.AppListSpinner;
 import com.vackosar.searchbasedlauncher.entity.App;
 
 import java.util.Collection;
@@ -21,7 +21,7 @@ import roboguice.inject.ContextSingleton;
 public class DialogFactory {
 
     @Inject private Activity activity;
-    @Inject private AppTypeSelector appTypeSelector;
+    @Inject private AppListSpinner appListSpinner;
 
     public static final String HIDE = "Hide";
     public static final String UNINSTALL = "Uninstall";
@@ -173,7 +173,7 @@ public class DialogFactory {
     }
 
     public void showOptionsForApp(App app, AppsManager appsManager) {
-        switch (appTypeSelector.getSelected()) {
+        switch (appListSpinner.getSelected()) {
             case normal:
                 showNormalOptions(app, appsManager);
                 break;

@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
-import com.vackosar.searchbasedlauncher.boundary.AppTypeSelector;
+import com.vackosar.searchbasedlauncher.boundary.AppListSpinner;
 import com.vackosar.searchbasedlauncher.entity.App;
 import com.vackosar.searchbasedlauncher.entity.AppsFactory;
 import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
@@ -21,7 +21,7 @@ import roboguice.inject.ContextSingleton;
 @ContextSingleton
 public class AppsManager {
 
-    @Inject private AppTypeSelector appTypeSelector;
+    @Inject private AppListSpinner appListSpinner;
     @Inject private PackageAddedOrRemovedEvent packageAddedOrRemovedEvent;
     @Inject private Activity activity;
     @Inject private AppsFactory appsFactory;
@@ -43,7 +43,7 @@ public class AppsManager {
 
     private void reload() {
         pkg.clear();
-        switch (appTypeSelector.getSelected()) {
+        switch (appListSpinner.getSelected()) {
             case normal:
                 pkg.addAll(appsFactory.getApplicationActivities());
                 pkg.removeAll(hidden);
