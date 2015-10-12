@@ -23,6 +23,7 @@
             style="@style/AppThemeButtons"
             android:id="@+id/menu"
             android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
             android:text="Menu" />
         <TextView
             android:id="@+id/wifi"
