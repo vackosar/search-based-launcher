@@ -33,6 +33,11 @@ public class AutostartSpinner implements AdapterView.OnItemSelectedListener {
 
     private void load() {
         persister.load(this);
+        if (autostart) {
+            spinner.setSelection(0);
+        } else {
+            spinner.setSelection(1);
+        }
     }
 
     public boolean isOn() {
