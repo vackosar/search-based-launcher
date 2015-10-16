@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
 import com.google.inject.Inject;
+import com.vackosar.searchbasedlauncher.boundary.BluetoothToggle;
 import com.vackosar.searchbasedlauncher.boundary.WifiToggle;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class AppsFactory {
 
     @Inject private Activity activity;
     @Inject private WifiToggle wifiToggle;
+    @Inject private BluetoothToggle bluetoothToggle;
 
     private PackageManager packageManager;
 
@@ -50,6 +52,7 @@ public class AppsFactory {
             pkg.add(app);
         }
         pkg.add(wifiToggle.getApp());
+        pkg.add(bluetoothToggle.getApp());
         return pkg;
     }
 

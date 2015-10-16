@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 
 import com.google.inject.Inject;
+import com.vackosar.searchbasedlauncher.boundary.BluetoothToggle;
 import com.vackosar.searchbasedlauncher.boundary.SearchText;
 import com.vackosar.searchbasedlauncher.boundary.WifiToggle;
 
@@ -15,6 +16,7 @@ public class AppExecutor {
     @Inject private SearchText searchText;
     @Inject private Activity activity;
     @Inject private WifiToggle wifiToggle;
+    @Inject private BluetoothToggle bluetoothToggle;
 
     public void act(App app) {
         try {
@@ -30,7 +32,9 @@ public class AppExecutor {
 
     private void startActivity(App app) {
         if (wifiToggle.getApp().equals(app)) {
-            wifiToggle.toggle();
+            wifiToggle.act();
+        } else if (bluetoothToggle.getApp().equals(app)) {
+            bluetoothToggle.act();
         } else {
             final Intent intent = new Intent(Intent.ACTION_MAIN, null);
             intent.setComponent(new ComponentName(app.getName(), app.getActivity()));
