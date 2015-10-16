@@ -20,7 +20,7 @@
         android:persistent="true"
         android:windowSoftInputMode="stateVisible|adjustResize" >
         <activity
-            android:name="com.vackosar.searchbasedlauncher.boundary.MainActivity"
+            android:name=".boundary.MainActivity"
             android:label="Search Based Launcher"
             android:alwaysRetainTaskState="true"
              android:launchMode="singleInstance" >
@@ -29,14 +29,6 @@
 	            <category android:name="android.intent.category.HOME"/>
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.vackosar.searchbasedlauncher.boundary.WifiToggle"
-            android:label="Wifi Toggle" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
     </application>

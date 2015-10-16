@@ -26,14 +26,9 @@
             android:layout_marginTop="0dp"
             android:text="Menu" />
         <TextView
-            android:id="@+id/wifi"
-            style="@style/AppThemeButtons"
-            android:layout_alignTop="@+id/menu"
-            android:text="Wifi" />
-        <TextView
             android:id="@+id/bluetooth"
             style="@style/AppThemeButtons"
-            android:layout_alignTop="@+id/wifi"
+            android:layout_alignTop="@+id/menu"
             android:text="Blue" />
         <EditText
             android:id="@+id/searchText"

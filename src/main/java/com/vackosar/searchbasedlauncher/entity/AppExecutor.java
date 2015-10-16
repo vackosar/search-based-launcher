@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.boundary.SearchText;
+import com.vackosar.searchbasedlauncher.boundary.WifiToggle;
 
 import roboguice.inject.ContextSingleton;
 
@@ -13,20 +14,28 @@ import roboguice.inject.ContextSingleton;
 public class AppExecutor {
     @Inject private SearchText searchText;
     @Inject private Activity activity;
+    @Inject private WifiToggle wifiToggle;
 
     public void act(App app) {
         try {
             searchText.setActivatedColor();
+            startActivity(app);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            searchText.clearText();
+            searchText.setNormalColor();
+        }
+    }
+
+    private void startActivity(App app) {
+        if (wifiToggle.getApp().equals(app)) {
+            wifiToggle.toggle();
+        } else {
             final Intent intent = new Intent(Intent.ACTION_MAIN, null);
-            intent.addCategory(Intent.CATEGORY_LAUNCHER);
             intent.setComponent(new ComponentName(app.getName(), app.getActivity()));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
             activity.startActivity(intent);
-            searchText.clearText();
-            searchText.setNormalColor();
-        } catch (Exception e) {
-            e.printStackTrace();
-            searchText.setNormalColor();
         }
     }
 }

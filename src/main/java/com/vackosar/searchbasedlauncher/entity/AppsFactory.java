@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
 import com.google.inject.Inject;
+import com.vackosar.searchbasedlauncher.boundary.WifiToggle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import roboguice.inject.ContextSingleton;
 public class AppsFactory {
 
     @Inject private Activity activity;
+    @Inject private WifiToggle wifiToggle;
 
     private PackageManager packageManager;
 
@@ -47,6 +49,7 @@ public class AppsFactory {
             final App app = new App(name, nick, activity);
             pkg.add(app);
         }
+        pkg.add(wifiToggle.getApp());
         return pkg;
     }
 
