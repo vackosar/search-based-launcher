@@ -20,11 +20,11 @@
             android:textFilterEnabled="false"
             android:divider="@null" />
         <TextView
-            style="@style/AppThemeButtons"
+            style="@style/AppThemeMenu"
             android:id="@+id/menu"
             android:layout_alignParentTop="true"
             android:layout_marginTop="0dp"
-            android:text="Menu" />
+            android:text=" . \n . \n . " />
         <EditText
             android:id="@+id/searchText"
             style="@style/AppThemeLarge"

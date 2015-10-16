@@ -14,10 +14,12 @@
     <style name="AppThemeLarge" parent="AppTheme" >
         <item name="android:textSize">10pt</item>
     </style>
-    <style name="AppThemeButtons" parent="AppTheme" >
+    <style name="AppThemeMenu" parent="AppTheme" >
         <item name="android:layout_marginTop">30dp</item>
         <item name="android:layout_marginRight">5dp</item>
         <item name="android:layout_alignParentRight">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">2.5pt</item>
     </style>
     <style name="AppThemeRadio" parent="AppTheme" >
         <item name="android:gravity">left</item>
