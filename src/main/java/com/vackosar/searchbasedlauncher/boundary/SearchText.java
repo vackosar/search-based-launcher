@@ -3,11 +3,9 @@ package com.vackosar.searchbasedlauncher.boundary;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
-import com.vackosar.searchbasedlauncher.control.Colorful;
 import com.vackosar.searchbasedlauncher.control.RegexEscaper;
 
 import roboguice.context.event.OnCreateEvent;
@@ -16,7 +14,7 @@ import roboguice.inject.ContextSingleton;
 import roboguice.inject.InjectView;
 
 @ContextSingleton
-public class SearchText extends Colorful implements TextWatcher {
+public class SearchText implements TextWatcher {
 
     @InjectView(R.id.searchText) EditText editText;
     @Inject RegexEscaper regexEscaper;
@@ -47,11 +45,6 @@ public class SearchText extends Colorful implements TextWatcher {
 
     public void setSearchTextCallback(TextChangedCallback textChangedCallback) {
         this.textChangedCallback = textChangedCallback;
-    }
-
-    @Override
-    public TextView getView() {
-        return editText;
     }
 
     public void clearText() {

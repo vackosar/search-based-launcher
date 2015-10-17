@@ -27,7 +27,6 @@ public class MenuButton implements View.OnClickListener {
     }
 
     public void toggle(@Observes ToggleEvent toggleEvent) {
-        searchText.setNormalColor();
         toggleView();
         if (! isMenuShown()) {
             appsManager.load();

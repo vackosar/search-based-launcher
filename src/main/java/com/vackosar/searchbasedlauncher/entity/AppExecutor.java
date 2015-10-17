@@ -20,13 +20,11 @@ public class AppExecutor {
 
     public void act(App app) {
         try {
-            searchText.setActivatedColor();
             startActivity(app);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             searchText.clearText();
-            searchText.setNormalColor();
         }
     }
 
