@@ -22,6 +22,7 @@ public class MainActivity extends RoboActivity {
     @Inject private BluetoothToggle bluetoothButton;
     @Inject private WikiButton wikiButton;
     @Inject private BackgroundSpinner backgroundSpinner;
+    @Inject private MenuList menuList;
 
     @Override
     public boolean onKeyUp(int keycode, KeyEvent event) {

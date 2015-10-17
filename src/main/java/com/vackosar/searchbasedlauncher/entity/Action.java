@@ -1,8 +1,9 @@
 package com.vackosar.searchbasedlauncher.entity;
 
-public abstract class Action {
+public abstract class Action implements Comparable<Action> {
 
     public abstract String getId();
+    public abstract String getName();
     public abstract void act();
 
     @Override
@@ -19,5 +20,10 @@ public abstract class Action {
     @Override
     public int hashCode() {
         return getId().hashCode();
+    }
+
+    @Override
+    public int compareTo(Action another) {
+        return getName().compareTo(another.getName());
     }
 }

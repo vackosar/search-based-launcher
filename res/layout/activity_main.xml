@@ -46,13 +46,23 @@
         android:layout_gravity="left|top"
         android:gravity="left|top"
         android:orientation="vertical" >
-        <TextView
+        <ListView
+            android:id="@+id/menuList"
             style="@style/AppThemeLarge"
-            android:text="Selected activity List:" />
-        <Spinner
-            style="@style/AppTheme"
-            android:id="@+id/appList"
-            android:entries="@array/appList" />
+            android:layout_width="fill_parent"
+            android:drawSelectorOnTop="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:textFilterEnabled="false"
+            android:divider="@null"
+            android:layout_height="0pt"
+            android:layout_weight="1" />
+        <TextView
+            style="@style/AppThemeMenu"
+            android:id="@+id/menu2"
+            android:layout_width="fill_parent"
+            android:background="@null"
+            android:text=":::" />
         <TextView
             style="@style/AppThemeLarge"
             android:id="@+id/autostartDesc"
