@@ -18,7 +18,7 @@
             android:focusableInTouchMode="false"
             android:textFilterEnabled="false"
             android:divider="@null"
-            android:layout_height="0dp"
+            android:layout_height="0pt"
             android:layout_weight="1" />
         <TextView
             style="@style/AppThemeMenu"
