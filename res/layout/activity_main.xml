@@ -3,11 +3,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/layoutMain"
         style="@style/AppTheme"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <ListView
             android:id="@+id/appListView"
             style="@style/AppThemeLarge"
@@ -17,17 +18,14 @@
             android:focusableInTouchMode="false"
             android:textFilterEnabled="false"
             android:divider="@null"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_above="@+id/menu" />
+            android:layout_height="0dp"
+            android:layout_weight="1" />
         <TextView
             style="@style/AppThemeMenu"
             android:id="@+id/menu"
             android:layout_width="fill_parent"
             android:background="@null"
-            android:text=":::"
-            android:layout_above="@+id/searchText"
-            android:layout_alignParentLeft="true" />
+            android:text=":::" />
         <EditText
             android:id="@+id/searchText"
             style="@style/AppThemeLarge"
@@ -36,12 +34,10 @@
             android:ems="10"
             android:inputType="textNoSuggestions"
             android:longClickable="true"
-            android:background="@null"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true">
+            android:background="@null" >
             <requestFocus />
         </EditText>
-    </RelativeLayout>
+    </LinearLayout >
 
     <LinearLayout
         android:id="@+id/layoutMenu"
@@ -52,42 +48,39 @@
         android:orientation="vertical" >
         <TextView
             style="@style/AppThemeLarge"
-            android:id="@+id/appListDesc"
-            android:layout_alignParentTop="true"
             android:text="Selected activity List:" />
         <Spinner
             style="@style/AppTheme"
             android:id="@+id/appList"
-            android:layout_alignTop="@+id/appListRadioGroup"
-            android:layout_alignParentLeft="true"
             android:entries="@array/appList" />
         <TextView
             style="@style/AppThemeLarge"
             android:id="@+id/autostartDesc"
-            android:layout_alignParentTop="true"
             android:text="Autostart single result:" />
         <Spinner
             style="@style/AppTheme"
             android:id="@+id/autostart"
-            android:layout_alignTop="@+id/autostartDesc"
-            android:layout_alignParentLeft="true"
             android:entries="@array/yesNo" />
         <TextView
             style="@style/AppThemeLarge"
             android:id="@+id/backgroundDesc"
-            android:layout_alignParentTop="true"
             android:text="Background:" />
         <Spinner
             style="@style/AppTheme"
             android:id="@+id/background"
-            android:layout_alignTop="@+id/backgroundDesc"
-            android:layout_alignParentLeft="true"
             android:entries="@array/background" />
+        <TextView
+            style="@style/AppThemeLarge"
+            android:text="Hide search bar:" />
+        <Spinner
+            style="@style/AppTheme"
+            android:id="@+id/searchTextHider"
+            android:entries="@array/yesNo" />
         <Button
             style="@style/AppThemeLarge"
             android:id="@+id/wikiButton"
-            android:layout_alignTop="@+id/background"
             android:text="Request a feature." />
     </LinearLayout>
+
 </ViewAnimator>
 

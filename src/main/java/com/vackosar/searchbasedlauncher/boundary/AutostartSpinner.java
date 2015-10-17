@@ -7,6 +7,7 @@ import android.widget.Spinner;
 import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
+import com.vackosar.searchbasedlauncher.control.YesNo;
 import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
 
 import roboguice.context.event.OnCreateEvent;
@@ -33,11 +34,7 @@ public class AutostartSpinner implements AdapterView.OnItemSelectedListener {
 
     private void load() {
         persister.load(this);
-        if (autostart) {
-            spinner.setSelection(0);
-        } else {
-            spinner.setSelection(1);
-        }
+        spinner.setSelection(YesNo.valueOf(autostart).position);
     }
 
     public boolean isOn() {
@@ -46,11 +43,7 @@ public class AutostartSpinner implements AdapterView.OnItemSelectedListener {
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (position == 0) {
-            autostart = true;
-        } else {
-            autostart = false;
-        }
+        autostart = YesNo.valueOf(position).bool;
         save();
     }
 
