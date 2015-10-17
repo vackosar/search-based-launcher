@@ -19,12 +19,6 @@
             android:focusableInTouchMode="false"
             android:textFilterEnabled="false"
             android:divider="@null" />
-        <TextView
-            style="@style/AppThemeMenu"
-            android:id="@+id/menu"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="0dp"
-            android:text=" . \n . \n . " />
         <EditText
             android:id="@+id/searchText"
             style="@style/AppThemeLarge"
@@ -38,6 +32,11 @@
             android:background="@null">
             <requestFocus />
         </EditText>
+        <TextView
+            style="@style/AppThemeMenu"
+            android:id="@+id/menu"
+            android:layout_alignParentBottom="true"
+            android:text=":" />
     </RelativeLayout>
     <LinearLayout
         android:id="@+id/layoutMenu"
