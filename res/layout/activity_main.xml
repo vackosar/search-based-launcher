@@ -87,7 +87,7 @@
             style="@style/AppThemeLarge"
             android:id="@+id/wikiButton"
             android:layout_alignTop="@+id/background"
-            android:text="Wiki" />
+            android:text="Request a feature." />
     </LinearLayout>
 </ViewAnimator>
 
