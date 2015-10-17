@@ -16,7 +16,7 @@ Features
 - Avoid distracting app icons.
 - Toggle wifi and bluetooth with buttons.
 - Match any character sequence with space character.
-- Read request features: https://github.com/vackosar/search-based-launcher/wiki
+- Request features: https://github.com/vackosar/search-based-launcher/wiki
 - Available at Google Play and F-Droid.
 
 Previews
