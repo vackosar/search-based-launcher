@@ -2,42 +2,47 @@
     android:id="@+id/viewAnimator"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+
     <RelativeLayout
         android:id="@+id/layoutMain"
+        style="@style/AppTheme"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
         <ListView
             android:id="@+id/appListView"
             style="@style/AppThemeLarge"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/searchText"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
             android:drawSelectorOnTop="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:textFilterEnabled="false"
-            android:divider="@null" />
+            android:divider="@null"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_above="@+id/menu" />
+        <TextView
+            style="@style/AppThemeMenu"
+            android:id="@+id/menu"
+            android:layout_width="fill_parent"
+            android:background="@null"
+            android:text="..."
+            android:layout_above="@+id/searchText"
+            android:layout_alignParentLeft="true" />
         <EditText
             android:id="@+id/searchText"
             style="@style/AppThemeLarge"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
             android:ems="10"
             android:inputType="textNoSuggestions"
             android:longClickable="true"
-            android:background="@null">
+            android:background="@null"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true">
             <requestFocus />
         </EditText>
-        <TextView
-            style="@style/AppThemeMenu"
-            android:id="@+id/menu"
-            android:layout_alignParentBottom="true"
-            android:text=":" />
     </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/layoutMenu"
         android:layout_width="fill_parent"

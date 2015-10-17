@@ -7,7 +7,6 @@ import android.widget.ViewAnimator;
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
 import com.vackosar.searchbasedlauncher.control.AppsManager;
-import com.vackosar.searchbasedlauncher.control.Colorful;
 
 import roboguice.context.event.OnCreateEvent;
 import roboguice.event.Observes;
@@ -15,16 +14,16 @@ import roboguice.inject.ContextSingleton;
 import roboguice.inject.InjectView;
 
 @ContextSingleton
-public class MenuButton extends Colorful implements View.OnClickListener {
+public class MenuButton implements View.OnClickListener {
     @InjectView(R.id.viewAnimator) ViewAnimator viewAnimator;
-    @InjectView(R.id.menu) TextView textView;
+    @InjectView(R.id.menu) TextView view;
     @Inject private SearchText searchText;
     @Inject private AppsManager appsManager;
 
     public static final int MENU_CHILD_ID = 1;
 
     public void onCreateEvent(@Observes OnCreateEvent OnCreateEvent) {
-        textView.setOnClickListener(this);
+        view.setOnClickListener(this);
     }
 
     public void toggle(@Observes ToggleEvent toggleEvent) {
@@ -41,11 +40,6 @@ public class MenuButton extends Colorful implements View.OnClickListener {
 
     private void toggleView() {
         viewAnimator.showNext();
-    }
-
-    @Override
-    public TextView getView() {
-        return textView;
     }
 
     @Override
