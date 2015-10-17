@@ -173,7 +173,7 @@ public class DialogFactory {
     }
 
     public void showOptionsForApp(App app, AppsManager appsManager) {
-        switch (itemListSelector.getSelected()) {
+        switch (itemListSelector.getAppType()) {
             case normal:
                 showNormalOptions(app, appsManager);
                 break;

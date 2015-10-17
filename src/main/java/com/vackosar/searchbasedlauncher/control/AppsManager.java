@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.boundary.ItemListSelector;
 import com.vackosar.searchbasedlauncher.entity.App;
 import com.vackosar.searchbasedlauncher.entity.AppsFactory;
+import com.vackosar.searchbasedlauncher.entity.Indentifiable;
 import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
 
 import java.util.Collections;
@@ -19,7 +20,7 @@ import roboguice.inject.ContextSingleton;
 
 @SuppressWarnings("Convert2Lambda")
 @ContextSingleton
-public class AppsManager {
+public class AppsManager implements Indentifiable {
 
     @Inject private ItemListSelector itemListSelector;
     @Inject private PackageAddedOrRemovedEvent packageAddedOrRemovedEvent;
@@ -43,7 +44,7 @@ public class AppsManager {
 
     private void reload() {
         pkg.clear();
-        switch (itemListSelector.getSelected()) {
+        switch (itemListSelector.getAppType()) {
             case normal:
                 pkg.addAll(appsFactory.getApplicationActivities());
                 pkg.removeAll(hidden);
@@ -87,6 +88,11 @@ public class AppsManager {
 
     public List<App> getPkg() {
         return pkg;
+    }
+
+    @Override
+    public String getId() {
+        return getClass().getName();
     }
 
     public interface RefreshCallback {

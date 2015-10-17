@@ -15,6 +15,7 @@ import com.vackosar.searchbasedlauncher.control.PackageAddedOrRemovedEvent;
 import com.vackosar.searchbasedlauncher.entity.App;
 import com.vackosar.searchbasedlauncher.entity.AppExecutor;
 import com.vackosar.searchbasedlauncher.entity.AppsFactory;
+import com.vackosar.searchbasedlauncher.entity.Indentifiable;
 import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
 
 import java.util.ArrayList;
@@ -29,10 +30,10 @@ import roboguice.inject.ContextSingleton;
 import roboguice.inject.InjectView;
 
 @ContextSingleton
-public class AppsView implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
+public class AppsView implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener, Indentifiable {
 
     @InjectView(R.id.appListView) private ListView listView;
-    @Inject private AutostartSpinner autostartSpinner;
+    @Inject private AutostartSelector autostartSelector;
     @Inject private DialogFactory dialogFactory;
     @Inject private Activity activity;
     @Inject private SearchText searchText;
@@ -68,6 +69,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         });
     }
 
+    @SuppressWarnings("unused")
     public void onStart(@Observes OnStartEvent onStartEvent) {
         appsManager.load();
     }
@@ -125,7 +127,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     }
 
     private boolean autostartFirstApp() {
-        return filtered.size() == 1 && appsManager.getPkg().size() > 1 && autostartSpinner.isOn();
+        return filtered.size() == 1 && appsManager.getPkg().size() > 1 && autostartSelector.isOn();
     }
 
     private List<App> getReversedRecent() {
@@ -169,5 +171,10 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     @SuppressWarnings("unused")
     public void onPackageAddedOrRemovedEvent(@Observes PackageAddedOrRemovedEvent packageAddedOrRemovedEvent) {
         recent.retainAll(appsFactory.getAllActivities());
+    }
+
+    @Override
+    public String getId() {
+        return getClass().getName();
     }
 }

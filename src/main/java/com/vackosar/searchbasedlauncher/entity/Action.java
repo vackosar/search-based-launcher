@@ -1,6 +1,6 @@
 package com.vackosar.searchbasedlauncher.entity;
 
-public abstract class Action implements Comparable<Action> {
+public abstract class Action implements Comparable<Action>, Indentifiable {
 
     public abstract String getId();
     public abstract String getName();

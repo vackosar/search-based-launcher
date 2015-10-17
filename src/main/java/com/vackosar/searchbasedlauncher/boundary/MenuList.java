@@ -23,6 +23,7 @@ public class MenuList implements AdapterView.OnItemClickListener {
     @InjectView(R.id.menuList) private ListView view;
     @Inject private Activity activity;
     @Inject private ItemListSelector itemListSelector;
+    @Inject private AutostartSelector autostartSelector;
 
     private List<Action> list;
 
@@ -35,6 +36,7 @@ public class MenuList implements AdapterView.OnItemClickListener {
     private void loadActions() {
         list = new ArrayList<>();
         list.add(itemListSelector);
+        list.add(autostartSelector);
         loadNames();
     }
 
@@ -47,7 +49,7 @@ public class MenuList implements AdapterView.OnItemClickListener {
     private List<String> extractNames() {
         List<String> names = new ArrayList<>();
         for (Action action: list) {
-            names.add(itemListSelector.getName());
+            names.add(action.getName());
         }
         return names;
     }

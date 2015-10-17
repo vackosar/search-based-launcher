@@ -13,7 +13,7 @@ import java.lang.reflect.Type;
 import roboguice.inject.ContextSingleton;
 
 @ContextSingleton
-public class SingletonPersister<T> {
+public class SingletonPersister<T extends Indentifiable> {
 
     @Inject private Context context;
     private static final String KEY = "json";
@@ -61,7 +61,13 @@ public class SingletonPersister<T> {
         requireNonNull(singleton);
         final String json = getSharedPreferences(singleton).getString(KEY, null);
         if (json != null) {
-            dejsonfy(singleton, json);
+            try {
+                dejsonfy(singleton, json);
+            } catch (Exception e) {
+                save(singleton);
+            }
+        } else {
+            save(singleton);
         }
     }
 
@@ -75,7 +81,7 @@ public class SingletonPersister<T> {
     }
 
     private SharedPreferences getSharedPreferences(T singleton) {
-        final String preferencesName = singleton.getClass().getCanonicalName();
+        final String preferencesName = singleton.getId();
         return context.getSharedPreferences(preferencesName, Context.MODE_PRIVATE);
     }
 

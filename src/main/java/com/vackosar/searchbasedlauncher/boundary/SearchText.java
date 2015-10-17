@@ -12,6 +12,7 @@ import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
 import com.vackosar.searchbasedlauncher.control.RegexEscaper;
 import com.vackosar.searchbasedlauncher.control.YesNo;
+import com.vackosar.searchbasedlauncher.entity.Indentifiable;
 import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
 
 import roboguice.context.event.OnCreateEvent;
@@ -20,7 +21,7 @@ import roboguice.inject.ContextSingleton;
 import roboguice.inject.InjectView;
 
 @ContextSingleton
-public class SearchText implements TextWatcher, AdapterView.OnItemSelectedListener {
+public class SearchText implements TextWatcher, AdapterView.OnItemSelectedListener, Indentifiable {
 
     @InjectView(R.id.searchText) private EditText editText;
     @InjectView(R.id.searchTextHider) private Spinner hider;
@@ -98,6 +99,11 @@ public class SearchText implements TextWatcher, AdapterView.OnItemSelectedListen
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    public String getId() {
+        return getClass().getName();
     }
 
     public interface TextChangedCallback {

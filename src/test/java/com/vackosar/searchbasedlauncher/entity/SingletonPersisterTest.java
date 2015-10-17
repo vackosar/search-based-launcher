@@ -3,7 +3,7 @@ package com.vackosar.searchbasedlauncher.entity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.vackosar.searchbasedlauncher.boundary.AutostartSpinner;
+import com.vackosar.searchbasedlauncher.boundary.AutostartSelector;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -31,11 +31,11 @@ public class SingletonPersisterTest {
     @Mock private Context context;
     @Mock private SharedPreferences sharedPreferences;
     @Mock private SharedPreferences.Editor editor;
-    @InjectMocks private SingletonPersister<AutostartSpinner> autostartButtonSingletonPersister;
+    @InjectMocks private SingletonPersister<AutostartSelector> autostartButtonSingletonPersister;
 
     private Map<String, String> preferences;
     private String preferenceName;
-    private AutostartSpinner autostartSpinner;
+    private AutostartSelector autostartSelector;
 
     @Before
     public void init() throws IllegalAccessException {
@@ -77,23 +77,23 @@ public class SingletonPersisterTest {
     }
 
     private void initAutostartButton() {
-        autostartSpinner = new AutostartSpinner();
-        setField(autostartSpinner, AUTOSTART_FIELDNAME, true);
+        autostartSelector = new AutostartSelector();
+        setField(autostartSelector, AUTOSTART_FIELDNAME, true);
     }
 
     @Test
     public void save() {
-        setField(autostartSpinner, AUTOSTART_FIELDNAME, true);
-        autostartButtonSingletonPersister.save(autostartSpinner);
+        setField(autostartSelector, AUTOSTART_FIELDNAME, true);
+        autostartButtonSingletonPersister.save(autostartSelector);
         Assert.assertEquals(1, preferences.entrySet().size());
         Assert.assertEquals("{\"autostart\":true}", preferences.get("json"));
-        Assert.assertEquals(AutostartSpinner.class.getCanonicalName(), preferenceName);
+        Assert.assertEquals(AutostartSelector.class.getCanonicalName(), preferenceName);
     }
 
     @Test
     public void load() {
-        autostartButtonSingletonPersister.load(autostartSpinner);
-        Assert.assertEquals(true, getField(autostartSpinner, AUTOSTART_FIELDNAME));
+        autostartButtonSingletonPersister.load(autostartSelector);
+        Assert.assertEquals(true, getField(autostartSelector, AUTOSTART_FIELDNAME));
     }
 
     private static Field getField(Class clazz, String name) {
