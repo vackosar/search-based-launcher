@@ -25,6 +25,7 @@ public class MenuList implements AdapterView.OnItemClickListener {
     @Inject private ItemListSelector itemListSelector;
     @Inject private AutostartSelector autostartSelector;
     @Inject private BackgroundSelector backgroundSelector;
+    @Inject private SearchbarHiderSelector searchbarHiderSelector;
 
     private List<Action> list;
 
@@ -39,6 +40,7 @@ public class MenuList implements AdapterView.OnItemClickListener {
         list.add(itemListSelector);
         list.add(autostartSelector);
         list.add(backgroundSelector);
+        list.add(searchbarHiderSelector);
         loadNames();
     }
 

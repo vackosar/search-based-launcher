@@ -63,13 +63,6 @@
             android:layout_width="fill_parent"
             android:background="@null"
             android:text=":::" />
-        <TextView
-            style="@style/AppThemeLarge"
-            android:text="Hide search bar:" />
-        <Spinner
-            style="@style/AppTheme"
-            android:id="@+id/searchTextHider"
-            android:entries="@array/yesNo" />
         <Button
             style="@style/AppThemeLarge"
             android:id="@+id/wikiButton"
