@@ -65,22 +65,6 @@
             android:text=":::" />
         <TextView
             style="@style/AppThemeLarge"
-            android:id="@+id/autostartDesc"
-            android:text="Autostart single result:" />
-        <Spinner
-            style="@style/AppTheme"
-            android:id="@+id/autostart"
-            android:entries="@array/yesNo" />
-        <TextView
-            style="@style/AppThemeLarge"
-            android:id="@+id/backgroundDesc"
-            android:text="Background:" />
-        <Spinner
-            style="@style/AppTheme"
-            android:id="@+id/background"
-            android:entries="@array/background" />
-        <TextView
-            style="@style/AppThemeLarge"
             android:text="Hide search bar:" />
         <Spinner
             style="@style/AppTheme"
