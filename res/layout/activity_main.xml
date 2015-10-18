@@ -63,10 +63,12 @@
             android:layout_width="fill_parent"
             android:background="@null"
             android:text=":::" />
-        <Button
-            style="@style/AppThemeLarge"
-            android:id="@+id/wikiButton"
-            android:text="Request a feature." />
+        <TextView
+            style="@style/AppThemeMenu"
+            android:id="@+id/menuDesc"
+            android:layout_width="fill_parent"
+            android:background="@null"
+            android:text="- Menu -" />
     </LinearLayout>
 
 </ViewAnimator>

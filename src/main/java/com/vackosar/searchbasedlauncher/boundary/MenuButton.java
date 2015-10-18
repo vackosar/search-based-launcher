@@ -17,6 +17,7 @@ import roboguice.inject.InjectView;
 public class MenuButton implements View.OnClickListener {
     @InjectView(R.id.viewAnimator) ViewAnimator viewAnimator;
     @InjectView(R.id.menu) TextView view;
+    @InjectView(R.id.menu2) TextView view2;
     @Inject private SearchText searchText;
     @Inject private AppsManager appsManager;
 
@@ -24,6 +25,7 @@ public class MenuButton implements View.OnClickListener {
 
     public void onCreateEvent(@Observes OnCreateEvent OnCreateEvent) {
         view.setOnClickListener(this);
+        view2.setOnClickListener(this);
     }
 
     public void toggle(@Observes ToggleEvent toggleEvent) {

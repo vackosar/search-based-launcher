@@ -24,8 +24,9 @@ public class MenuList implements AdapterView.OnItemClickListener {
     @Inject private Activity activity;
     @Inject private ItemListSelector itemListSelector;
     @Inject private AutostartSelector autostartSelector;
-    @Inject private BackgroundSelector backgroundSelector;
+    @Inject private ThemeSelector themeSelector;
     @Inject private SearchbarHiderSelector searchbarHiderSelector;
+    @Inject private WikiAction wikiAction;
 
     private List<Action> list;
 
@@ -39,8 +40,9 @@ public class MenuList implements AdapterView.OnItemClickListener {
         list = new ArrayList<>();
         list.add(itemListSelector);
         list.add(autostartSelector);
-        list.add(backgroundSelector);
+        list.add(themeSelector);
         list.add(searchbarHiderSelector);
+        list.add(wikiAction);
         loadNames();
     }
 

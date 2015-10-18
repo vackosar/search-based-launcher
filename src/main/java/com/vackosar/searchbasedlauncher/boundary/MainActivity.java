@@ -19,9 +19,6 @@ public class MainActivity extends RoboActivity {
     @Inject private MenuButton menuButton;
     @Inject private AppsView appsView;
     @Inject private EventManager eventManager;
-    @Inject private BluetoothToggle bluetoothButton;
-    @Inject private WikiButton wikiButton;
-    @Inject private BackgroundSelector backgroundSelector;
     @Inject private MenuList menuList;
 
     @Override
@@ -43,7 +40,7 @@ public class MainActivity extends RoboActivity {
     /** Set theme before view rendering. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        new BackgroundSelector(this);
+        new ThemeSelector(this);
         super.onCreate(savedInstanceState);
     }
 }

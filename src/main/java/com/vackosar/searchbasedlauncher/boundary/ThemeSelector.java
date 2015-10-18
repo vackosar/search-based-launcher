@@ -14,17 +14,17 @@ import roboguice.event.Observes;
 import roboguice.inject.ContextSingleton;
 
 @ContextSingleton
-public class BackgroundSelector extends SelectAction<BackgroundSelector.Theme> implements Indentifiable {
+public class ThemeSelector extends SelectAction<ThemeSelector.Theme> implements Indentifiable {
 
     @Inject private Activity activity;
-    @Expose private BackgroundSelector.Theme theme;
+    @Expose private ThemeSelector.Theme theme;
 
-    private Theme DEFAULT_THEME = Theme.wallpaper;
+    private Theme DEFAULT_THEME = Theme.Wallpaper;
 
     @SuppressWarnings("unused")
-    public BackgroundSelector() { theme = DEFAULT_THEME; }
+    public ThemeSelector() { theme = DEFAULT_THEME; }
 
-    public BackgroundSelector(Activity activity) {
+    public ThemeSelector(Activity activity) {
         super();
         theme = DEFAULT_THEME;
         this.activity = activity;
@@ -62,13 +62,13 @@ public class BackgroundSelector extends SelectAction<BackgroundSelector.Theme> i
 
     @Override
     public String getName() {
-        return "Background";
+        return "Theme";
     }
 
     public enum Theme {
-        wallpaper(R.style.Wallpaper),
-        black(R.style.Black),
-        white(R.style.White);
+        Wallpaper(R.style.Wallpaper),
+        Black(R.style.Black),
+        White(R.style.White);
 
         private int id;
 

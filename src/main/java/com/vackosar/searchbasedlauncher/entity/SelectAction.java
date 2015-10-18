@@ -62,8 +62,4 @@ public abstract class SelectAction<T extends Enum<T>> extends Action {
 
     public abstract void setSelected(Enum<T> selected);
 
-    //    protected void setSelected(Enum<T> value) {
-//        this.selected = value;
-//        save();
-//    }
 }
