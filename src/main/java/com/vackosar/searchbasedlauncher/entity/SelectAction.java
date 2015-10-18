@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
-import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
 
 import java.util.ArrayList;
@@ -17,25 +16,32 @@ public abstract class SelectAction<T extends Enum<T>> extends Action {
 
     @Inject private Activity activity;
 
-    @Expose protected Enum<T> selected;
     @Inject private SingletonPersister<Action> persister;
+
+    public SelectAction() {}
+
+    protected void setActivity(Activity activity) {
+        this.activity = activity;
+        persister = new SingletonPersister<>(activity.getApplicationContext());
+        load();
+    }
 
     @SuppressWarnings("unused")
     public void onCreate(@Observes OnCreateEvent onCreate) {
         load();
     }
 
-    private void save() {
+    protected void save() {
         persister.save(this);
     }
 
-    private void load() {
+    protected void load() {
         persister.load(this);
     }
 
     public void act() {
         List<String> items = new ArrayList<>();
-        final Enum[] values = selected.getClass().getEnumConstants();
+        final Enum[] values = getSelected().getClass().getEnumConstants();
         for (Object o: values) {
             items.add(o.toString());
         }
@@ -43,12 +49,21 @@ public abstract class SelectAction<T extends Enum<T>> extends Action {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                selected = selected.getClass().getEnumConstants()[which];
+                setSelected(getSelected().getClass().getEnumConstants()[which]);
             }
         };
         new AlertDialog.Builder(activity)
-                .setTitle(getName() + "\nCurrent: " + selected)
+                .setTitle(getName() + "\nCurrent: " + getSelected())
                 .setItems(items.toArray(new String[items.size()]), listener)
                 .show();
     }
+
+    protected abstract Enum<T> getSelected();
+
+    public abstract void setSelected(Enum<T> selected);
+
+    //    protected void setSelected(Enum<T> value) {
+//        this.selected = value;
+//        save();
+//    }
 }

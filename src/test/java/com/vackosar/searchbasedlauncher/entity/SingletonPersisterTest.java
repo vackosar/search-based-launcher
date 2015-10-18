@@ -3,6 +3,7 @@ package com.vackosar.searchbasedlauncher.entity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.vackosar.searchbasedlauncher.FieldAccessor;
 import com.vackosar.searchbasedlauncher.boundary.AutostartSelector;
 
 import org.junit.Assert;
@@ -15,7 +16,6 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.mockito.stubbing.Answer;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,17 +73,17 @@ public class SingletonPersisterTest {
         preferences = new HashMap<>();
         initAutostartButton();
         autostartButtonSingletonPersister = new SingletonPersister();
-        setField(autostartButtonSingletonPersister, CONTEXT_FIELDNAME, context);
+        FieldAccessor.setField(autostartButtonSingletonPersister, CONTEXT_FIELDNAME, context);
     }
 
     private void initAutostartButton() {
         autostartSelector = new AutostartSelector();
-        setField(autostartSelector, AUTOSTART_FIELDNAME, true);
+        FieldAccessor.setField(autostartSelector, AUTOSTART_FIELDNAME, true);
     }
 
     @Test
     public void save() {
-        setField(autostartSelector, AUTOSTART_FIELDNAME, true);
+        FieldAccessor.setField(autostartSelector, AUTOSTART_FIELDNAME, true);
         autostartButtonSingletonPersister.save(autostartSelector);
         Assert.assertEquals(1, preferences.entrySet().size());
         Assert.assertEquals("{\"autostart\":true}", preferences.get("json"));
@@ -93,37 +93,7 @@ public class SingletonPersisterTest {
     @Test
     public void load() {
         autostartButtonSingletonPersister.load(autostartSelector);
-        Assert.assertEquals(true, getField(autostartSelector, AUTOSTART_FIELDNAME));
+        Assert.assertEquals(true, FieldAccessor.getField(autostartSelector, AUTOSTART_FIELDNAME));
     }
 
-    private static Field getField(Class clazz, String name) {
-        final Field[] fields = clazz.getDeclaredFields();
-        for (Field field: fields) {
-            if (name.equals(field.getName())) {
-                field.setAccessible(true);
-                return field;
-            }
-        }
-        throw new RuntimeException("Not found field name: " + name);
-    }
-
-    private static void setField(Object object, String name, Object value) {
-        final Field field = getField(object.getClass(), name);
-        field.setAccessible(true);
-        try {
-            field.set(object, value);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static Object getField(Object object, String name) {
-        final Field field = getField(object.getClass(), name);
-        field.setAccessible(true);
-        try {
-            return field.get(object);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

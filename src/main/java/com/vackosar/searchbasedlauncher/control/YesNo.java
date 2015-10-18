@@ -1,8 +1,10 @@
 package com.vackosar.searchbasedlauncher.control;
 
+import com.google.gson.annotations.Expose;
+
 public enum YesNo {
-    Yes(0, true),
-    No(1, false);
+    @Expose Yes(0, true),
+    @Expose No(1, false);
 
     public int position;
     public boolean bool;

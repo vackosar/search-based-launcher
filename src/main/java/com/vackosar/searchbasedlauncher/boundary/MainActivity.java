@@ -21,7 +21,7 @@ public class MainActivity extends RoboActivity {
     @Inject private EventManager eventManager;
     @Inject private BluetoothToggle bluetoothButton;
     @Inject private WikiButton wikiButton;
-    @Inject private BackgroundSpinner backgroundSpinner;
+    @Inject private BackgroundSelector backgroundSelector;
     @Inject private MenuList menuList;
 
     @Override
@@ -43,7 +43,7 @@ public class MainActivity extends RoboActivity {
     /** Set theme before view rendering. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        new BackgroundSpinner(this);
+        new BackgroundSelector(this);
         super.onCreate(savedInstanceState);
     }
 }

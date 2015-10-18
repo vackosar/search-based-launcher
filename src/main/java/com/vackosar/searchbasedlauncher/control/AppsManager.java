@@ -44,7 +44,7 @@ public class AppsManager implements Indentifiable {
 
     private void reload() {
         pkg.clear();
-        switch (itemListSelector.getAppType()) {
+        switch (itemListSelector.getAppsType()) {
             case normal:
                 pkg.addAll(appsFactory.getApplicationActivities());
                 pkg.removeAll(hidden);
