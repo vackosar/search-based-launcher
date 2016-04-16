@@ -1,5 +1,6 @@
 package com.vackosar.searchbasedlauncher.boundary;
 
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
@@ -9,6 +10,8 @@ import com.vackosar.searchbasedlauncher.R;
 import com.vackosar.searchbasedlauncher.control.RegexEscaper;
 import com.vackosar.searchbasedlauncher.entity.Indentifiable;
 import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
+
+import java.util.Arrays;
 
 import roboguice.activity.event.OnResumeEvent;
 import roboguice.context.event.OnCreateEvent;
@@ -22,6 +25,7 @@ public class SearchText implements TextWatcher, Indentifiable {
     @InjectView(R.id.searchText) private EditText editText;
     @Inject private RegexEscaper regexEscaper;
     @Inject private SingletonPersister<SearchText> persister;
+    @Inject private ThemeSelector themeSelector;
 
     private static final String EMPTY = "";
     private static final String SPACE = " ";
@@ -29,6 +33,10 @@ public class SearchText implements TextWatcher, Indentifiable {
     private TextChangedCallback textChangedCallback;
 
     private void onCreate(@Observes OnCreateEvent onCreate) {
+        // Fix for missing android:editTextColor in API 10-.
+        if (Arrays.asList(ThemeSelector.Theme.Black, ThemeSelector.Theme.Wallpaper).contains(themeSelector.getSelected())) {
+            editText.setTextColor(Color.WHITE);
+        }
         editText.addTextChangedListener(this);
     }
 
