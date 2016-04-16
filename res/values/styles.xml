@@ -1,11 +1,9 @@
 <resources>
     <style name="AppTheme">
         <item name="android:typeface" >monospace</item>
-        <item name="android:shadowColor">#000000</item>
         <item name="android:shadowDx">0</item>
         <item name="android:shadowDy">0</item>
         <item name="android:shadowRadius">3</item>
-        <item name="android:textColor">@android:color/white</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">7pt</item>
         <item name="android:layout_height">wrap_content</item>
@@ -23,8 +21,16 @@
         <item name="android:layout_alignParentTop">true</item>
         <item name="android:layout_alignParentLeft">true</item>
     </style>
-
-    <style name="Wallpaper" parent="android:Theme.Wallpaper.NoTitleBar" />
-    <style name="Black" parent="android:Theme.Black.NoTitleBar" />
-    <style name="White" parent="android:Theme.Light.NoTitleBar" />
+    <style name="Wallpaper" parent="android:Theme.Wallpaper.NoTitleBar">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:shadowColor">@android:color/black</item>
+    </style>
+    <style name="Black" parent="android:Theme.Black.NoTitleBar">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:shadowColor">@android:color/black</item>
+    </style>
+    <style name="White" parent="android:Theme.Light.NoTitleBar">
+        <item name="android:shadowColor">@android:color/white</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
 </resources>
