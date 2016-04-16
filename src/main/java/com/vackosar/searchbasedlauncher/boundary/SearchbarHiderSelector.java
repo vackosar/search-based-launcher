@@ -50,6 +50,6 @@ public class SearchbarHiderSelector extends SelectAction<YesNo> {
 
     @Override
     public String getName() {
-        return "Hiding Searchbar";
+        return "Hide Searchbar";
     }
 }

@@ -35,7 +35,7 @@ public class ItemListSelector extends SelectAction<AppsType> {
 
     @Override
     public String getName() {
-        return "List Selection";
+        return "Select List";
     }
 
     public AppsType getAppsType() {

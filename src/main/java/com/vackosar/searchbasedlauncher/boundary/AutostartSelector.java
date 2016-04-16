@@ -39,6 +39,6 @@ public class AutostartSelector extends SelectAction<YesNo> implements Serializab
 
     @Override
     public String getName() {
-        return "Autostart Single Result";
+        return "Autostart";
     }
 }
