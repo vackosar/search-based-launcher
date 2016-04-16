@@ -23,7 +23,7 @@ public class WikiAction extends Action{
 
     @Override
     public String getName() {
-        return "Request feature";
+        return "Request Feature";
     }
 
     @Override
