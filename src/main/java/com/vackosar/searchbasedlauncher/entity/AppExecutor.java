@@ -6,14 +6,12 @@ import android.content.Intent;
 
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.boundary.BluetoothToggle;
-import com.vackosar.searchbasedlauncher.boundary.SearchText;
 import com.vackosar.searchbasedlauncher.boundary.WifiToggle;
 
 import roboguice.inject.ContextSingleton;
 
 @ContextSingleton
 public class AppExecutor {
-    @Inject private SearchText searchText;
     @Inject private Activity activity;
     @Inject private WifiToggle wifiToggle;
     @Inject private BluetoothToggle bluetoothToggle;
@@ -23,8 +21,6 @@ public class AppExecutor {
             startActivity(app);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            searchText.clearText();
         }
     }
 

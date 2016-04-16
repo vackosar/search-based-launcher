@@ -10,6 +10,7 @@ import com.vackosar.searchbasedlauncher.control.RegexEscaper;
 import com.vackosar.searchbasedlauncher.entity.Indentifiable;
 import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
 
+import roboguice.activity.event.OnResumeEvent;
 import roboguice.context.event.OnCreateEvent;
 import roboguice.event.Observes;
 import roboguice.inject.ContextSingleton;
@@ -29,6 +30,10 @@ public class SearchText implements TextWatcher, Indentifiable {
 
     private void onCreate(@Observes OnCreateEvent onCreate) {
         editText.addTextChangedListener(this);
+    }
+
+    private void onResume(@Observes OnResumeEvent onResumeEvent) {
+        clearText();
     }
 
     @Override
