@@ -5,8 +5,8 @@ import android.widget.EditText;
 
 import com.google.gson.annotations.Expose;
 import com.vackosar.searchbasedlauncher.R;
-import com.vackosar.searchbasedlauncher.control.YesNo;
 import com.vackosar.searchbasedlauncher.entity.SelectAction;
+import com.vackosar.searchbasedlauncher.entity.YesNo;
 
 import roboguice.inject.InjectView;
 

@@ -3,7 +3,6 @@ package com.vackosar.searchbasedlauncher.boundary;
 import android.app.Activity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.gson.annotations.Expose;
@@ -11,6 +10,7 @@ import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
 import com.vackosar.searchbasedlauncher.control.AppsManager;
 import com.vackosar.searchbasedlauncher.control.DialogFactory;
+import com.vackosar.searchbasedlauncher.control.ListAdapterFactory;
 import com.vackosar.searchbasedlauncher.control.PackageAddedOrRemovedEvent;
 import com.vackosar.searchbasedlauncher.entity.App;
 import com.vackosar.searchbasedlauncher.entity.AppExecutor;
@@ -41,6 +41,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     @Inject private AppsManager appsManager;
     @Inject private EventManager eventManager;
     @Inject private AppsFactory appsFactory;
+    @Inject private ListAdapterFactory listAdapterFactory;
     @Inject private SingletonPersister<AppsView> persister;
 
     @Expose private List<App> recent = new ArrayList<>();
@@ -141,8 +142,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         for (App app: appList) {
             list.add(app.getNick());
         }
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, R.layout.list_item, android.R.id.text1, list);
-        listView.setAdapter(adapter);
+        listView.setAdapter(listAdapterFactory.create(list));
     }
 
     public void executeActivity(int index) {

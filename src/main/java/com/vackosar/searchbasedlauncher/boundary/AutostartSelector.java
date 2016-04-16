@@ -1,8 +1,8 @@
 package com.vackosar.searchbasedlauncher.boundary;
 
 import com.google.gson.annotations.Expose;
-import com.vackosar.searchbasedlauncher.control.YesNo;
 import com.vackosar.searchbasedlauncher.entity.SelectAction;
+import com.vackosar.searchbasedlauncher.entity.YesNo;
 
 import java.io.Serializable;
 

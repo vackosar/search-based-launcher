@@ -3,11 +3,11 @@ package com.vackosar.searchbasedlauncher.boundary;
 import android.app.Activity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
+import com.vackosar.searchbasedlauncher.control.ListAdapterFactory;
 import com.vackosar.searchbasedlauncher.entity.Action;
 
 import java.util.ArrayList;
@@ -26,6 +26,8 @@ public class MenuList implements AdapterView.OnItemClickListener {
     @Inject private AutostartSelector autostartSelector;
     @Inject private ThemeSelector themeSelector;
     @Inject private SearchbarHiderSelector searchbarHiderSelector;
+    @Inject private ListAdapterFactory listAdapterFactory;
+    @Inject private FontSizeSelector fontSizeSelector;
     @Inject private WikiAction wikiAction;
 
     private List<Action> list;
@@ -42,14 +44,14 @@ public class MenuList implements AdapterView.OnItemClickListener {
         list.add(autostartSelector);
         list.add(themeSelector);
         list.add(searchbarHiderSelector);
+        list.add(fontSizeSelector);
         list.add(wikiAction);
         loadNames();
     }
 
     private void loadNames() {
         final List<String> names = extractNames();
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, R.layout.list_item, android.R.id.text1, names);
-        view.setAdapter(adapter);
+        view.setAdapter(listAdapterFactory.create(names));
     }
 
     private List<String> extractNames() {

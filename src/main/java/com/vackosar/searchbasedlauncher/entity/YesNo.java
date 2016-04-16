@@ -1,4 +1,4 @@
-package com.vackosar.searchbasedlauncher.control;
+package com.vackosar.searchbasedlauncher.entity;
 
 import com.google.gson.annotations.Expose;
 

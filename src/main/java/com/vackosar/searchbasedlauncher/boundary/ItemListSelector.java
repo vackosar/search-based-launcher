@@ -1,10 +1,7 @@
 package com.vackosar.searchbasedlauncher.boundary;
 
-import android.app.Activity;
-
 import com.google.gson.annotations.Expose;
-import com.google.inject.Inject;
-import com.vackosar.searchbasedlauncher.control.AppsType;
+import com.vackosar.searchbasedlauncher.entity.AppsType;
 import com.vackosar.searchbasedlauncher.entity.SelectAction;
 
 import roboguice.inject.ContextSingleton;
@@ -12,7 +9,6 @@ import roboguice.inject.ContextSingleton;
 @ContextSingleton
 public class ItemListSelector extends SelectAction<AppsType> {
 
-    @Inject private Activity activity;
     @Expose private AppsType appsType;
 
     public static final AppsType DEFAULT_SELECTED = AppsType.normal;
@@ -29,11 +25,12 @@ public class ItemListSelector extends SelectAction<AppsType> {
     @Override
     public void setSelected(Enum<AppsType> selected) {
         appsType = (AppsType) selected;
+        save();
     }
 
     @Override
     public String getId() {
-        return this.getClass().getName();
+        return getClass().getName();
     }
 
     @Override

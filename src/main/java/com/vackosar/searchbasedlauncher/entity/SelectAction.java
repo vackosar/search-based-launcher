@@ -15,7 +15,6 @@ import roboguice.event.Observes;
 public abstract class SelectAction<T extends Enum<T>> extends Action {
 
     @Inject private Activity activity;
-
     @Inject private SingletonPersister<Action> persister;
 
     public SelectAction() {}
