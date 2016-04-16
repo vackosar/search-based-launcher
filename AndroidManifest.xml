@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vackosar.searchbasedlauncher"
-    android:versionCode="51"
-    android:versionName="51" >
+    android:versionCode="52"
+    android:versionName="52" >
     <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="10" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
