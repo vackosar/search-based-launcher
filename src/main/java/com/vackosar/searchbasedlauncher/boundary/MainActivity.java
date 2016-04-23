@@ -3,6 +3,7 @@ package com.vackosar.searchbasedlauncher.boundary;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.WindowManager;
 
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
@@ -41,6 +42,7 @@ public class MainActivity extends RoboActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         new ThemeSelector(this);
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         super.onCreate(savedInstanceState);
     }
 }
