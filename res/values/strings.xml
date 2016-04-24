@@ -14,4 +14,5 @@
         <item>Added Activities</item>
         <item>Hidden Activities</item>
     </string-array>
+    <string name="delimiter">:::</string>
 </resources>

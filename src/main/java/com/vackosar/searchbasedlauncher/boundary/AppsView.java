@@ -10,8 +10,8 @@ import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
 import com.vackosar.searchbasedlauncher.control.AppsManager;
 import com.vackosar.searchbasedlauncher.control.DialogFactory;
-import com.vackosar.searchbasedlauncher.control.ListAdapterFactory;
 import com.vackosar.searchbasedlauncher.control.PackageAddedOrRemovedEvent;
+import com.vackosar.searchbasedlauncher.control.TextViewManager;
 import com.vackosar.searchbasedlauncher.entity.App;
 import com.vackosar.searchbasedlauncher.entity.AppExecutor;
 import com.vackosar.searchbasedlauncher.entity.AppsFactory;
@@ -41,7 +41,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     @Inject private AppsManager appsManager;
     @Inject private EventManager eventManager;
     @Inject private AppsFactory appsFactory;
-    @Inject private ListAdapterFactory listAdapterFactory;
+    @Inject private TextViewManager textViewManager;
     @Inject private SingletonPersister<AppsView> persister;
 
     @Expose private List<App> recent = new ArrayList<>();
@@ -142,7 +142,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         for (App app: appList) {
             list.add(app.getNick());
         }
-        listView.setAdapter(listAdapterFactory.create(list));
+        listView.setAdapter(textViewManager.createListAdapter(list));
     }
 
     public void executeActivity(int index) {

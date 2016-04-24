@@ -25,7 +25,7 @@
             android:id="@+id/menu"
             android:layout_width="fill_parent"
             android:background="@null"
-            android:text=":::" />
+            android:text="@string/delimiter" />
         <EditText
             android:id="@+id/searchText"
             style="@style/AppTheme"
@@ -62,7 +62,7 @@
             android:id="@+id/menu2"
             android:layout_width="fill_parent"
             android:background="@null"
-            android:text=":::" />
+            android:text="@string/delimiter" />
         <TextView
             style="@style/AppThemeMenu"
             android:id="@+id/menuDesc"

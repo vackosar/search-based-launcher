@@ -2,10 +2,7 @@ package com.vackosar.searchbasedlauncher.boundary;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.TypedValue;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
@@ -30,7 +27,6 @@ public class FontSizeSelector extends SelectAction<FontSize> {
     @SuppressWarnings("unused")
     public void onCreate(@Observes OnCreateEvent onCreate) {
         load();
-        setSizeToTextChilds(viewGroup);
     }
 
     @Override
@@ -56,26 +52,9 @@ public class FontSizeSelector extends SelectAction<FontSize> {
         return "Text Size";
     }
 
-    public void setSize(TextView textView) {
-        textView.setTextSize(TypedValue.COMPLEX_UNIT_PT, getSize());
-    }
-
     public int getSize() {
         return fontSize.getSize();
     }
 
-    public void setSizeToTextChilds(ViewGroup parent) {
-        for (int i = parent.getChildCount() - 1; i >= 0; i--) {
-            final View child = parent.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                setSizeToTextChilds((ViewGroup) child);
-            } else {
-                if (child != null) {
-                    if (child instanceof TextView) {
-                        setSize((TextView) child);
-                    }
-                }
-            }
-        }
-    }
+
 }

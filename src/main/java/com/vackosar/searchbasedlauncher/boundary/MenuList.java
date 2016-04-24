@@ -7,7 +7,7 @@ import android.widget.ListView;
 
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
-import com.vackosar.searchbasedlauncher.control.ListAdapterFactory;
+import com.vackosar.searchbasedlauncher.control.TextViewManager;
 import com.vackosar.searchbasedlauncher.entity.Action;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class MenuList implements AdapterView.OnItemClickListener {
     @Inject private AutostartSelector autostartSelector;
     @Inject private ThemeSelector themeSelector;
     @Inject private SearchbarHiderSelector searchbarHiderSelector;
-    @Inject private ListAdapterFactory listAdapterFactory;
+    @Inject private TextViewManager textViewManager;
     @Inject private FontSizeSelector fontSizeSelector;
     @Inject private KeyboardHiderSelector keyboardHiderSelector;
     @Inject private WikiAction wikiAction;
@@ -53,7 +53,7 @@ public class MenuList implements AdapterView.OnItemClickListener {
 
     private void loadNames() {
         final List<String> names = extractNames();
-        view.setAdapter(listAdapterFactory.create(names));
+        view.setAdapter(textViewManager.createListAdapter(names));
     }
 
     private List<String> extractNames() {
