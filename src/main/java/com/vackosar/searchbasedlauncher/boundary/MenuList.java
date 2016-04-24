@@ -27,7 +27,8 @@ public class MenuList implements AdapterView.OnItemClickListener {
     @Inject private ThemeSelector themeSelector;
     @Inject private SearchbarHiderSelector searchbarHiderSelector;
     @Inject private TextViewManager textViewManager;
-    @Inject private FontSizeSelector fontSizeSelector;
+    @Inject private SizeSelector sizeSelector;
+    @Inject private AlignmentSelector alignmentSelector;
     @Inject private KeyboardHiderSelector keyboardHiderSelector;
     @Inject private WikiAction wikiAction;
 
@@ -45,7 +46,8 @@ public class MenuList implements AdapterView.OnItemClickListener {
         list.add(autostartSelector);
         list.add(themeSelector);
         list.add(searchbarHiderSelector);
-        list.add(fontSizeSelector);
+        list.add(sizeSelector);
+        list.add(alignmentSelector);
         list.add(keyboardHiderSelector);
         list.add(wikiAction);
         loadNames();

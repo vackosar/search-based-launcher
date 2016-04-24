@@ -2,27 +2,23 @@ package com.vackosar.searchbasedlauncher.boundary;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.view.ViewGroup;
 
 import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
-import com.vackosar.searchbasedlauncher.R;
 import com.vackosar.searchbasedlauncher.entity.FontSize;
 import com.vackosar.searchbasedlauncher.entity.SelectAction;
 
 import roboguice.context.event.OnCreateEvent;
 import roboguice.event.Observes;
 import roboguice.inject.ContextSingleton;
-import roboguice.inject.InjectView;
 
 @ContextSingleton
-public class FontSizeSelector extends SelectAction<FontSize> {
+public class SizeSelector extends SelectAction<FontSize> {
 
     public static final FontSize DEFAULT = FontSize.pt9;
 
     @Inject private Activity activity;
     @Expose private FontSize fontSize = DEFAULT;
-    @InjectView(R.id.viewAnimator) private ViewGroup viewGroup;
 
     @SuppressWarnings("unused")
     public void onCreate(@Observes OnCreateEvent onCreate) {

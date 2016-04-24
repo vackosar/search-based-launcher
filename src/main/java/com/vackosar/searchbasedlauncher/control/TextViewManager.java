@@ -10,7 +10,8 @@ import android.widget.TextView;
 
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
-import com.vackosar.searchbasedlauncher.boundary.FontSizeSelector;
+import com.vackosar.searchbasedlauncher.boundary.AlignmentSelector;
+import com.vackosar.searchbasedlauncher.boundary.SizeSelector;
 
 import java.util.List;
 
@@ -22,7 +23,8 @@ import roboguice.inject.InjectView;
 @ContextSingleton
 public class TextViewManager {
 
-    @Inject private FontSizeSelector fontSizeSelector;
+    @Inject private SizeSelector sizeSelector;
+    @Inject private AlignmentSelector alignmentSelector;
     @InjectView(R.id.viewAnimator) private ViewGroup viewGroup;
     @Inject private Activity activity;
 
@@ -32,7 +34,8 @@ public class TextViewManager {
     }
 
     public void configure(TextView child) {
-        child.setTextSize(TypedValue.COMPLEX_UNIT_PT, fontSizeSelector.getSize());
+        child.setTextSize(TypedValue.COMPLEX_UNIT_PT, sizeSelector.getSize());
+        child.setGravity(alignmentSelector.getAligmentId());
     }
 
     private void configureChildren(ViewGroup parent) {
