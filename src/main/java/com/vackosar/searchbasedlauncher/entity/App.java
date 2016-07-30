@@ -37,13 +37,16 @@ public class App implements Comparable<App> {
 
         App app = (App) o;
 
-        return activity.equals(app.activity);
+        if (name != null ? !name.equals(app.name) : app.name != null) return false;
+        return activity != null ? activity.equals(app.activity) : app.activity == null;
 
     }
 
     @Override
     public int hashCode() {
-        return activity.hashCode();
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (activity != null ? activity.hashCode() : 0);
+        return result;
     }
 
     @Override
