@@ -32,7 +32,7 @@ public class MenuList implements AdapterView.OnItemClickListener {
     @Inject private AlignmentSelector alignmentSelector;
     @Inject private KeyboardHiderSelector keyboardHiderSelector;
     @Inject private WikiAction wikiAction;
-    @Inject private ClearHistory clearHistory;
+    @Inject private ClearHistoryAndRestart clearHistoryAndRestart;
 
     private List<Action> list;
 
@@ -53,7 +53,7 @@ public class MenuList implements AdapterView.OnItemClickListener {
                 , alignmentSelector
                 , keyboardHiderSelector
                 , wikiAction
-                , clearHistory));
+                , clearHistoryAndRestart));
         loadNames();
     }
 
