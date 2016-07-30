@@ -177,4 +177,10 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     public String getId() {
         return getClass().getName();
     }
+
+    public void clearRecent() {
+        recent.clear();
+        save();
+        refreshView();
+    }
 }

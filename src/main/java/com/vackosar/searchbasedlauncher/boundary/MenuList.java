@@ -11,6 +11,7 @@ import com.vackosar.searchbasedlauncher.control.TextViewManager;
 import com.vackosar.searchbasedlauncher.entity.Action;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import roboguice.context.event.OnCreateEvent;
@@ -31,6 +32,7 @@ public class MenuList implements AdapterView.OnItemClickListener {
     @Inject private AlignmentSelector alignmentSelector;
     @Inject private KeyboardHiderSelector keyboardHiderSelector;
     @Inject private WikiAction wikiAction;
+    @Inject private ClearHistory clearHistory;
 
     private List<Action> list;
 
@@ -42,14 +44,16 @@ public class MenuList implements AdapterView.OnItemClickListener {
 
     private void loadActions() {
         list = new ArrayList<>();
-        list.add(itemListSelector);
-        list.add(autostartSelector);
-        list.add(themeSelector);
-        list.add(searchbarHiderSelector);
-        list.add(sizeSelector);
-        list.add(alignmentSelector);
-        list.add(keyboardHiderSelector);
-        list.add(wikiAction);
+        list.addAll(Arrays.asList(
+                  itemListSelector
+                , autostartSelector
+                , themeSelector
+                , searchbarHiderSelector
+                , sizeSelector
+                , alignmentSelector
+                , keyboardHiderSelector
+                , wikiAction
+                , clearHistory));
         loadNames();
     }
 
