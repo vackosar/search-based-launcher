@@ -27,7 +27,9 @@ public class MainActivity extends RoboActivity {
         switch (keycode) {
             case KeyEvent.KEYCODE_MENU:
             case KeyEvent.KEYCODE_BACK:
-                eventManager.fire(new MenuButton.ToggleEvent());
+                if (eventManager != null){
+                    eventManager.fire(new MenuButton.ToggleEvent());
+                }
                 break;
             case KeyEvent.KEYCODE_SEARCH:
                 startSearch(INITIAL_SEARCH_QUERY, false, null, true);
