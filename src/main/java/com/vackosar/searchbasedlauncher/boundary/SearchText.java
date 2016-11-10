@@ -100,7 +100,10 @@ public class SearchText implements TextWatcher, Indentifiable, View.OnFocusChang
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if (editText.equals(v)){
-            if (hasFocus &&  keyboardHiderSelector.getSelected().equals(YesNo.No)){
+            if (hasFocus &&
+                    keyboardHiderSelector.getSelected().equals(YesNo.No) &&
+                    editText.getVisibility() == View.VISIBLE
+                    ){
                 InputMethodManager imm = (InputMethodManager)editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 //imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                 imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
