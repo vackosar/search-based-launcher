@@ -1,12 +1,15 @@
 package com.vackosar.searchbasedlauncher.boundary;
 
 
+import android.content.ContextWrapper;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
+import com.vackosar.searchbasedlauncher.control.CrashReporter;
+import com.vackosar.searchbasedlauncher.control.CustomExceptionHandler;
 
 import roboguice.activity.RoboActivity;
 import roboguice.event.EventManager;
@@ -21,6 +24,7 @@ public class MainActivity extends RoboActivity {
     @Inject private AppsView appsView;
     @Inject private EventManager eventManager;
     @Inject private MenuList menuList;
+    private CrashReporter crashReporter;
 
     @Override
     public boolean onKeyUp(int keycode, KeyEvent event) {
@@ -44,7 +48,18 @@ public class MainActivity extends RoboActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         new ThemeSelector(this);
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         super.onCreate(savedInstanceState);
+        if(!(Thread.getDefaultUncaughtExceptionHandler() instanceof CustomExceptionHandler)) {
+            Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(this.getApplicationContext().getFilesDir().getPath()));
+        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        crashReporter = new CrashReporter();
+        crashReporter.reportPreviousCrashes(this);
+
     }
 }
