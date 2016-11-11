@@ -1,8 +1,11 @@
 package com.vackosar.searchbasedlauncher.boundary;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.google.inject.Inject;
@@ -10,9 +13,11 @@ import com.vackosar.searchbasedlauncher.R;
 import com.vackosar.searchbasedlauncher.control.RegexEscaper;
 import com.vackosar.searchbasedlauncher.entity.Indentifiable;
 import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
+import com.vackosar.searchbasedlauncher.entity.YesNo;
 
 import java.util.Arrays;
 
+import roboguice.activity.event.OnPauseEvent;
 import roboguice.activity.event.OnResumeEvent;
 import roboguice.context.event.OnCreateEvent;
 import roboguice.event.Observes;
@@ -20,12 +25,13 @@ import roboguice.inject.ContextSingleton;
 import roboguice.inject.InjectView;
 
 @ContextSingleton
-public class SearchText implements TextWatcher, Indentifiable {
+public class SearchText implements TextWatcher, Indentifiable, View.OnFocusChangeListener {
 
     @InjectView(R.id.searchText) private EditText editText;
     @Inject private RegexEscaper regexEscaper;
     @Inject private SingletonPersister<SearchText> persister;
     @Inject private ThemeSelector themeSelector;
+    @Inject private KeyboardHiderSelector keyboardHiderSelector;
 
     private static final String EMPTY = "";
     private static final String SPACE = " ";
@@ -37,11 +43,19 @@ public class SearchText implements TextWatcher, Indentifiable {
         if (Arrays.asList(ThemeSelector.Theme.Black, ThemeSelector.Theme.Wallpaper).contains(themeSelector.getSelected())) {
             editText.setTextColor(Color.WHITE);
         }
-        editText.addTextChangedListener(this);
     }
 
     private void onResume(@Observes OnResumeEvent onResumeEvent) {
+        editText.addTextChangedListener(this);
         clearText();
+        editText.setOnFocusChangeListener(this);
+        editText.requestFocus();
+
+    }
+
+    private void onPause(@Observes OnPauseEvent onPauseEvent){
+        editText.setOnFocusChangeListener(null);
+        editText.removeTextChangedListener(this);
     }
 
     @Override
@@ -77,6 +91,28 @@ public class SearchText implements TextWatcher, Indentifiable {
     @Override
     public String getId() {
         return getClass().getName();
+    }
+
+    public void requestFocus(){
+        editText.requestFocus();
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (editText.equals(v)){
+            if (hasFocus &&
+                    keyboardHiderSelector.getSelected().equals(YesNo.No) &&
+                    editText.getVisibility() == View.VISIBLE
+                    ){
+                InputMethodManager imm = (InputMethodManager)editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                //imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+                imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+
+            } else{
+                InputMethodManager imm = (InputMethodManager)editText.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+            }
+        }
     }
 
     public interface TextChangedCallback {

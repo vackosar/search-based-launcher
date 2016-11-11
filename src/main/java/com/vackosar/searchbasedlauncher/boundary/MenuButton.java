@@ -32,6 +32,7 @@ public class MenuButton implements View.OnClickListener {
         toggleView();
         if (! isMenuShown()) {
             appsManager.load();
+            searchText.requestFocus();
         }
     }
 

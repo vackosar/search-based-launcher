@@ -43,6 +43,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     @Inject private AppsFactory appsFactory;
     @Inject private TextViewManager textViewManager;
     @Inject private SingletonPersister<AppsView> persister;
+    private boolean isAppFound = false;
 
     @Expose private List<App> recent = new ArrayList<>();
 
@@ -59,7 +60,9 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         searchText.setSearchTextCallback(new SearchText.TextChangedCallback() {
             @Override
             public void call() {
-                refreshView();
+                if (!isAppFound){
+                    refreshView();
+                }
             }
         });
         appsManager.setRefreshCallback(new AppsManager.RefreshCallback() {
@@ -72,6 +75,11 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
 
     @SuppressWarnings("unused")
     public void onStart(@Observes OnStartEvent onStartEvent) {
+        if (isAppFound){
+            isAppFound = false;
+            filtered.clear();
+            searchText.clearText();
+        }
         appsManager.load();
     }
 
@@ -149,6 +157,7 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
         final App app = getApp(index);
         addNewRecent(app);
         appExecutor.act(app);
+        isAppFound = true;
     }
 
     private App getApp(int index) {
