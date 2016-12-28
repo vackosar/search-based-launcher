@@ -36,7 +36,7 @@ public class AppExecutor {
         } else {
             final Intent intent = new Intent(Intent.ACTION_MAIN, null);
             intent.setComponent(new ComponentName(app.getName(), app.getActivity()));
-            intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+            intent.setFlags(Intent.	FLAG_ACTIVITY_REORDER_TO_FRONT);
             activity.startActivity(intent);
         }
     }
