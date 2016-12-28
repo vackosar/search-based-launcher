@@ -1,13 +1,11 @@
-package com.vackosar.searchbasedlauncher.entity;
+package com.vackosar.searchbasedlauncher.boundary;
 
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 
 import com.google.inject.Inject;
-import com.vackosar.searchbasedlauncher.boundary.BluetoothToggle;
-import com.vackosar.searchbasedlauncher.boundary.SearchText;
-import com.vackosar.searchbasedlauncher.boundary.WifiToggle;
+import com.vackosar.searchbasedlauncher.entity.App;
 
 import roboguice.inject.ContextSingleton;
 
