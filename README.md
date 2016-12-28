@@ -21,6 +21,7 @@ Features
 Previews
 ---------
 
+[![Review](https://raw.githubusercontent.com/vackosar/search-based-launcher/master/store/screenshots/review.png)](https://www.youtube.com/watch?v=tCb0H-IyOac)
 ![Preview](https://raw.githubusercontent.com/vackosar/search-based-launcher/master/store/screenshots/searching.png)
 ![Preview](https://raw.githubusercontent.com/vackosar/search-based-launcher/master/store/screenshots/menu.png)
 
