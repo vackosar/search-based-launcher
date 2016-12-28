@@ -31,6 +31,7 @@ public class MenuList implements AdapterView.OnItemClickListener {
     @Inject private SizeSelector sizeSelector;
     @Inject private AlignmentSelector alignmentSelector;
     @Inject private KeyboardHiderSelector keyboardHiderSelector;
+    @Inject private RecentsCountSelector recentsCountSelector;
     @Inject private WikiAction wikiAction;
     @Inject private ClearHistoryAndRestart clearHistoryAndRestart;
 
@@ -52,8 +53,10 @@ public class MenuList implements AdapterView.OnItemClickListener {
                 , sizeSelector
                 , alignmentSelector
                 , keyboardHiderSelector
+                , recentsCountSelector
                 , wikiAction
-                , clearHistoryAndRestart));
+                , clearHistoryAndRestart
+        ));
         loadNames();
     }
 

@@ -43,10 +43,10 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
 
     @Expose private List<App> recent = new ArrayList<>();
 
-    public static final int MAX_RECENT_COUNT = 15;
     public static final int FIRST_INDEX = 0;
 
     private final List<App> filtered = new ArrayList<>();
+    private int recentsCount = 15;
 
     @SuppressWarnings("unused")
     public void onCreate(@Observes OnCreateEvent onCreate) {
@@ -155,10 +155,19 @@ public class AppsView implements AdapterView.OnItemClickListener, AdapterView.On
     public void addNewRecent(App app) {
         recent.remove(app);
         recent.add(app);
-        if (recent.size() > MAX_RECENT_COUNT) {
+        resizeRecents();
+        save();
+    }
+
+    private void resizeRecents() {
+        while (recent.size() > recentsCount) {
             recent.remove(FIRST_INDEX);
         }
-        save();
+    }
+
+    public void setRecentsCount(int recentsCount) {
+        this.recentsCount = recentsCount;
+        resizeRecents();
     }
 
     private void save() {
