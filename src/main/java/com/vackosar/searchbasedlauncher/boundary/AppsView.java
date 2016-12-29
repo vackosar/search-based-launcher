@@ -14,6 +14,7 @@ import com.vackosar.searchbasedlauncher.control.PackageAddedOrRemovedEvent;
 import com.vackosar.searchbasedlauncher.control.TextViewManager;
 import com.vackosar.searchbasedlauncher.entity.App;
 import com.vackosar.searchbasedlauncher.entity.Indentifiable;
+import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
 
 import java.util.ArrayList;
 import java.util.Collections;

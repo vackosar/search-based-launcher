@@ -1,4 +1,4 @@
-package com.vackosar.searchbasedlauncher.boundary;
+package com.vackosar.searchbasedlauncher.entity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
 import com.google.inject.Inject;
-import com.vackosar.searchbasedlauncher.entity.Indentifiable;
 
 import java.lang.reflect.Type;
 

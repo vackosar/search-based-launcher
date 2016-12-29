@@ -9,6 +9,7 @@ import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
 import com.vackosar.searchbasedlauncher.control.RegexEscaper;
 import com.vackosar.searchbasedlauncher.entity.Indentifiable;
+import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
 
 import java.util.Arrays;
 

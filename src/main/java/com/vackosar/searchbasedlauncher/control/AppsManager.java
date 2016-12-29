@@ -6,9 +6,9 @@ import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.boundary.AppsFactory;
 import com.vackosar.searchbasedlauncher.boundary.ItemListSelector;
-import com.vackosar.searchbasedlauncher.boundary.SingletonPersister;
 import com.vackosar.searchbasedlauncher.entity.App;
 import com.vackosar.searchbasedlauncher.entity.Indentifiable;
+import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -44,6 +44,8 @@ public class AppsManager implements Indentifiable {
 
     private void reload() {
         pkg.clear();
+        List<App> allActivities = appsFactory.getAllActivities();
+        purgeHiddenAndExtraFromNonExistent(allActivities);
         switch (itemListSelector.getAppsType()) {
             case normal:
                 pkg.addAll(appsFactory.getApplicationActivities());
@@ -51,7 +53,7 @@ public class AppsManager implements Indentifiable {
                 pkg.addAll(extra);
                 break;
             case activity:
-                pkg.addAll(appsFactory.getAllActivities());
+                pkg.addAll(allActivities);
                 pkg.removeAll(hidden);
                 pkg.addAll(extra);
                 break;
@@ -66,6 +68,21 @@ public class AppsManager implements Indentifiable {
         }
         Collections.sort(pkg);
         refreshView();
+    }
+
+
+    private void purgeHiddenAndExtraFromNonExistent(List<App> allActivities) {
+        purgeFromNonExistent(allActivities, hidden);
+        purgeFromNonExistent(allActivities, extra);
+        persister.save(this);
+    }
+
+    private void purgeFromNonExistent(List<App> allActivities, Set<App> purgable) {
+        for (App app: purgable) {
+            if (! allActivities.contains(app)) {
+                purgable.remove(app);
+            }
+        }
     }
 
     public void load() {

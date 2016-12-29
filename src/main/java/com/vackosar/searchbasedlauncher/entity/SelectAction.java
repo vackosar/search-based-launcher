@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 import com.google.inject.Inject;
-import com.vackosar.searchbasedlauncher.boundary.SingletonPersister;
 
 import java.util.ArrayList;
 import java.util.List;

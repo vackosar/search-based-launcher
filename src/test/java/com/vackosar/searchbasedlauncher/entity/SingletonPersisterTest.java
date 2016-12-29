@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 
 import com.vackosar.searchbasedlauncher.FieldAccessor;
 import com.vackosar.searchbasedlauncher.boundary.AutostartSelector;
-import com.vackosar.searchbasedlauncher.boundary.SingletonPersister;
 
 import org.junit.Assert;
 import org.junit.Before;
