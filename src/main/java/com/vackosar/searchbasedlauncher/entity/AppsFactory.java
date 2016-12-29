@@ -1,4 +1,4 @@
-package com.vackosar.searchbasedlauncher.boundary;
+package com.vackosar.searchbasedlauncher.entity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,7 +6,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
 import com.google.inject.Inject;
-import com.vackosar.searchbasedlauncher.entity.App;
+import com.vackosar.searchbasedlauncher.boundary.BluetoothToggle;
+import com.vackosar.searchbasedlauncher.boundary.WifiToggle;
 
 import java.util.ArrayList;
 import java.util.List;

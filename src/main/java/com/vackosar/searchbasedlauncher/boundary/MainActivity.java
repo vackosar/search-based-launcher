@@ -7,6 +7,7 @@ import android.view.WindowManager;
 
 import com.google.inject.Inject;
 import com.vackosar.searchbasedlauncher.R;
+import com.vackosar.searchbasedlauncher.entity.AppsView;
 
 import roboguice.activity.RoboActivity;
 import roboguice.event.EventManager;

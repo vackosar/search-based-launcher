@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.vackosar.searchbasedlauncher.entity.Action;
+import com.vackosar.searchbasedlauncher.entity.AppsView;
 
 @Singleton
 public class ClearHistoryAndRestart extends Action {

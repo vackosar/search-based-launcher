@@ -13,8 +13,8 @@ import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
 
 import java.util.Arrays;
 
-import roboguice.activity.event.OnPauseEvent;
 import roboguice.activity.event.OnResumeEvent;
+import roboguice.activity.event.OnStopEvent;
 import roboguice.context.event.OnCreateEvent;
 import roboguice.event.Observes;
 import roboguice.inject.ContextSingleton;
@@ -45,7 +45,7 @@ public class SearchText implements TextWatcher, Indentifiable {
         clearText();
     }
 
-    private void onPause(@Observes OnPauseEvent event) {
+    private void onStop(@Observes OnStopEvent event) {
         clearText();
     }
 

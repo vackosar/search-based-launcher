@@ -4,9 +4,9 @@ import android.app.Activity;
 
 import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
-import com.vackosar.searchbasedlauncher.boundary.AppsFactory;
 import com.vackosar.searchbasedlauncher.boundary.ItemListSelector;
 import com.vackosar.searchbasedlauncher.entity.App;
+import com.vackosar.searchbasedlauncher.entity.AppsFactory;
 import com.vackosar.searchbasedlauncher.entity.Indentifiable;
 import com.vackosar.searchbasedlauncher.entity.SingletonPersister;
 

@@ -2,6 +2,7 @@ package com.vackosar.searchbasedlauncher.boundary;
 
 import com.google.gson.annotations.Expose;
 import com.google.inject.Inject;
+import com.vackosar.searchbasedlauncher.entity.AppsView;
 import com.vackosar.searchbasedlauncher.entity.RecentsCount;
 import com.vackosar.searchbasedlauncher.entity.SelectAction;
 
