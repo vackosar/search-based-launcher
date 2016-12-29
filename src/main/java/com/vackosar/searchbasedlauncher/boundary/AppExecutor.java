@@ -21,8 +21,6 @@ public class AppExecutor {
             startActivity(app);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            searchText.clearText();
         }
     }
 
