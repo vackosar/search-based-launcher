@@ -9,7 +9,8 @@ Is a minimalistic open-source launcher.
 Donate
 ------
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-pink.svg)](https://www.paypal.me/vackosar)
+* [![Donate](https://img.shields.io/badge/Donate-PayPal-pink.svg)](https://www.paypal.me/vackosar)
+* [Bitcoin: 1NapZs8brWNifGk7QFemqTByczdBAAg9cA](bitcoin://1NapZs8brWNifGk7QFemqTByczdBAAg9cA)
 
 Features
 ---------
