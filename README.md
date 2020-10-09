@@ -39,5 +39,6 @@ Note
 - I am continuously improving currently low code quality. This was my first Java project.
 
  Subscribe to My Blog
+ -----------
  
  [VaclavKosar.com](https://vaclavkosar.com)
